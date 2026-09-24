@@ -143,9 +143,11 @@ From a checkout of the repository:
 make demo
 ```
 
-Open `http://localhost:8080/demo/`: the free Jodit editor (from a CDN)
-with its file browser and uploader connected to jodit-python on port
-8081. The page and the files (`./files`) are served on port 8080; the
+It opens `http://localhost:8080/demo/` in the browser (`NO_BROWSER=1` skips
+that): the Jodit PRO file browser (from a
+CDN, as in the jodit-nodejs demo) connected to jodit-python on port
+8081. Jodit PRO needs no license key on `localhost`; on other hosts it
+shows a "Trial version" notice. The page and the files (`./files`) are served on port 8080; the
 connector uses `demo/config.json`. Another connector can be tried with
 `http://localhost:8080/demo/?connector=https://example.com/connector/`.
 

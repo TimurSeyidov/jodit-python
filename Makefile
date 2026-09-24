@@ -34,7 +34,7 @@ sync: ## Install/update dependencies
 run: ## Run the connector (PORT, default 8081)
 	uv run jcpy
 
-demo: ## Real Jodit editor on http://localhost:8080/demo/ with this connector
+demo: ## Jodit PRO file browser on http://localhost:8080/demo/ with this connector
 	bash scripts/demo.sh
 
 dev: ## Run with auto-reload

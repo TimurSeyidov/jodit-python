@@ -31,12 +31,14 @@ make menu   # interactive list of commands
 ## Try it with Jodit
 
 ```bash
-make demo   # then open http://localhost:8080/demo/
+make demo   # opens http://localhost:8080/demo/ (NO_BROWSER=1 to skip)
 ```
 
-`demo/index.html` loads the free Jodit editor from a CDN and talks to the
-connector configured by `demo/config.json` (CORS on, files in
-`./files`, served by the same static server as the page).
+`demo/index.html` is the Jodit PRO file browser (from a CDN, as in the
+jodit-nodejs demo) talking to the connector configured by
+`demo/config.json` (CORS on, files in `./files`, served by the same
+static server as the page). Jodit PRO needs no license key on
+`localhost`; on other hosts it shows a "Trial version" notice.
 
 ## Usage
 
