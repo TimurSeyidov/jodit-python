@@ -1,0 +1,15 @@
+{
+  "title": "Admin files",
+  "defaultRole": "anonymous",
+  "accessControl": [
+    {"role": "anonymous", "FILES": false, "FOLDERS": false, "PERMISSIONS": false},
+    {"role": "admin", "FILES": true, "FOLDERS": true, "PERMISSIONS": true}
+  ],
+  "sources": {
+    "private": {
+      "title": "Private",
+      "root": "./files/private",
+      "baseurl": "http://localhost:8080/files/private/"
+    }
+  }
+}

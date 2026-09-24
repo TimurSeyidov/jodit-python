@@ -150,10 +150,34 @@ app.include_router(
 )
 ```
 
+## Examples
+
+Runnable programs in [`examples/`](examples) (start them from the
+repository root, e.g. `uv run python examples/basic.py`):
+
+| Example | Shows |
+|---|---|
+| `basic.py` | Standalone connector from a JSON config |
+| `cookie_auth.py` | Role from a cookie |
+| `jwt_auth.py` | Role from a signed JWT (PyJWT) |
+| `session_auth.py` | Role in a server-signed session with login routes |
+| `custom_svg.py` | Custom thumbnail icons |
+| `multi_instance.py` | Two isolated connectors in one application |
+| `s3.py` | Files in an S3 bucket |
+| `multi_tenant.py` | Per-request (tenant) sources |
+
+## API reference
+
+The OpenAPI 3.1 document is generated from Pydantic models into
+[`docs/openapi/`](docs/openapi) (`openapi.json`, `openapi.yaml` and a
+Swagger UI page `index.html`); `make openapi` regenerates it and CI
+fails when it is stale. The connector itself does not serve `/docs` or
+`/openapi.json`: like jodit-nodejs, every path is an action name.
+
 ## Development
 
 ```bash
-make check  # lint + format check + mypy --strict + tests with coverage
+make check  # lint, format check, mypy --strict, OpenAPI check, tests
 ```
 
 All caches (uv, ruff, mypy, pytest, coverage, bytecode) live in

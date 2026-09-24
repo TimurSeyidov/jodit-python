@@ -1,0 +1,13 @@
+{
+  "createThumb": true,
+  "generateSvgThumbs": true,
+  "svgThumbWidth": 100,
+  "svgThumbHeight": 100,
+  "sources": {
+    "default": {
+      "title": "My Files",
+      "root": "./files",
+      "baseurl": "http://localhost:8080/files/"
+    }
+  }
+}

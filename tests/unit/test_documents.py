@@ -126,7 +126,11 @@ def test_fetcher_refuses_local_files(tmp_path: Path) -> None:
 
     with pytest.raises(ValueError, match="disallowed protocol"):
         fetcher.fetch(secret.as_uri())
-    assert fetcher.fetch("data:text/plain,hi").read() == b"hi"
+    response = fetcher.fetch("data:text/plain,hi")
+    try:
+        assert response.read() == b"hi"
+    finally:
+        response.close()
 
 
 class Recorder:

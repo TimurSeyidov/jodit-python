@@ -9,7 +9,7 @@ export DYLD_FALLBACK_LIBRARY_PATH := /opt/homebrew/lib:/usr/local/lib
 endif
 
 .PHONY: help menu sync run dev lint lint-fix format format-check \
-	typecheck test test-v coverage check clean \
+	typecheck test test-v coverage check clean openapi openapi-check \
 	dev-up dev-down dev-logs dev-shell prod-build prod-up prod-down \
 	prod-logs
 
@@ -63,7 +63,15 @@ test-v: ## Run tests verbosely
 coverage: ## Run tests with coverage (fails under 90%)
 	uv run pytest --cov --cov-report=term-missing --cov-report=html
 
-check: lint format-check typecheck coverage ## Run everything (as in CI)
+check: lint format-check typecheck openapi-check coverage ## Run everything (as in CI)
+
+# --- docs ---------------------------------------------------------------
+
+openapi: ## Generate docs/openapi (JSON, YAML, Swagger UI)
+	uv run python scripts/generate_openapi.py
+
+openapi-check: ## Fail when docs/openapi is out of date
+	uv run python scripts/generate_openapi.py --check
 
 # --- docker: dev ------------------------------------------------------
 

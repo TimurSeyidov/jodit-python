@@ -1,0 +1,15 @@
+{
+  "defaultRole": "guest",
+  "accessControl": [
+    {"role": "guest", "FILES": true, "FILE_UPLOAD": false, "FILE_REMOVE": false},
+    {"role": "editor", "FILES": true, "FILE_UPLOAD": true, "FILE_REMOVE": false},
+    {"role": "admin", "FILES": true, "FILE_UPLOAD": true, "FILE_REMOVE": true}
+  ],
+  "sources": {
+    "uploads": {
+      "title": "Uploads",
+      "root": "./files/uploads",
+      "baseurl": "http://localhost:8080/files/uploads/"
+    }
+  }
+}

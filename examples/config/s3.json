@@ -1,0 +1,19 @@
+{
+  "debug": false,
+  "allowCrossOrigin": true,
+  "createThumb": true,
+  "thumbSize": 250,
+  "quality": 90,
+  "sources": {
+    "media": {
+      "title": "Media library",
+      "baseurl": "https://my-bucket.s3.eu-central-1.amazonaws.com/media/",
+      "storageAdapter": "s3",
+      "s3": {
+        "bucket": "my-bucket",
+        "region": "eu-central-1",
+        "prefix": "media"
+      }
+    }
+  }
+}

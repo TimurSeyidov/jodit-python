@@ -1,0 +1,2575 @@
+openapi: 3.1.0
+info:
+  title: Jodit Connector API
+  version: 0.1.0
+  description: Jodit FileBrowser and Uploader connector for Python, API-compatible
+    with jodit-nodejs.
+  license:
+    name: MIT
+    identifier: MIT
+servers:
+- url: http://localhost:8081/
+  description: Local development server
+paths:
+  /ping:
+    get:
+      operationId: ping
+      summary: Health check
+      description: Answers before CORS and authentication.
+      tags:
+      - System
+      responses:
+        '200':
+          description: Service is running
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingResponse'
+  /files:
+    get:
+      operationId: files
+      summary: Get list of files
+      description: 'Lists files (and optionally folders) of a directory in the requested
+        source or in every source.
+
+
+        Also available as `/?action=files`.'
+      tags:
+      - Files
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FilesResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Non-numeric paging parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name; the first (or every) source when omitted
+          examples: &id010
+          - default
+          title: Source
+        description: Source name; the first (or every) source when omitted
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Directory inside the source
+          examples: &id011
+          - /
+          title: Path
+        description: Directory inside the source
+      - name: mods
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/FilesMods'
+        style: deepObject
+        explode: true
+  /fileUpload:
+    post:
+      operationId: fileUpload
+      summary: Upload files
+      description: 'Uploads one or more files into a directory via multipart/form-data.
+
+
+        Also available as `/?action=fileUpload`.'
+      tags:
+      - Files
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UploadForm'
+  /fileUploadRemote:
+    get:
+      operationId: fileUploadRemote
+      summary: Upload file from remote URL
+      description: 'Downloads a file from a public http(s) URL into a directory.
+        Private and local addresses are refused unless allowPrivateNetworkUploads
+        is on.
+
+
+        Also available as `/?action=fileUploadRemote`.'
+      tags:
+      - Files
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoteUploadResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name; the first (or every) source when omitted
+          examples: &id027
+          - default
+          title: Source
+        description: Source name; the first (or every) source when omitted
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Directory inside the source
+          examples: &id028
+          - /
+          title: Path
+        description: Directory inside the source
+      - name: url
+        in: query
+        required: true
+        schema: &id029
+          description: File to download
+          examples:
+          - https://example.com/a.png
+          title: Url
+          type: string
+        description: File to download
+  /fileRemove:
+    get:
+      operationId: fileRemove
+      summary: Remove file
+      description: 'Removes a file from a directory.
+
+
+        Also available as `/?action=fileRemove`.'
+      tags:
+      - Files
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoneResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name; the first (or every) source when omitted
+          examples: &id003
+          - default
+          title: Source
+        description: Source name; the first (or every) source when omitted
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Directory inside the source
+          examples: &id004
+          - /
+          title: Path
+        description: Directory inside the source
+      - name: name
+        in: query
+        required: true
+        schema: &id005
+          description: Entry name
+          examples:
+          - photo.jpg
+          title: Name
+          type: string
+        description: Entry name
+  /fileMove:
+    get:
+      operationId: fileMove
+      summary: Move file or folder
+      description: 'Moves a file or folder (`from`, relative to the root) into the
+        directory `path`.
+
+
+        Also available as `/?action=fileMove`.'
+      tags:
+      - Files
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoneResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name
+          title: Source
+        description: Source name
+      - name: from
+        in: query
+        required: true
+        schema: &id001
+          description: Entry path relative to the source root
+          examples:
+          - /photos/photo.jpg
+          title: From
+          type: string
+        description: Entry path relative to the source root
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Destination directory (the root when omitted)
+          examples: &id002
+          - /archive
+          title: Path
+        description: Destination directory (the root when omitted)
+  /fileCopy:
+    get:
+      operationId: fileCopy
+      summary: Copy file
+      description: 'Copies a file; a taken name gets a " (N)" suffix, so copying
+        into the same folder duplicates the file.
+
+
+        Also available as `/?action=fileCopy`.'
+      tags:
+      - Files
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoneResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name
+          title: Source
+        description: Source name
+      - name: from
+        in: query
+        required: true
+        schema: *id001
+        description: Entry path relative to the source root
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Destination directory (the root when omitted)
+          examples: *id002
+          title: Path
+        description: Destination directory (the root when omitted)
+  /fileRename:
+    get:
+      operationId: fileRename
+      summary: Rename file or folder
+      description: 'Renames an entry of a directory; files keep their extension.
+
+
+        Also available as `/?action=fileRename`.'
+      tags:
+      - Files
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoneResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name; the first (or every) source when omitted
+          examples: &id006
+          - default
+          title: Source
+        description: Source name; the first (or every) source when omitted
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Directory inside the source
+          examples: &id007
+          - /
+          title: Path
+        description: Directory inside the source
+      - name: name
+        in: query
+        required: true
+        schema: &id008
+          description: Entry name
+          examples:
+          - photo.jpg
+          title: Name
+          type: string
+        description: Entry name
+      - name: newname
+        in: query
+        required: true
+        schema: &id009
+          description: New name
+          examples:
+          - holiday.jpg
+          title: Newname
+          type: string
+        description: New name
+  /fileDownload:
+    get:
+      operationId: fileDownload
+      summary: Download file
+      description: 'Sends a file as an attachment.
+
+
+        Also available as `/?action=fileDownload`.'
+      tags:
+      - Files
+      responses:
+        '200':
+          description: File
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name; the first (or every) source when omitted
+          examples: *id003
+          title: Source
+        description: Source name; the first (or every) source when omitted
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Directory inside the source
+          examples: *id004
+          title: Path
+        description: Directory inside the source
+      - name: name
+        in: query
+        required: true
+        schema: *id005
+        description: Entry name
+  /getLocalFileByUrl:
+    get:
+      operationId: getLocalFileByUrl
+      summary: Resolve local file by URL
+      description: 'Finds which source file a public URL points to.
+
+
+        Also available as `/?action=getLocalFileByUrl`.'
+      tags:
+      - Files
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LocalFileResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: url
+        in: query
+        required: true
+        schema: &id032
+          description: Public URL of a file
+          examples:
+          - http://localhost:8081/files/photo.jpg
+          title: Url
+          type: string
+        description: Public URL of a file
+  /folders:
+    get:
+      operationId: folders
+      summary: Get folders list
+      description: 'Lists the sub-folders of a directory in the requested source
+        or in every source.
+
+
+        Also available as `/?action=folders`.'
+      tags:
+      - Folders
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FoldersResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name; the first (or every) source when omitted
+          examples: &id015
+          - default
+          title: Source
+        description: Source name; the first (or every) source when omitted
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Directory inside the source
+          examples: &id016
+          - /
+          title: Path
+        description: Directory inside the source
+      - name: dots
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Start with `.` or `..` (default true)
+          title: Dots
+        description: Start with `.` or `..` (default true)
+  /folderCreate:
+    get:
+      operationId: folderCreate
+      summary: Create new folder
+      description: 'Creates a folder; unsafe characters of the name become `_`.
+
+
+        Also available as `/?action=folderCreate`.'
+      tags:
+      - Folders
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessagesResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name; the first (or every) source when omitted
+          examples: &id012
+          - default
+          title: Source
+        description: Source name; the first (or every) source when omitted
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Directory inside the source
+          examples: &id013
+          - /
+          title: Path
+        description: Directory inside the source
+      - name: name
+        in: query
+        required: true
+        schema: &id014
+          description: New folder name
+          examples:
+          - photos
+          title: Name
+          type: string
+        description: New folder name
+  /folderRemove:
+    get:
+      operationId: folderRemove
+      summary: Remove folder
+      description: 'Removes a folder with everything in it.
+
+
+        Also available as `/?action=folderRemove`.'
+      tags:
+      - Folders
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoneResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name; the first (or every) source when omitted
+          examples: *id003
+          title: Source
+        description: Source name; the first (or every) source when omitted
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Directory inside the source
+          examples: *id004
+          title: Path
+        description: Directory inside the source
+      - name: name
+        in: query
+        required: true
+        schema: *id005
+        description: Entry name
+  /folderMove:
+    get:
+      operationId: folderMove
+      summary: Move folder
+      description: 'Moves a folder (`from`, relative to the root) into `path`.
+
+
+        Also available as `/?action=folderMove`.'
+      tags:
+      - Folders
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoneResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name
+          title: Source
+        description: Source name
+      - name: from
+        in: query
+        required: true
+        schema: *id001
+        description: Entry path relative to the source root
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Destination directory (the root when omitted)
+          examples: *id002
+          title: Path
+        description: Destination directory (the root when omitted)
+  /folderCopy:
+    get:
+      operationId: folderCopy
+      summary: Copy folder
+      description: 'Copies a folder recursively; a taken name gets a " (N)" suffix.
+        Copying a folder into itself is refused.
+
+
+        Also available as `/?action=folderCopy`.'
+      tags:
+      - Folders
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoneResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name
+          title: Source
+        description: Source name
+      - name: from
+        in: query
+        required: true
+        schema: *id001
+        description: Entry path relative to the source root
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Destination directory (the root when omitted)
+          examples: *id002
+          title: Path
+        description: Destination directory (the root when omitted)
+  /folderRename:
+    get:
+      operationId: folderRename
+      summary: Rename folder
+      description: 'Renames a folder of a directory.
+
+
+        Also available as `/?action=folderRename`.'
+      tags:
+      - Folders
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DoneResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name; the first (or every) source when omitted
+          examples: *id006
+          title: Source
+        description: Source name; the first (or every) source when omitted
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Directory inside the source
+          examples: *id007
+          title: Path
+        description: Directory inside the source
+      - name: name
+        in: query
+        required: true
+        schema: *id008
+        description: Entry name
+      - name: newname
+        in: query
+        required: true
+        schema: *id009
+        description: New name
+  /imageResize:
+    get:
+      operationId: imageResize
+      summary: Resize image
+      description: 'Scales an image to `box[w]` x `box[h]` in place or as `newname`.
+
+
+        Also available as `/?action=imageResize`.'
+      tags:
+      - Images
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name; the first (or every) source when omitted
+          examples: &id023
+          - default
+          title: Source
+        description: Source name; the first (or every) source when omitted
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Directory inside the source
+          examples: &id024
+          - /
+          title: Path
+        description: Directory inside the source
+      - name: name
+        in: query
+        required: true
+        schema: &id025
+          description: Entry name
+          examples:
+          - photo.jpg
+          title: Name
+          type: string
+        description: Entry name
+      - name: newname
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Save as (overwrite `name` when omitted)
+          title: Newname
+        description: Save as (overwrite `name` when omitted)
+      - name: box
+        in: query
+        required: true
+        schema: &id026
+          $ref: '#/components/schemas/ResizeBox'
+        style: deepObject
+        explode: true
+  /imageCrop:
+    get:
+      operationId: imageCrop
+      summary: Crop image
+      description: 'Cuts the `box` region out of an image in place or as `newname`.
+
+
+        Also available as `/?action=imageCrop`.'
+      tags:
+      - Images
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name; the first (or every) source when omitted
+          examples: &id019
+          - default
+          title: Source
+        description: Source name; the first (or every) source when omitted
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Directory inside the source
+          examples: &id020
+          - /
+          title: Path
+        description: Directory inside the source
+      - name: name
+        in: query
+        required: true
+        schema: &id021
+          description: Entry name
+          examples:
+          - photo.jpg
+          title: Name
+          type: string
+        description: Entry name
+      - name: newname
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Save as (overwrite `name` when omitted)
+          title: Newname
+        description: Save as (overwrite `name` when omitted)
+      - name: box
+        in: query
+        required: true
+        schema: &id022
+          $ref: '#/components/schemas/CropBox'
+        style: deepObject
+        explode: true
+  /imageSave:
+    post:
+      operationId: imageSave
+      summary: Save an edited image
+      description: 'Stores the image produced by the client-side image editor as
+        `newname` or over `name`. POST only.
+
+
+        Also available as `/?action=imageSave`.'
+      tags:
+      - Images
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageSaveResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ImageSaveForm'
+  /imageLoad:
+    post:
+      operationId: imageLoad
+      summary: Read an image as a base64 data URL
+      description: 'Returns an image through the CORS-enabled API, for browsers that
+        cannot read the file host directly. POST only.
+
+
+        Also available as `/?action=imageLoad`.'
+      tags:
+      - Images
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageLoadResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '405':
+          description: Method not allowed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImageLoadBody'
+  /generatePdf:
+    get:
+      operationId: generatePdf
+      summary: Generate PDF document
+      description: 'Renders HTML as a PDF attachment. Remote resources are loaded
+        only from public hosts (see pdf.isRemoteEnabled).
+
+
+        Also available as `/?action=generatePdf`.'
+      tags:
+      - Documents
+      responses:
+        '200':
+          description: File
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: html
+        in: query
+        required: true
+        schema: &id018
+          description: Document markup
+          minLength: 1
+          title: Html
+          type: string
+        description: Document markup
+      - name: options
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/PdfOptions'
+        style: deepObject
+        explode: true
+  /generateDocx:
+    get:
+      operationId: generateDocx
+      summary: Generate DOCX document
+      description: 'Converts HTML into a Word document attachment.
+
+
+        Also available as `/?action=generateDocx`.'
+      tags:
+      - Documents
+      responses:
+        '200':
+          description: File
+          content:
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: html
+        in: query
+        required: true
+        schema: &id017
+          description: Document markup
+          minLength: 1
+          title: Html
+          type: string
+        description: Document markup
+  /permissions:
+    get:
+      operationId: permissions
+      summary: Get permissions
+      description: 'Reports which actions the user may run in a directory.
+
+
+        Also available as `/?action=permissions`.'
+      tags:
+      - System
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionsResponse'
+        '400':
+          description: Invalid parameters or request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Access denied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Source, path or file not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      parameters:
+      - name: source
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Source name; the first (or every) source when omitted
+          examples: &id030
+          - default
+          title: Source
+        description: Source name; the first (or every) source when omitted
+      - name: path
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Directory inside the source
+          examples: &id031
+          - /
+          title: Path
+        description: Directory inside the source
+components:
+  schemas:
+    CropBox:
+      description: Region to keep, sent as ``box[x]``, ``box[y]``, ``box[w]``...
+      properties:
+        w:
+          description: Width in pixels
+          exclusiveMinimum: 0
+          title: W
+          type: integer
+        h:
+          description: Height in pixels
+          exclusiveMinimum: 0
+          title: H
+          type: integer
+        x:
+          description: Left offset in pixels
+          minimum: 0
+          title: X
+          type: integer
+        y:
+          description: Top offset in pixels
+          minimum: 0
+          title: Y
+          type: integer
+      required:
+      - w
+      - h
+      - x
+      - y
+      title: CropBox
+      type: object
+    Done:
+      description: Result of an action without payload.
+      properties:
+        code:
+          const: 220
+          default: 220
+          title: Code
+          type: integer
+      title: Done
+      type: object
+    DoneResponse:
+      description: Success envelope without payload.
+      properties:
+        success:
+          const: true
+          title: Success
+          type: boolean
+        data:
+          $ref: '#/components/schemas/Done'
+      required:
+      - success
+      - data
+      title: DoneResponse
+      type: object
+    ErrorData:
+      description: Error details.
+      properties:
+        code:
+          description: HTTP status
+          examples:
+          - 400
+          title: Code
+          type: integer
+        messages:
+          examples:
+          - - Validation failed
+          items:
+            type: string
+          title: Messages
+          type: array
+      required:
+      - code
+      - messages
+      title: ErrorData
+      type: object
+    ErrorResponse:
+      description: Error envelope.
+      properties:
+        success:
+          const: false
+          title: Success
+          type: boolean
+        data:
+          $ref: '#/components/schemas/ErrorData'
+      required:
+      - success
+      - data
+      title: ErrorResponse
+      type: object
+    FileItem:
+      description: Entry of a listing.
+      properties:
+        file:
+          examples:
+          - photo.jpg
+          title: File
+          type: string
+        name:
+          examples:
+          - photo.jpg
+          title: Name
+          type: string
+        type:
+          enum:
+          - file
+          - image
+          - folder
+          title: Type
+          type: string
+        isImage:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: null
+          title: Isimage
+        size:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          examples:
+          - 1.5MB
+          title: Size
+        changed:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          examples:
+          - 9/24/2026 1:02:03 PM
+          title: Changed
+        thumb:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          examples:
+          - _thumbs/photo.jpg
+          title: Thumb
+      required:
+      - file
+      - name
+      - type
+      title: FileItem
+      type: object
+    FilesData:
+      description: Result of ``files``.
+      properties:
+        code:
+          const: 220
+          default: 220
+          title: Code
+          type: integer
+        sources:
+          items:
+            $ref: '#/components/schemas/SourceFiles'
+          title: Sources
+          type: array
+      required:
+      - sources
+      title: FilesData
+      type: object
+    FilesMods:
+      description: Listing modifiers, sent as ``mods[...]``.
+      properties:
+        withFolders:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: null
+          description: Include folders
+          title: Withfolders
+        onlyImages:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: null
+          description: Only image files
+          title: Onlyimages
+        offset:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          default: null
+          description: First item
+          title: Offset
+        limit:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          default: null
+          description: Number of items
+          title: Limit
+        sortBy:
+          anyOf:
+          - enum:
+            - name-asc
+            - name-desc
+            - changed-asc
+            - changed-desc
+            - size-asc
+            - size-desc
+            type: string
+          - type: 'null'
+          default: null
+          description: Sort order
+          title: Sortby
+        foldersPosition:
+          anyOf:
+          - enum:
+            - default
+            - top
+            - bottom
+            type: string
+          - type: 'null'
+          default: null
+          description: Where folders go
+          title: Foldersposition
+        filterWord:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Case-insensitive part of the names to keep
+          title: Filterword
+      title: FilesMods
+      type: object
+    FilesQuery:
+      description: Parameters of ``files``.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name; the first (or every) source when omitted
+          examples: *id010
+          title: Source
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Directory inside the source
+          examples: *id011
+          title: Path
+        mods:
+          anyOf:
+          - $ref: '#/components/schemas/FilesMods'
+          - type: 'null'
+          default: null
+      title: FilesQuery
+      type: object
+    FilesResponse:
+      description: Answer of ``files``.
+      properties:
+        success:
+          const: true
+          title: Success
+          type: boolean
+        data:
+          $ref: '#/components/schemas/FilesData'
+      required:
+      - success
+      - data
+      title: FilesResponse
+      type: object
+    FolderCreateQuery:
+      description: Parameters of ``folderCreate``.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name; the first (or every) source when omitted
+          examples: *id012
+          title: Source
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Directory inside the source
+          examples: *id013
+          title: Path
+        name: *id014
+      required:
+      - name
+      title: FolderCreateQuery
+      type: object
+    FoldersData:
+      description: Result of ``folders``.
+      properties:
+        sources:
+          items:
+            $ref: '#/components/schemas/SourceFolders'
+          title: Sources
+          type: array
+        code:
+          const: 220
+          default: 220
+          title: Code
+          type: integer
+      required:
+      - sources
+      title: FoldersData
+      type: object
+    FoldersQuery:
+      description: Parameters of ``folders``.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name; the first (or every) source when omitted
+          examples: *id015
+          title: Source
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Directory inside the source
+          examples: *id016
+          title: Path
+        dots:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          default: null
+          description: Start with `.` or `..` (default true)
+          title: Dots
+      title: FoldersQuery
+      type: object
+    FoldersResponse:
+      description: Answer of ``folders``.
+      properties:
+        success:
+          const: true
+          title: Success
+          type: boolean
+        data:
+          $ref: '#/components/schemas/FoldersData'
+      required:
+      - success
+      - data
+      title: FoldersResponse
+      type: object
+    GenerateDocxQuery:
+      description: Parameters of ``generateDocx``.
+      properties:
+        html: *id017
+      required:
+      - html
+      title: GenerateDocxQuery
+      type: object
+    GeneratePdfQuery:
+      description: Parameters of ``generatePdf``.
+      properties:
+        html: *id018
+        options:
+          anyOf:
+          - $ref: '#/components/schemas/PdfOptions'
+          - type: 'null'
+          default: null
+      required:
+      - html
+      title: GeneratePdfQuery
+      type: object
+    ImageCropQuery:
+      description: Parameters of ``imageCrop``.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name; the first (or every) source when omitted
+          examples: *id019
+          title: Source
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Directory inside the source
+          examples: *id020
+          title: Path
+        name: *id021
+        newname:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Save as (overwrite `name` when omitted)
+          title: Newname
+        box: *id022
+      required:
+      - name
+      - box
+      title: ImageCropQuery
+      type: object
+    ImageData:
+      description: Result of ``imageResize`` and ``imageCrop``.
+      properties:
+        code:
+          const: 220
+          default: 220
+          title: Code
+          type: integer
+        newPath:
+          examples:
+          - http://localhost:8081/files/photo.jpg
+          title: Newpath
+          type: string
+      required:
+      - newPath
+      title: ImageData
+      type: object
+    ImageLoadBody:
+      description: Body of ``imageLoad``.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name; the first (or every) source when omitted
+          examples:
+          - default
+          title: Source
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Directory inside the source
+          examples:
+          - /
+          title: Path
+        name:
+          description: Entry name
+          examples:
+          - photo.jpg
+          title: Name
+          type: string
+      required:
+      - name
+      title: ImageLoadBody
+      type: object
+    ImageLoadData:
+      description: Result of ``imageLoad``.
+      properties:
+        code:
+          const: 220
+          default: 220
+          title: Code
+          type: integer
+        content:
+          examples:
+          - data:image/png;base64,iVBORw0KGgo...
+          title: Content
+          type: string
+        name:
+          title: Name
+          type: string
+      required:
+      - content
+      - name
+      title: ImageLoadData
+      type: object
+    ImageLoadResponse:
+      description: Answer of ``imageLoad``.
+      properties:
+        success:
+          const: true
+          title: Success
+          type: boolean
+        data:
+          $ref: '#/components/schemas/ImageLoadData'
+      required:
+      - success
+      - data
+      title: ImageLoadResponse
+      type: object
+    ImageResizeQuery:
+      description: Parameters of ``imageResize``.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name; the first (or every) source when omitted
+          examples: *id023
+          title: Source
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Directory inside the source
+          examples: *id024
+          title: Path
+        name: *id025
+        newname:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Save as (overwrite `name` when omitted)
+          title: Newname
+        box: *id026
+      required:
+      - name
+      - box
+      title: ImageResizeQuery
+      type: object
+    ImageResponse:
+      description: Answer of ``imageResize`` and ``imageCrop``.
+      properties:
+        success:
+          const: true
+          title: Success
+          type: boolean
+        data:
+          $ref: '#/components/schemas/ImageData'
+      required:
+      - success
+      - data
+      title: ImageResponse
+      type: object
+    ImageSaveData:
+      description: Result of ``imageSave``.
+      properties:
+        code:
+          const: 220
+          default: 220
+          title: Code
+          type: integer
+        newPath:
+          examples:
+          - http://localhost:8081/files/photo.jpg
+          title: Newpath
+          type: string
+        name:
+          title: Name
+          type: string
+      required:
+      - newPath
+      - name
+      title: ImageSaveData
+      type: object
+    ImageSaveForm:
+      description: Multipart form of ``imageSave``.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name; the first (or every) source when omitted
+          examples:
+          - default
+          title: Source
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Directory inside the source
+          examples:
+          - /
+          title: Path
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Original image
+          title: Name
+        newname:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Save as
+          title: Newname
+        files:
+          description: The edited image (first file is used)
+          items:
+            format: binary
+            type: string
+          title: Files
+          type: array
+      required:
+      - files
+      title: ImageSaveForm
+      type: object
+    ImageSaveResponse:
+      description: Answer of ``imageSave``.
+      properties:
+        success:
+          const: true
+          title: Success
+          type: boolean
+        data:
+          $ref: '#/components/schemas/ImageSaveData'
+      required:
+      - success
+      - data
+      title: ImageSaveResponse
+      type: object
+    LocalFileData:
+      description: Result of ``getLocalFileByUrl``.
+      properties:
+        code:
+          const: 220
+          default: 220
+          title: Code
+          type: integer
+        path:
+          examples:
+          - /photos
+          title: Path
+          type: string
+        name:
+          examples:
+          - photo.jpg
+          title: Name
+          type: string
+        source:
+          examples:
+          - default
+          title: Source
+          type: string
+      required:
+      - path
+      - name
+      - source
+      title: LocalFileData
+      type: object
+    LocalFileResponse:
+      description: Answer of ``getLocalFileByUrl``.
+      properties:
+        success:
+          const: true
+          title: Success
+          type: boolean
+        data:
+          $ref: '#/components/schemas/LocalFileData'
+      required:
+      - success
+      - data
+      title: LocalFileResponse
+      type: object
+    MessagesData:
+      description: Result carrying messages.
+      properties:
+        code:
+          const: 220
+          default: 220
+          title: Code
+          type: integer
+        messages:
+          items:
+            type: string
+          title: Messages
+          type: array
+      required:
+      - messages
+      title: MessagesData
+      type: object
+    MessagesResponse:
+      description: Answer carrying messages.
+      properties:
+        success:
+          const: true
+          title: Success
+          type: boolean
+        data:
+          $ref: '#/components/schemas/MessagesData'
+      required:
+      - success
+      - data
+      title: MessagesResponse
+      type: object
+    MoveQuery:
+      description: Parameters of move and copy actions.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name
+          title: Source
+        from: *id001
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Destination directory (the root when omitted)
+          examples: *id002
+          title: Path
+      required:
+      - from
+      title: MoveQuery
+      type: object
+    NameQuery:
+      description: Parameters of actions working on one entry of a directory.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name; the first (or every) source when omitted
+          examples: *id003
+          title: Source
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Directory inside the source
+          examples: *id004
+          title: Path
+        name: *id005
+      required:
+      - name
+      title: NameQuery
+      type: object
+    PdfOptions:
+      description: PDF options, sent as ``options[...]``.
+      properties:
+        format:
+          anyOf:
+          - enum:
+            - A4
+            - A3
+            - Letter
+            - Legal
+            - Tabloid
+            type: string
+          - type: 'null'
+          default: null
+          title: Format
+        page_orientation:
+          anyOf:
+          - enum:
+            - portrait
+            - landscape
+            type: string
+          - type: 'null'
+          default: null
+          title: Page Orientation
+        defaultFont:
+          anyOf:
+          - enum:
+            - courier
+            - helvetica
+            - times
+            type: string
+          - type: 'null'
+          default: null
+          title: Defaultfont
+      title: PdfOptions
+      type: object
+    PermissionsData:
+      description: Result of ``permissions``.
+      properties:
+        code:
+          const: 220
+          default: 220
+          title: Code
+          type: integer
+        permissions:
+          additionalProperties:
+            type: boolean
+          examples:
+          - allowFileUpload: false
+            allowFiles: true
+          title: Permissions
+          type: object
+      required:
+      - permissions
+      title: PermissionsData
+      type: object
+    PermissionsResponse:
+      description: Answer of ``permissions``.
+      properties:
+        success:
+          const: true
+          title: Success
+          type: boolean
+        data:
+          $ref: '#/components/schemas/PermissionsData'
+      required:
+      - success
+      - data
+      title: PermissionsResponse
+      type: object
+    PingResponse:
+      description: Liveness probe answer.
+      properties:
+        success:
+          const: true
+          title: Success
+          type: boolean
+      required:
+      - success
+      title: PingResponse
+      type: object
+    RemoteUploadData:
+      description: Result of ``fileUploadRemote``.
+      properties:
+        code:
+          const: 220
+          default: 220
+          title: Code
+          type: integer
+        baseurl:
+          title: Baseurl
+          type: string
+        newfilename:
+          examples:
+          - photo.jpg
+          title: Newfilename
+          type: string
+        isImage:
+          title: Isimage
+          type: boolean
+      required:
+      - baseurl
+      - newfilename
+      - isImage
+      title: RemoteUploadData
+      type: object
+    RemoteUploadQuery:
+      description: Parameters of ``fileUploadRemote``.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name; the first (or every) source when omitted
+          examples: *id027
+          title: Source
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Directory inside the source
+          examples: *id028
+          title: Path
+        url: *id029
+      required:
+      - url
+      title: RemoteUploadQuery
+      type: object
+    RemoteUploadResponse:
+      description: Answer of ``fileUploadRemote``.
+      properties:
+        success:
+          const: true
+          title: Success
+          type: boolean
+        data:
+          $ref: '#/components/schemas/RemoteUploadData'
+      required:
+      - success
+      - data
+      title: RemoteUploadResponse
+      type: object
+    RenameQuery:
+      description: Parameters of rename actions.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name; the first (or every) source when omitted
+          examples: *id006
+          title: Source
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Directory inside the source
+          examples: *id007
+          title: Path
+        name: *id008
+        newname: *id009
+      required:
+      - name
+      - newname
+      title: RenameQuery
+      type: object
+    ResizeBox:
+      description: Target size, sent as ``box[w]`` and ``box[h]``.
+      properties:
+        w:
+          description: Width in pixels
+          exclusiveMinimum: 0
+          title: W
+          type: integer
+        h:
+          description: Height in pixels
+          exclusiveMinimum: 0
+          title: H
+          type: integer
+      required:
+      - w
+      - h
+      title: ResizeBox
+      type: object
+    SourceFiles:
+      description: Listing of one source.
+      properties:
+        name:
+          title: Name
+          type: string
+        title:
+          title: Title
+          type: string
+        baseurl:
+          title: Baseurl
+          type: string
+        path:
+          title: Path
+          type: string
+        files:
+          items:
+            $ref: '#/components/schemas/FileItem'
+          title: Files
+          type: array
+      required:
+      - name
+      - title
+      - baseurl
+      - path
+      - files
+      title: SourceFiles
+      type: object
+    SourceFolders:
+      description: Folders of one source.
+      properties:
+        name:
+          title: Name
+          type: string
+        title:
+          title: Title
+          type: string
+        baseurl:
+          title: Baseurl
+          type: string
+        path:
+          title: Path
+          type: string
+        folders:
+          examples:
+          - - ..
+            - photos
+          items:
+            type: string
+          title: Folders
+          type: array
+      required:
+      - name
+      - title
+      - baseurl
+      - path
+      - folders
+      title: SourceFolders
+      type: object
+    SourceQuery:
+      description: Parameters every source-bound action accepts.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name; the first (or every) source when omitted
+          examples: *id030
+          title: Source
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Directory inside the source
+          examples: *id031
+          title: Path
+      title: SourceQuery
+      type: object
+    UploadData:
+      description: Result of ``fileUpload``.
+      properties:
+        code:
+          const: 220
+          default: 220
+          title: Code
+          type: integer
+        baseurl:
+          title: Baseurl
+          type: string
+        messages:
+          examples:
+          - - File photo.jpg was uploaded
+          items:
+            type: string
+          title: Messages
+          type: array
+        files:
+          examples:
+          - - photos/photo.jpg
+          items:
+            type: string
+          title: Files
+          type: array
+        isImages:
+          items:
+            type: boolean
+          title: Isimages
+          type: array
+      required:
+      - baseurl
+      - messages
+      - files
+      - isImages
+      title: UploadData
+      type: object
+    UploadForm:
+      description: Multipart form of ``fileUpload``.
+      properties:
+        source:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Source name; the first (or every) source when omitted
+          examples:
+          - default
+          title: Source
+        path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          default: null
+          description: Directory inside the source
+          examples:
+          - /
+          title: Path
+        files:
+          description: Files, as `files[0]`, `files[1]`... or the `defaultFilesKey`
+            field
+          items:
+            format: binary
+            type: string
+          title: Files
+          type: array
+      required:
+      - files
+      title: UploadForm
+      type: object
+    UploadResponse:
+      description: Answer of ``fileUpload``.
+      properties:
+        success:
+          const: true
+          title: Success
+          type: boolean
+        data:
+          $ref: '#/components/schemas/UploadData'
+      required:
+      - success
+      - data
+      title: UploadResponse
+      type: object
+    UrlQuery:
+      description: Parameters of ``getLocalFileByUrl``.
+      properties:
+        url: *id032
+      required:
+      - url
+      title: UrlQuery
+      type: object

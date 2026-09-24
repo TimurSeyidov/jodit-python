@@ -1,0 +1,11 @@
+{
+  "title": "Multi-tenant connector",
+  "dynamicSourcesCache": {"max": 100, "ttlMs": 300000},
+  "sources": {
+    "shared": {
+      "title": "Shared",
+      "root": "./files/shared",
+      "baseurl": "http://localhost:8080/files/shared/"
+    }
+  }
+}

@@ -48,6 +48,9 @@ jobs:
       - name: Typecheck
         run: make typecheck
 
+      - name: Check OpenAPI document
+        run: make openapi-check
+
       - name: Tests with coverage
         run: make coverage
 

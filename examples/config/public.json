@@ -1,0 +1,16 @@
+{
+  "title": "Public files",
+  "accessControl": [
+    {"FILE_UPLOAD": false, "FILE_UPLOAD_REMOTE": false, "FILE_REMOVE": false,
+     "FILE_MOVE": false, "FILE_RENAME": false, "FOLDER_CREATE": false,
+     "FOLDER_REMOVE": false, "FOLDER_MOVE": false, "FOLDER_RENAME": false,
+     "IMAGE_RESIZE": false, "IMAGE_CROP": false, "IMAGE_SAVE": false}
+  ],
+  "sources": {
+    "public": {
+      "title": "Public",
+      "root": "./files/public",
+      "baseurl": "http://localhost:8080/files/public/"
+    }
+  }
+}

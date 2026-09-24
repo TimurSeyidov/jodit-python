@@ -137,7 +137,13 @@ def create_app(
     Raises:
         ConfigError: The configuration cannot be read or is invalid.
     """
-    app = FastAPI(title="Jodit Connector", version=version("jodit-python"))
+    app = FastAPI(
+        title="Jodit Connector",
+        version=version("jodit-python"),
+        openapi_url=None,
+        docs_url=None,
+        redoc_url=None,
+    )
     app.add_middleware(_VersionHeaderMiddleware)
     app.include_router(
         create_router(

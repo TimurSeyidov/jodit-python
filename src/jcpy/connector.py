@@ -138,7 +138,8 @@ class Connector:
         """Serve a connector action.
 
         Order: POST-only guard, CORS, authentication, parameters,
-        action handler. Every failure becomes an error envelope.
+        action handler. Every failure becomes an error envelope;
+        uploaded files are closed once the handler is done.
 
         Args:
             request: Incoming request.
@@ -177,6 +178,9 @@ class Connector:
         except Exception as error:
             self._log(error)
             response = internal_error_response(str(error))
+        finally:
+            # Release the temporary files of a parsed multipart form.
+            await request.close()
         response.headers.update(cors_headers)
         return response
 

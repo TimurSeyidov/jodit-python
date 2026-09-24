@@ -302,3 +302,19 @@ async def test_options_without_cors_lists_methods(
 
     assert response.status_code == 200
     assert response.headers["allow"] == "GET, HEAD, POST"
+
+
+async def test_uploaded_files_are_closed_after_the_answer(
+    connector_client: ClientFactory,
+) -> None:
+    async with connector_client(
+        {"accessControl": [{"FILE_UPLOAD": False}]}
+    ) as http:
+        denied = await http.post(
+            "/fileUpload", files={"files[0]": ("a.txt", b"a")}
+        )
+        echoed = await http.post("/echo", files={"files[0]": ("a.txt", b"a")})
+
+    # A leaked temporary file would fail the test (ResourceWarning).
+    assert denied.status_code == 403
+    assert echoed.json()["data"]["files"] == ["a.txt"]

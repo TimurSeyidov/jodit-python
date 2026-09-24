@@ -1,0 +1,10 @@
+{
+  "title": "Basic connector",
+  "sources": {
+    "default": {
+      "title": "Files",
+      "root": "./files",
+      "baseurl": "http://localhost:8080/files/"
+    }
+  }
+}

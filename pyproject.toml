@@ -41,13 +41,18 @@ module-name = "jcpy"
 dev = [
     "boto3-stubs[s3]>=1.35",
     "httpx>=0.28",
+    "itsdangerous>=2.2",
     "mypy>=1.15",
+    "openapi-spec-validator>=0.7",
+    "pyjwt>=2.9",
     "pypdf>=5",
     "pytest>=8.3",
     "pytest-asyncio>=0.25",
     "pytest-cov>=6.0",
+    "pyyaml>=6",
     "ruff>=0.11",
     "testcontainers[minio]>=4.9",
+    "types-pyyaml>=6.0.12.20260906",
 ]
 
 [tool.ruff]
@@ -80,7 +85,7 @@ known-first-party = ["jcpy"]
 
 [tool.mypy]
 python_version = "3.14"
-files = ["src", "tests"]
+files = ["src", "tests", "scripts", "examples"]
 mypy_path = "src"
 explicit_package_bases = true
 strict = true
@@ -108,6 +113,11 @@ addopts = "-ra --strict-markers"
 testpaths = ["tests"]
 markers = ["docker: needs a Docker daemon (skipped when none is reachable)"]
 asyncio_mode = "auto"
+# Leaked files and sockets fail the test that leaks them.
+filterwarnings = [
+    "error::ResourceWarning",
+    "error::pytest.PytestUnraisableExceptionWarning",
+]
 asyncio_default_fixture_loop_scope = "function"
 cache_dir = ".cache/pytest"
 
