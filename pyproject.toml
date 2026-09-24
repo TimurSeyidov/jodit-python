@@ -9,6 +9,7 @@ requires-python = ">=3.14"
 keywords = ["jodit", "file-manager", "uploader", "fastapi"]
 dependencies = [
     "fastapi>=0.115",
+    "httpx>=0.28",
     "pillow>=11.0",
     "pydantic>=2.11",
     "python-multipart>=0.0.20",

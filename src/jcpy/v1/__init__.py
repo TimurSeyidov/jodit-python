@@ -9,6 +9,7 @@ from jcpy.v1.file_move.handler import file_move_handler
 from jcpy.v1.file_remove.handler import file_remove_handler
 from jcpy.v1.file_rename.handler import file_rename_handler
 from jcpy.v1.file_upload.handler import file_upload_handler
+from jcpy.v1.file_upload_remote.handler import file_upload_remote_handler
 from jcpy.v1.files.handler import files_handler
 from jcpy.v1.folder_copy.handler import folder_copy_handler
 from jcpy.v1.folder_create.handler import folder_create_handler
@@ -34,6 +35,7 @@ ACTIONS: Mapping[str, ActionHandler] = MappingProxyType(
     {
         "files": files_handler,
         "fileUpload": file_upload_handler,
+        "fileUploadRemote": file_upload_remote_handler,
         "fileRemove": file_remove_handler,
         "fileMove": file_move_handler,
         "fileCopy": file_copy_handler,

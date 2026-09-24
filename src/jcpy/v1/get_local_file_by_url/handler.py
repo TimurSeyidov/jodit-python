@@ -3,8 +3,9 @@
 from typing import TYPE_CHECKING
 
 from jcpy.errors import HttpError
+from jcpy.helpers.urls import url_pathname
 from jcpy.responses import success_response
-from jcpy.services.resolve_url import resolve_file_by_url, url_pathname
+from jcpy.services.resolve_url import resolve_file_by_url
 from jcpy.validation import Issue, string_field
 
 if TYPE_CHECKING:

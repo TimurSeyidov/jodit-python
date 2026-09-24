@@ -296,6 +296,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
+    { name = "httpx" },
     { name = "pillow" },
     { name = "pydantic" },
     { name = "python-multipart" },
@@ -315,6 +316,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.115" },
+    { name = "httpx", specifier = ">=0.28" },
     { name = "pillow", specifier = ">=11.0" },
     { name = "pydantic", specifier = ">=2.11" },
     { name = "python-multipart", specifier = ">=0.0.20" },

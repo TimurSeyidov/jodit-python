@@ -9,8 +9,8 @@ from urllib.parse import unquote
 import pytest
 from PIL import Image
 
+from jcpy.helpers.urls import url_pathname
 from jcpy.services.listing import _Item, sort_items
-from jcpy.services.resolve_url import url_pathname
 from jcpy.services.thumbs import render_thumbnail
 from jcpy.storage.base import StatEntry
 
