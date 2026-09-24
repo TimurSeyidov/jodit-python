@@ -6,11 +6,15 @@ from pydantic import BaseModel
 
 
 class PingResponse(BaseModel):
-    """Service is running."""
+    """Liveness probe response: always ``{"success": true}``."""
 
     success: Literal[True] = True
 
 
 async def ping_handler() -> PingResponse:
-    """Answer the liveness probe."""
+    """Report that the service is running.
+
+    Returns:
+        Successful ping response.
+    """
     return PingResponse()

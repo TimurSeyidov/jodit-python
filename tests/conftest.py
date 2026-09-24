@@ -13,7 +13,11 @@ if TYPE_CHECKING:
 
 @pytest.fixture
 async def client() -> AsyncIterator[AsyncClient]:
-    """HTTP client bound to a fresh application instance."""
+    """HTTP client bound to a fresh application instance.
+
+    Yields:
+        Client sending requests to the app in-process.
+    """
     transport = ASGITransport(app=create_app())
     async with AsyncClient(
         transport=transport, base_url="http://test"

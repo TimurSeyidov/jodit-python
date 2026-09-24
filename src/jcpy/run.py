@@ -10,7 +10,14 @@ MAX_PORT = 65535
 
 
 def get_port() -> int:
-    """Read the listening port from ``PORT``."""
+    """Read the listening port from the ``PORT`` environment variable.
+
+    Returns:
+        Port number, ``8081`` when ``PORT`` is not set.
+
+    Raises:
+        SystemExit: ``PORT`` is not an integer in the range 1-65535.
+    """
     raw = os.environ.get("PORT", str(DEFAULT_PORT))
     try:
         port = int(raw)
@@ -23,7 +30,11 @@ def get_port() -> int:
 
 
 def main() -> None:
-    """Run the connector with uvicorn."""
+    """Serve the connector with uvicorn until interrupted.
+
+    Listens on ``HOST`` (default ``0.0.0.0``) and ``PORT``
+    (default ``8081``).
+    """
     uvicorn.run(
         "jcpy.app:create_app",
         factory=True,
