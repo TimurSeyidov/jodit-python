@@ -18,6 +18,7 @@ from jcpy.config.models import (
 )
 from jcpy.context import ActionContext
 from jcpy.errors import ConfigError, HttpError
+from jcpy.helpers.svg_icon import SvgGenerator, generate_icon
 from jcpy.types import AuthCallback, OriginPredicate
 
 __version__ = version("jodit-python")
@@ -37,7 +38,9 @@ __all__ = [
     "OriginPredicate",
     "RulesProvider",
     "SourceConfig",
+    "SvgGenerator",
     "__version__",
     "create_app",
     "create_router",
+    "generate_icon",
 ]

@@ -1,0 +1,142 @@
+[
+ {
+  "path": "docs",
+  "isDirectory": true,
+  "width": 100,
+  "height": 100,
+  "result": "\n\t<svg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#f5aa2b\"/>\n\t\t\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#dd9927\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#93661a\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "docs",
+  "isDirectory": true,
+  "width": 48,
+  "height": 64,
+  "result": "\n\t<svg width=\"48\" height=\"64\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#f5aa2b\"/>\n\t\t\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#dd9927\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#93661a\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "a/report.pdf",
+  "isDirectory": false,
+  "width": 100,
+  "height": 100,
+  "result": "\n\t<svg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#e45453\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#893232\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \tpdf\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#cd4c4b\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#cd4c4b\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#893232\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "a/report.pdf",
+  "isDirectory": false,
+  "width": 48,
+  "height": 64,
+  "result": "\n\t<svg width=\"48\" height=\"64\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#e45453\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#893232\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \tpdf\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#cd4c4b\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#cd4c4b\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#893232\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "x.docx",
+  "isDirectory": false,
+  "width": 100,
+  "height": 100,
+  "result": "\n\t<svg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#7adfed\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#49868e\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \tdocx\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#6ec9d5\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#6ec9d5\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#49868e\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "x.docx",
+  "isDirectory": false,
+  "width": 48,
+  "height": 64,
+  "result": "\n\t<svg width=\"48\" height=\"64\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#7adfed\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#49868e\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \tdocx\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#6ec9d5\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#6ec9d5\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#49868e\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "y.TXT",
+  "isDirectory": false,
+  "width": 100,
+  "height": 100,
+  "result": "\n\t<svg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#f5aa2b\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#93661a\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \ttxt\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#dd9927\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#dd9927\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#93661a\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "y.TXT",
+  "isDirectory": false,
+  "width": 48,
+  "height": 64,
+  "result": "\n\t<svg width=\"48\" height=\"64\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#f5aa2b\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#93661a\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \ttxt\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#dd9927\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#dd9927\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#93661a\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "archive.tar.gz",
+  "isDirectory": false,
+  "width": 100,
+  "height": 100,
+  "result": "\n\t<svg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#aec446\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#68762a\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \tgz\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#9db03f\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#9db03f\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#68762a\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "archive.tar.gz",
+  "isDirectory": false,
+  "width": 48,
+  "height": 64,
+  "result": "\n\t<svg width=\"48\" height=\"64\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#aec446\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#68762a\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \tgz\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#9db03f\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#9db03f\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#68762a\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "z.xlsx",
+  "isDirectory": false,
+  "width": 100,
+  "height": 100,
+  "result": "\n\t<svg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#de919a\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#85575c\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \txlsx\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#c8838b\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#c8838b\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#85575c\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "z.xlsx",
+  "isDirectory": false,
+  "width": 48,
+  "height": 64,
+  "result": "\n\t<svg width=\"48\" height=\"64\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#de919a\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#85575c\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \txlsx\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#c8838b\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#c8838b\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#85575c\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "m.mp4",
+  "isDirectory": false,
+  "width": 100,
+  "height": 100,
+  "result": "\n\t<svg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#92a5ab\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#586367\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \tmp4\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#83959a\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#83959a\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#586367\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "m.mp4",
+  "isDirectory": false,
+  "width": 48,
+  "height": 64,
+  "result": "\n\t<svg width=\"48\" height=\"64\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#92a5ab\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#586367\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \tmp4\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#83959a\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#83959a\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#586367\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "b.csv",
+  "isDirectory": false,
+  "width": 100,
+  "height": 100,
+  "result": "\n\t<svg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#edea43\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#8e8c28\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \tcsv\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#d5d33c\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#d5d33c\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#8e8c28\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "b.csv",
+  "isDirectory": false,
+  "width": 48,
+  "height": 64,
+  "result": "\n\t<svg width=\"48\" height=\"64\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#edea43\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#8e8c28\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \tcsv\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#d5d33c\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#d5d33c\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#8e8c28\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "c.html",
+  "isDirectory": false,
+  "width": 100,
+  "height": 100,
+  "result": "\n\t<svg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#d46ead\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#7f4268\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \thtml\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#bf639c\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#bf639c\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#7f4268\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "c.html",
+  "isDirectory": false,
+  "width": 48,
+  "height": 64,
+  "result": "\n\t<svg width=\"48\" height=\"64\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#d46ead\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#7f4268\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \thtml\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#bf639c\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#bf639c\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#7f4268\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "d.7z",
+  "isDirectory": false,
+  "width": 100,
+  "height": 100,
+  "result": "\n\t<svg width=\"100\" height=\"100\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#006ab4\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#00406c\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \t7z\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#005fa2\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#005fa2\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#00406c\"/>\n\t</svg>\n"
+ },
+ {
+  "path": "d.7z",
+  "isDirectory": false,
+  "width": 48,
+  "height": 64,
+  "result": "\n\t<svg width=\"48\" height=\"64\" viewBox=\"0 0 100 100\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n\t\t<path d=\"M20 19C20 14.5817 23.5817 11 28 11H56L80 34.5V82C80 86.4183 76.4183 90 72 90H28C23.5817 90 20 86.4183 20 82V19Z\" fill=\"#006ab4\"/>\n\t\t\n\t\t<g>\n\t\t\t<rect x=\"13\" y=\"55\" width=\"54\" height=\"22\" rx=\"4\" fill=\"#00406c\"/>\n\t\t\t<text\n          x=\"40\"\n          y=\"68\"\n          dominant-baseline=\"middle\"\n          text-anchor=\"middle\"\n          fill=\"white\"\n          font-family=\"Arial\"\n          font-size=\"16\"\n      >\n      \t7z\n      </text>\n\t\t</g>\n\t\t<path d=\"M64.5 56.5L80 72V82.54V82.54C79.7186 86.7384 76.2078 90 72 90V90H52L20.5 77L64.5 56.5Z\" fill=\"#005fa2\" fill-opacity=\"0.5\"/>\n\n\t\t<path d=\"M79.5 34L80 36.5V42L64 33.5L60.5 31L79.5 34Z\" fill=\"#005fa2\" fill-opacity=\"0.5\"/>\n\t\t<path d=\"M56 11L80 34.5L66.063 34.1832C61.4741 34.079 57.699 30.538 57.3013 25.9652L56 11Z\" fill=\"#00406c\"/>\n\t</svg>\n"
+ }
+]

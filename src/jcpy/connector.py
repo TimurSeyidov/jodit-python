@@ -12,6 +12,7 @@ from starlette.responses import JSONResponse, PlainTextResponse, Response
 from jcpy.acl import AccessControl
 from jcpy.context import ActionContext, RequestContext
 from jcpy.errors import HttpError
+from jcpy.helpers.svg_icon import generate_icon
 from jcpy.responses import error_response, internal_error_response
 from jcpy.sources import SourcePool
 from jcpy.v1 import ACTIONS
@@ -23,6 +24,7 @@ if TYPE_CHECKING:
     from jcpy.acl import AccessControlProtocol, RulesProvider
     from jcpy.config.models import AppConfig
     from jcpy.context import ActionHandler
+    from jcpy.helpers.svg_icon import SvgGenerator
     from jcpy.types import AuthCallback, OriginPredicate
 
 logger = logging.getLogger("jcpy")
@@ -49,6 +51,8 @@ class Connector:
             configuration.
         access_control_instance: Custom access control implementation;
             replaces both rule sources above.
+        svg_generator: Renders thumbnail icons of folders and non-image
+            files.
         actions: Action handlers by name.
     """
 
@@ -60,13 +64,14 @@ class Connector:
         allowed_origins: OriginPredicate | None = None,
         access_control: RulesProvider | None = None,
         access_control_instance: AccessControlProtocol | None = None,
+        svg_generator: SvgGenerator = generate_icon,
         actions: Mapping[str, ActionHandler] = ACTIONS,
     ) -> None:
         self.config = config
         self.check_authentication = check_authentication
         self.allowed_origins = allowed_origins
         self.actions = actions
-        self.sources = SourcePool(config)
+        self.sources = SourcePool(config, svg_generator=svg_generator)
         self.access: AccessControlProtocol = (
             access_control_instance
             or AccessControl(access_control or config.access_control)

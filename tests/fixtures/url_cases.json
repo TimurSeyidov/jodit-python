@@ -1,0 +1,150 @@
+[
+ {
+  "url": "http://localhost:8081/files/test/a.txt",
+  "pathname": "/files/test/a.txt"
+ },
+ {
+  "url": "http://x",
+  "pathname": "/"
+ },
+ {
+  "url": "http://x/",
+  "pathname": "/"
+ },
+ {
+  "url": "https://x/a/b/../c",
+  "pathname": "/a/c"
+ },
+ {
+  "url": "http://x/a/./b/.",
+  "pathname": "/a/b/"
+ },
+ {
+  "url": "http://x/a/%2e%2e/b",
+  "pathname": "/b"
+ },
+ {
+  "url": "http://x/a/b/..",
+  "pathname": "/a/"
+ },
+ {
+  "url": "http://x/../../etc/passwd",
+  "pathname": "/etc/passwd"
+ },
+ {
+  "url": "http:x/y",
+  "pathname": "/y"
+ },
+ {
+  "url": "http:/x/y",
+  "pathname": "/y"
+ },
+ {
+  "url": "http://x\\a\\b",
+  "pathname": "/a/b"
+ },
+ {
+  "url": "http://x/a?q=1#h",
+  "pathname": "/a"
+ },
+ {
+  "url": "http://x/a#h?q",
+  "pathname": "/a"
+ },
+ {
+  "url": "http://",
+  "pathname": null
+ },
+ {
+  "url": "http://:80/",
+  "pathname": null
+ },
+ {
+  "url": "http://x:99999/",
+  "pathname": null
+ },
+ {
+  "url": "http://x:abc/",
+  "pathname": null
+ },
+ {
+  "url": "http://x:/a",
+  "pathname": "/a"
+ },
+ {
+  "url": "http://user:pass@host:8080/p",
+  "pathname": "/p"
+ },
+ {
+  "url": "http://[::1]/p",
+  "pathname": "/p"
+ },
+ {
+  "url": "http://[::1]:81/p",
+  "pathname": "/p"
+ },
+ {
+  "url": "mailto:user@example.com",
+  "pathname": "user@example.com"
+ },
+ {
+  "url": "data:text/plain,hi",
+  "pathname": "text/plain,hi"
+ },
+ {
+  "url": "file:///etc/passwd",
+  "pathname": "/etc/passwd"
+ },
+ {
+  "url": "file:/a/../b",
+  "pathname": "/b"
+ },
+ {
+  "url": "file://host/share/x",
+  "pathname": "/share/x"
+ },
+ {
+  "url": "nope",
+  "pathname": null
+ },
+ {
+  "url": "",
+  "pathname": null
+ },
+ {
+  "url": "/relative/path",
+  "pathname": null
+ },
+ {
+  "url": "1http://x/",
+  "pathname": null
+ },
+ {
+  "url": "  http://x/trim  ",
+  "pathname": "/trim"
+ },
+ {
+  "url": "http://x/a b/ç",
+  "pathname": "/a%20b/%C3%A7"
+ },
+ {
+  "url": "ftp://h/f",
+  "pathname": "/f"
+ },
+ {
+  "url": "ws://h:1/s",
+  "pathname": "/s"
+ },
+ {
+  "url": "HTTP://X/Up",
+  "pathname": "/Up"
+ },
+ {
+  "url": "http://x/%2E/y",
+  "pathname": "/y"
+ },
+ {
+  "url": "http://x/.%2e/y",
+  "pathname": "/y"
+ }
+]

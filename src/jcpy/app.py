@@ -7,6 +7,7 @@ from fastapi import FastAPI
 
 from jcpy.config.loader import load_config
 from jcpy.connector import Connector
+from jcpy.helpers.svg_icon import generate_icon
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -15,6 +16,7 @@ if TYPE_CHECKING:
     from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
     from jcpy.acl import AccessControlProtocol, RulesProvider
+    from jcpy.helpers.svg_icon import SvgGenerator
     from jcpy.types import AuthCallback, OriginPredicate
 
 VERSION_HEADER = b"x-app-version"
@@ -27,6 +29,7 @@ def create_router(
     allowed_origins: OriginPredicate | None = None,
     access_control: RulesProvider | None = None,
     access_control_instance: AccessControlProtocol | None = None,
+    svg_generator: SvgGenerator = generate_icon,
 ) -> APIRouter:
     """Build an isolated connector instance as a router.
 
@@ -47,6 +50,8 @@ def create_router(
             of the configuration.
         access_control_instance: Custom access control implementation
             replacing both rule sources above.
+        svg_generator: Renders thumbnail icons of folders and non-image
+            files; receives the entry, width and height.
 
     Returns:
         Router serving ``/ping``, ``/`` and ``/{action}``.
@@ -60,6 +65,7 @@ def create_router(
         allowed_origins=allowed_origins,
         access_control=access_control,
         access_control_instance=access_control_instance,
+        svg_generator=svg_generator,
     )
     return connector.build_router()
 
@@ -96,6 +102,7 @@ def create_app(
     allowed_origins: OriginPredicate | None = None,
     access_control: RulesProvider | None = None,
     access_control_instance: AccessControlProtocol | None = None,
+    svg_generator: SvgGenerator = generate_icon,
 ) -> FastAPI:
     """Build a standalone connector application.
 
@@ -112,6 +119,8 @@ def create_app(
             of the configuration.
         access_control_instance: Custom access control implementation
             replacing both rule sources above.
+        svg_generator: Renders thumbnail icons of folders and non-image
+            files; receives the entry, width and height.
 
     Returns:
         Application with the connector mounted at ``/`` and the
@@ -129,6 +138,7 @@ def create_app(
             allowed_origins=allowed_origins,
             access_control=access_control,
             access_control_instance=access_control_instance,
+            svg_generator=svg_generator,
         )
     )
     return app

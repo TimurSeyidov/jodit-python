@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING
 from anyio import to_thread
 
 from jcpy.errors import HttpError
+from jcpy.helpers.svg_icon import SvgGenerator, generate_icon
 from jcpy.storage.file_storage import FileStorage
 from jcpy.storage.registry import (
     create_storage_adapter,
@@ -98,6 +99,7 @@ class Source:
         config: Effective configuration of the source (global settings
             with the source overrides applied).
         storage: Storage holding the files.
+        svg_generator: Renders icons of folders and non-image files.
     """
 
     def __init__(
@@ -106,11 +108,13 @@ class Source:
         settings: SourceConfig,
         config: AppConfig,
         storage: FileStorage,
+        svg_generator: SvgGenerator = generate_icon,
     ) -> None:
         self.name = name
         self.settings = settings
         self.config = config
         self.storage = storage
+        self.svg_generator = svg_generator
 
     @property
     def is_virtual_root(self) -> bool:
@@ -158,6 +162,94 @@ class Source:
             await verify_real_path(pathname, root)
         return pathname
 
+    async def validate_path(self, pathname: str) -> str:
+        """Normalize an absolute path and require it inside the root.
+
+        Args:
+            pathname: Absolute path built from client input.
+
+        Returns:
+            Normalized absolute path.
+
+        Raises:
+            HttpError: ``404 Path does not exist`` outside the root.
+        """
+        root = self.get_root()
+        normalized = _resolve(pathname)
+        if not is_path_within_root(normalized, root):
+            raise HttpError.not_found(PATH_NOT_FOUND)
+        if not self.is_virtual_root:
+            await verify_real_path(normalized, root)
+        return normalized
+
+    @staticmethod
+    def get_extension(path: str) -> str:
+        """Lower-cased extension without the dot.
+
+        Args:
+            path: File path.
+
+        Returns:
+            Extension, ``""`` when there is none.
+        """
+        return posixpath.splitext(path)[1][1:].lower()
+
+    def is_excluded(self, path: str) -> bool:
+        """Tell whether an entry is hidden from listings.
+
+        Args:
+            path: Entry path.
+
+        Returns:
+            ``True`` for the thumbnail folder (when thumbnails are on)
+            and ``excludeDirectoryNames``.
+        """
+        name = posixpath.basename(path)
+        return (
+            self.config.create_thumb and name == self.config.thumb_folder_name
+        ) or name in self.config.exclude_directory_names
+
+    def is_good_file(self, path: str) -> bool:
+        """Tell whether a file has an allowed extension.
+
+        Args:
+            path: File path.
+
+        Returns:
+            ``True`` when the extension is listed in ``extensions``.
+        """
+        extension = self.get_extension(path)
+        return bool(extension) and extension in self.config.extensions
+
+    def is_image(self, path: str) -> bool:
+        """Tell whether a file is an image by its extension.
+
+        Args:
+            path: File path.
+
+        Returns:
+            ``True`` for ``svg`` and ``imageExtensions``.
+        """
+        extension = self.get_extension(path)
+        return extension == "svg" or extension in self.config.image_extensions
+
+    def is_safe_file(self, path: str) -> bool:
+        """Tell whether a file may be served.
+
+        Args:
+            path: File path.
+
+        Returns:
+            ``True`` for allowed extensions; image extensions must also
+            be recognized as images.
+        """
+        if not self.is_good_file(path):
+            return False
+        extension = self.get_extension(path)
+        return extension not in self.config.image_extensions or self.is_image(
+            path
+        )
+
     def relative(self, pathname: str) -> str:
         """Path of an absolute location relative to the root.
 
@@ -178,14 +270,17 @@ class SourcePool:
         config: Instance configuration.
         sources: Source settings by name; ``config.sources`` when
             omitted.
+        svg_generator: Renders icons of folders and non-image files.
     """
 
     def __init__(
         self,
         config: AppConfig,
         sources: Mapping[str, SourceConfig] | None = None,
+        svg_generator: SvgGenerator = generate_icon,
     ) -> None:
         self.config = config
+        self.svg_generator = svg_generator
         self.settings = dict(config.sources if sources is None else sources)
         self._built: dict[str, Source] | None = None
 
@@ -198,6 +293,7 @@ class SourcePool:
                     settings,
                     self.config.with_overrides(settings),
                     FileStorage(create_storage_adapter(settings)),
+                    self.svg_generator,
                 )
             self._built = built
         return self._built

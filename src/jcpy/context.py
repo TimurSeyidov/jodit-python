@@ -1,8 +1,6 @@
 """Request parameters and the context passed to action handlers."""
 
 import json
-import math
-import re
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
@@ -10,6 +8,7 @@ from starlette.datastructures import UploadFile
 
 from jcpy.errors import HttpError
 from jcpy.helpers import append_field, qs
+from jcpy.helpers.js import is_js_numeric, js_parse_float
 from jcpy.helpers.merge import merge_without_nulls
 
 if TYPE_CHECKING:
@@ -30,35 +29,6 @@ _JSON_TYPE = "application/json"
 _FORM_TYPE = "application/x-www-form-urlencoded"
 _MULTIPART_TYPE = "multipart/form-data"
 
-_JS_DECIMAL = re.compile(r"[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?")
-_JS_INTEGER_LITERAL = re.compile(r"0[xX][0-9a-fA-F]+|0[oO][0-7]+|0[bB][01]+")
-_JS_FLOAT_PREFIX = re.compile(
-    r"[+-]?(?:Infinity|(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)"
-)
-_JS_INFINITY = frozenset({"Infinity", "+Infinity", "-Infinity"})
-
-
-def _is_js_numeric(text: str) -> bool:
-    """Mirror ``!isNaN(+text)`` for a string."""
-    stripped = text.strip()
-    return (
-        not stripped
-        or stripped in _JS_INFINITY
-        or _JS_DECIMAL.fullmatch(stripped) is not None
-        or _JS_INTEGER_LITERAL.fullmatch(stripped) is not None
-    )
-
-
-def _js_parse_float(text: str) -> int | float:
-    """Mirror ``parseFloat``; integral results are returned as ``int``."""
-    match = _JS_FLOAT_PREFIX.match(text.lstrip())
-    if match is None:
-        return math.nan
-    number = float(match.group(0))
-    if math.isfinite(number) and number.is_integer():
-        return int(number)
-    return number
-
 
 def prepare_value(value: JsonValue) -> JsonValue:
     """Convert a raw parameter the way jodit-nodejs does.
@@ -76,8 +46,8 @@ def prepare_value(value: JsonValue) -> JsonValue:
         return value
     if value in {"true", "false"}:
         return value == "true"
-    if value and _is_js_numeric(value):
-        return _js_parse_float(value)
+    if value and is_js_numeric(value):
+        return js_parse_float(value)
     return value
 
 
@@ -165,9 +135,13 @@ class RequestContext:
         Returns:
             Parameter as sent by the client.
         """
-        node: JsonValue = self.data
-        for part in key.split("/"):
-            node = _child(node, part)
+        parts = key.split("/")
+        flat_key = parts[0] + "".join(f"[{part}]" for part in parts[1:])
+        node: JsonValue = self.data.get(flat_key)
+        if node is None:
+            node = self.data
+            for part in parts:
+                node = _child(node, part)
         if isinstance(node, str):
             return node
         if isinstance(node, (int, float)) and not isinstance(node, bool):

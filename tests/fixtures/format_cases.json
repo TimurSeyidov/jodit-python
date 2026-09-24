@@ -1,0 +1,2248 @@
+{
+ "bytes": [
+  {
+   "size": 0,
+   "result": "0B"
+  },
+  {
+   "size": 1,
+   "result": "1B"
+  },
+  {
+   "size": 11,
+   "result": "11B"
+  },
+  {
+   "size": 1000,
+   "result": "1000B"
+  },
+  {
+   "size": 1023,
+   "result": "1023B"
+  },
+  {
+   "size": 1024,
+   "result": "1KB"
+  },
+  {
+   "size": 1025,
+   "result": "1KB"
+  },
+  {
+   "size": 1152,
+   "result": "1.13KB"
+  },
+  {
+   "size": 1536,
+   "result": "1.5KB"
+  },
+  {
+   "size": 1587,
+   "result": "1.55KB"
+  },
+  {
+   "size": 10240,
+   "result": "10KB"
+  },
+  {
+   "size": 1048575,
+   "result": "1024KB"
+  },
+  {
+   "size": 1048576,
+   "result": "1MB"
+  },
+  {
+   "size": 1572864,
+   "result": "1.5MB"
+  },
+  {
+   "size": 5767168,
+   "result": "5.5MB"
+  },
+  {
+   "size": 1073741824,
+   "result": "1GB"
+  },
+  {
+   "size": 1610612736,
+   "result": "1.5GB"
+  },
+  {
+   "size": 1099511627776,
+   "result": "1TB"
+  },
+  {
+   "size": 1125899906842624,
+   "result": "1PB"
+  },
+  {
+   "size": 2251799813685248,
+   "result": "2PB"
+  },
+  {
+   "size": 123456789,
+   "result": "117.74MB"
+  },
+  {
+   "size": 1126,
+   "result": "1.1KB"
+  },
+  {
+   "size": 1127,
+   "result": "1.1KB"
+  },
+  {
+   "size": 2047,
+   "result": "2KB"
+  },
+  {
+   "size": 999999,
+   "result": "976.56KB"
+  }
+ ],
+ "dayjs": [
+  {
+   "format": "M/D/YYYY h:mm:ss A",
+   "time": 0,
+   "result": "1/1/1970 3:00:00 AM"
+  },
+  {
+   "format": "M/D/YYYY h:mm:ss A",
+   "time": 1,
+   "result": "1/1/1970 3:00:00 AM"
+  },
+  {
+   "format": "M/D/YYYY h:mm:ss A",
+   "time": 999,
+   "result": "1/1/1970 3:00:00 AM"
+  },
+  {
+   "format": "M/D/YYYY h:mm:ss A",
+   "time": 1000.9,
+   "result": "1/1/1970 3:00:01 AM"
+  },
+  {
+   "format": "M/D/YYYY h:mm:ss A",
+   "time": 1700000000123,
+   "result": "11/15/2023 1:13:20 AM"
+  },
+  {
+   "format": "M/D/YYYY h:mm:ss A",
+   "time": 1700000000123.7,
+   "result": "11/15/2023 1:13:20 AM"
+  },
+  {
+   "format": "M/D/YYYY h:mm:ss A",
+   "time": 1709251199999,
+   "result": "3/1/2024 2:59:59 AM"
+  },
+  {
+   "format": "M/D/YYYY h:mm:ss A",
+   "time": 1719792000000,
+   "result": "7/1/2024 3:00:00 AM"
+  },
+  {
+   "format": "M/D/YYYY h:mm:ss A",
+   "time": 946684800000,
+   "result": "1/1/2000 3:00:00 AM"
+  },
+  {
+   "format": "M/D/YYYY h:mm:ss A",
+   "time": -86400000,
+   "result": "12/31/1969 3:00:00 AM"
+  },
+  {
+   "format": "M/D/YYYY h:mm:ss A",
+   "time": 32503680000000,
+   "result": "1/1/3000 3:00:00 AM"
+  },
+  {
+   "format": "YYYY-MM-DD HH:mm:ss",
+   "time": 0,
+   "result": "1970-01-01 03:00:00"
+  },
+  {
+   "format": "YYYY-MM-DD HH:mm:ss",
+   "time": 1,
+   "result": "1970-01-01 03:00:00"
+  },
+  {
+   "format": "YYYY-MM-DD HH:mm:ss",
+   "time": 999,
+   "result": "1970-01-01 03:00:00"
+  },
+  {
+   "format": "YYYY-MM-DD HH:mm:ss",
+   "time": 1000.9,
+   "result": "1970-01-01 03:00:01"
+  },
+  {
+   "format": "YYYY-MM-DD HH:mm:ss",
+   "time": 1700000000123,
+   "result": "2023-11-15 01:13:20"
+  },
+  {
+   "format": "YYYY-MM-DD HH:mm:ss",
+   "time": 1700000000123.7,
+   "result": "2023-11-15 01:13:20"
+  },
+  {
+   "format": "YYYY-MM-DD HH:mm:ss",
+   "time": 1709251199999,
+   "result": "2024-03-01 02:59:59"
+  },
+  {
+   "format": "YYYY-MM-DD HH:mm:ss",
+   "time": 1719792000000,
+   "result": "2024-07-01 03:00:00"
+  },
+  {
+   "format": "YYYY-MM-DD HH:mm:ss",
+   "time": 946684800000,
+   "result": "2000-01-01 03:00:00"
+  },
+  {
+   "format": "YYYY-MM-DD HH:mm:ss",
+   "time": -86400000,
+   "result": "1969-12-31 03:00:00"
+  },
+  {
+   "format": "YYYY-MM-DD HH:mm:ss",
+   "time": 32503680000000,
+   "result": "3000-01-01 03:00:00"
+  },
+  {
+   "format": "DD.MM.YY hh:mm a",
+   "time": 0,
+   "result": "01.01.70 03:00 am"
+  },
+  {
+   "format": "DD.MM.YY hh:mm a",
+   "time": 1,
+   "result": "01.01.70 03:00 am"
+  },
+  {
+   "format": "DD.MM.YY hh:mm a",
+   "time": 999,
+   "result": "01.01.70 03:00 am"
+  },
+  {
+   "format": "DD.MM.YY hh:mm a",
+   "time": 1000.9,
+   "result": "01.01.70 03:00 am"
+  },
+  {
+   "format": "DD.MM.YY hh:mm a",
+   "time": 1700000000123,
+   "result": "15.11.23 01:13 am"
+  },
+  {
+   "format": "DD.MM.YY hh:mm a",
+   "time": 1700000000123.7,
+   "result": "15.11.23 01:13 am"
+  },
+  {
+   "format": "DD.MM.YY hh:mm a",
+   "time": 1709251199999,
+   "result": "01.03.24 02:59 am"
+  },
+  {
+   "format": "DD.MM.YY hh:mm a",
+   "time": 1719792000000,
+   "result": "01.07.24 03:00 am"
+  },
+  {
+   "format": "DD.MM.YY hh:mm a",
+   "time": 946684800000,
+   "result": "01.01.00 03:00 am"
+  },
+  {
+   "format": "DD.MM.YY hh:mm a",
+   "time": -86400000,
+   "result": "31.12.69 03:00 am"
+  },
+  {
+   "format": "DD.MM.YY hh:mm a",
+   "time": 32503680000000,
+   "result": "01.01.00 03:00 am"
+  },
+  {
+   "format": "MMM MMMM d dd ddd dddd",
+   "time": 0,
+   "result": "Jan January 4 Th Thu Thursday"
+  },
+  {
+   "format": "MMM MMMM d dd ddd dddd",
+   "time": 1,
+   "result": "Jan January 4 Th Thu Thursday"
+  },
+  {
+   "format": "MMM MMMM d dd ddd dddd",
+   "time": 999,
+   "result": "Jan January 4 Th Thu Thursday"
+  },
+  {
+   "format": "MMM MMMM d dd ddd dddd",
+   "time": 1000.9,
+   "result": "Jan January 4 Th Thu Thursday"
+  },
+  {
+   "format": "MMM MMMM d dd ddd dddd",
+   "time": 1700000000123,
+   "result": "Nov November 3 We Wed Wednesday"
+  },
+  {
+   "format": "MMM MMMM d dd ddd dddd",
+   "time": 1700000000123.7,
+   "result": "Nov November 3 We Wed Wednesday"
+  },
+  {
+   "format": "MMM MMMM d dd ddd dddd",
+   "time": 1709251199999,
+   "result": "Mar March 5 Fr Fri Friday"
+  },
+  {
+   "format": "MMM MMMM d dd ddd dddd",
+   "time": 1719792000000,
+   "result": "Jul July 1 Mo Mon Monday"
+  },
+  {
+   "format": "MMM MMMM d dd ddd dddd",
+   "time": 946684800000,
+   "result": "Jan January 6 Sa Sat Saturday"
+  },
+  {
+   "format": "MMM MMMM d dd ddd dddd",
+   "time": -86400000,
+   "result": "Dec December 3 We Wed Wednesday"
+  },
+  {
+   "format": "MMM MMMM d dd ddd dddd",
+   "time": 32503680000000,
+   "result": "Jan January 3 We Wed Wednesday"
+  },
+  {
+   "format": "H HH m s SSS",
+   "time": 0,
+   "result": "3 03 0 0 000"
+  },
+  {
+   "format": "H HH m s SSS",
+   "time": 1,
+   "result": "3 03 0 0 001"
+  },
+  {
+   "format": "H HH m s SSS",
+   "time": 999,
+   "result": "3 03 0 0 999"
+  },
+  {
+   "format": "H HH m s SSS",
+   "time": 1000.9,
+   "result": "3 03 0 1 000"
+  },
+  {
+   "format": "H HH m s SSS",
+   "time": 1700000000123,
+   "result": "1 01 13 20 123"
+  },
+  {
+   "format": "H HH m s SSS",
+   "time": 1700000000123.7,
+   "result": "1 01 13 20 123"
+  },
+  {
+   "format": "H HH m s SSS",
+   "time": 1709251199999,
+   "result": "2 02 59 59 999"
+  },
+  {
+   "format": "H HH m s SSS",
+   "time": 1719792000000,
+   "result": "3 03 0 0 000"
+  },
+  {
+   "format": "H HH m s SSS",
+   "time": 946684800000,
+   "result": "3 03 0 0 000"
+  },
+  {
+   "format": "H HH m s SSS",
+   "time": -86400000,
+   "result": "3 03 0 0 000"
+  },
+  {
+   "format": "H HH m s SSS",
+   "time": 32503680000000,
+   "result": "3 03 0 0 000"
+  },
+  {
+   "format": "Z ZZ",
+   "time": 0,
+   "result": "+03:00 +0300"
+  },
+  {
+   "format": "Z ZZ",
+   "time": 1,
+   "result": "+03:00 +0300"
+  },
+  {
+   "format": "Z ZZ",
+   "time": 999,
+   "result": "+03:00 +0300"
+  },
+  {
+   "format": "Z ZZ",
+   "time": 1000.9,
+   "result": "+03:00 +0300"
+  },
+  {
+   "format": "Z ZZ",
+   "time": 1700000000123,
+   "result": "+03:00 +0300"
+  },
+  {
+   "format": "Z ZZ",
+   "time": 1700000000123.7,
+   "result": "+03:00 +0300"
+  },
+  {
+   "format": "Z ZZ",
+   "time": 1709251199999,
+   "result": "+03:00 +0300"
+  },
+  {
+   "format": "Z ZZ",
+   "time": 1719792000000,
+   "result": "+03:00 +0300"
+  },
+  {
+   "format": "Z ZZ",
+   "time": 946684800000,
+   "result": "+03:00 +0300"
+  },
+  {
+   "format": "Z ZZ",
+   "time": -86400000,
+   "result": "+03:00 +0300"
+  },
+  {
+   "format": "Z ZZ",
+   "time": 32503680000000,
+   "result": "+03:00 +0300"
+  },
+  {
+   "format": "[Today is] dddd",
+   "time": 0,
+   "result": "Today is Thursday"
+  },
+  {
+   "format": "[Today is] dddd",
+   "time": 1,
+   "result": "Today is Thursday"
+  },
+  {
+   "format": "[Today is] dddd",
+   "time": 999,
+   "result": "Today is Thursday"
+  },
+  {
+   "format": "[Today is] dddd",
+   "time": 1000.9,
+   "result": "Today is Thursday"
+  },
+  {
+   "format": "[Today is] dddd",
+   "time": 1700000000123,
+   "result": "Today is Wednesday"
+  },
+  {
+   "format": "[Today is] dddd",
+   "time": 1700000000123.7,
+   "result": "Today is Wednesday"
+  },
+  {
+   "format": "[Today is] dddd",
+   "time": 1709251199999,
+   "result": "Today is Friday"
+  },
+  {
+   "format": "[Today is] dddd",
+   "time": 1719792000000,
+   "result": "Today is Monday"
+  },
+  {
+   "format": "[Today is] dddd",
+   "time": 946684800000,
+   "result": "Today is Saturday"
+  },
+  {
+   "format": "[Today is] dddd",
+   "time": -86400000,
+   "result": "Today is Wednesday"
+  },
+  {
+   "format": "[Today is] dddd",
+   "time": 32503680000000,
+   "result": "Today is Wednesday"
+  },
+  {
+   "format": "Y YYY",
+   "time": 0,
+   "result": "+0300 +0300"
+  },
+  {
+   "format": "Y YYY",
+   "time": 1,
+   "result": "+0300 +0300"
+  },
+  {
+   "format": "Y YYY",
+   "time": 999,
+   "result": "+0300 +0300"
+  },
+  {
+   "format": "Y YYY",
+   "time": 1000.9,
+   "result": "+0300 +0300"
+  },
+  {
+   "format": "Y YYY",
+   "time": 1700000000123,
+   "result": "+0300 +0300"
+  },
+  {
+   "format": "Y YYY",
+   "time": 1700000000123.7,
+   "result": "+0300 +0300"
+  },
+  {
+   "format": "Y YYY",
+   "time": 1709251199999,
+   "result": "+0300 +0300"
+  },
+  {
+   "format": "Y YYY",
+   "time": 1719792000000,
+   "result": "+0300 +0300"
+  },
+  {
+   "format": "Y YYY",
+   "time": 946684800000,
+   "result": "+0300 +0300"
+  },
+  {
+   "format": "Y YYY",
+   "time": -86400000,
+   "result": "+0300 +0300"
+  },
+  {
+   "format": "Y YYY",
+   "time": 32503680000000,
+   "result": "+0300 +0300"
+  },
+  {
+   "format": "[a]A[b]",
+   "time": 0,
+   "result": "aAMb"
+  },
+  {
+   "format": "[a]A[b]",
+   "time": 1,
+   "result": "aAMb"
+  },
+  {
+   "format": "[a]A[b]",
+   "time": 999,
+   "result": "aAMb"
+  },
+  {
+   "format": "[a]A[b]",
+   "time": 1000.9,
+   "result": "aAMb"
+  },
+  {
+   "format": "[a]A[b]",
+   "time": 1700000000123,
+   "result": "aAMb"
+  },
+  {
+   "format": "[a]A[b]",
+   "time": 1700000000123.7,
+   "result": "aAMb"
+  },
+  {
+   "format": "[a]A[b]",
+   "time": 1709251199999,
+   "result": "aAMb"
+  },
+  {
+   "format": "[a]A[b]",
+   "time": 1719792000000,
+   "result": "aAMb"
+  },
+  {
+   "format": "[a]A[b]",
+   "time": 946684800000,
+   "result": "aAMb"
+  },
+  {
+   "format": "[a]A[b]",
+   "time": -86400000,
+   "result": "aAMb"
+  },
+  {
+   "format": "[a]A[b]",
+   "time": 32503680000000,
+   "result": "aAMb"
+  },
+  {
+   "format": "",
+   "time": 0,
+   "result": "1970-01-01T03:00:00+03:00"
+  },
+  {
+   "format": "",
+   "time": 1,
+   "result": "1970-01-01T03:00:00+03:00"
+  },
+  {
+   "format": "",
+   "time": 999,
+   "result": "1970-01-01T03:00:00+03:00"
+  },
+  {
+   "format": "",
+   "time": 1000.9,
+   "result": "1970-01-01T03:00:01+03:00"
+  },
+  {
+   "format": "",
+   "time": 1700000000123,
+   "result": "2023-11-15T01:13:20+03:00"
+  },
+  {
+   "format": "",
+   "time": 1700000000123.7,
+   "result": "2023-11-15T01:13:20+03:00"
+  },
+  {
+   "format": "",
+   "time": 1709251199999,
+   "result": "2024-03-01T02:59:59+03:00"
+  },
+  {
+   "format": "",
+   "time": 1719792000000,
+   "result": "2024-07-01T03:00:00+03:00"
+  },
+  {
+   "format": "",
+   "time": 946684800000,
+   "result": "2000-01-01T03:00:00+03:00"
+  },
+  {
+   "format": "",
+   "time": -86400000,
+   "result": "1969-12-31T03:00:00+03:00"
+  },
+  {
+   "format": "",
+   "time": 32503680000000,
+   "result": "3000-01-01T03:00:00+03:00"
+  }
+ ],
+ "slugify": [
+  {
+   "name": "image",
+   "result": "image"
+  },
+  {
+   "name": "My File",
+   "result": "My-File"
+  },
+  {
+   "name": "Привет мир",
+   "result": "Privet-mir"
+  },
+  {
+   "name": "ёлка",
+   "result": "yolka"
+  },
+  {
+   "name": "Straße",
+   "result": "Strasse"
+  },
+  {
+   "name": "café au lait",
+   "result": "cafe-au-lait"
+  },
+  {
+   "name": "a$b%c&d",
+   "result": "adollarbpercentcandd"
+  },
+  {
+   "name": "x<y>z|w",
+   "result": "xlessygreaterzorw"
+  },
+  {
+   "name": "foo--bar",
+   "result": "foo-bar"
+  },
+  {
+   "name": "  spaced  ",
+   "result": "spaced"
+  },
+  {
+   "name": "tab\there",
+   "result": "tab-here"
+  },
+  {
+   "name": "日本語",
+   "result": ""
+  },
+  {
+   "name": "emoji😀name",
+   "result": "emojiname"
+  },
+  {
+   "name": "a.b.c",
+   "result": "a.b.c"
+  },
+  {
+   "name": "it's (1) [2] {3}",
+   "result": "it's-(1)-2-3"
+  },
+  {
+   "name": "MÜNCHEN",
+   "result": "MUNCHEN"
+  },
+  {
+   "name": "Ælfred",
+   "result": "AElfred"
+  },
+  {
+   "name": "ƒunction",
+   "result": "function"
+  },
+  {
+   "name": "∞ love ♥",
+   "result": "infinity-love-love"
+  },
+  {
+   "name": "dash-_-under",
+   "result": "dash-_-under"
+  },
+  {
+   "name": "x+y~z!@:",
+   "result": "x+y~z!@:"
+  },
+  {
+   "name": "\"quoted\"",
+   "result": "\"quoted\""
+  },
+  {
+   "name": "ǅemal",
+   "result": "emal"
+  },
+  {
+   "name": "ﬁle",
+   "result": "le"
+  },
+  {
+   "name": "½ ¼",
+   "result": ""
+  },
+  {
+   "name": "Ωmega",
+   "result": "Wmega"
+  },
+  {
+   "name": "Ĳssel",
+   "result": "ssel"
+  },
+  {
+   "name": "§1",
+   "result": "1"
+  },
+  {
+   "name": "a b",
+   "result": "a-b"
+  },
+  {
+   "name": "é",
+   "result": "e"
+  }
+ ],
+ "validation": [
+  {
+   "schema": "files",
+   "input": {},
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "source": "t"
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "source": 1
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received number"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "source": null
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received null"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "source": []
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received array"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "source": {}
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received object"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "source": true
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received boolean"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "path": 5
+   },
+   "issues": [
+    {
+     "path": "path",
+     "message": "Invalid input: expected string, received number"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "mods": "withFolders"
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "mods": {}
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "mods": 5
+   },
+   "issues": [
+    {
+     "path": "mods",
+     "message": "Invalid input"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "mods": []
+   },
+   "issues": [
+    {
+     "path": "mods",
+     "message": "Invalid input"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "mods": null
+   },
+   "issues": [
+    {
+     "path": "mods",
+     "message": "Invalid input"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "mods": {
+     "sortBy": "x"
+    }
+   },
+   "issues": [
+    {
+     "path": "mods",
+     "message": "Invalid input"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "mods": {
+     "sortBy": "name-asc",
+     "limit": 5
+    }
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "mods": {
+     "withFolders": 1
+    }
+   },
+   "issues": [
+    {
+     "path": "mods",
+     "message": "Invalid input"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "mods": {
+     "limit": true
+    }
+   },
+   "issues": [
+    {
+     "path": "mods",
+     "message": "Invalid input"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "mods": {
+     "foldersPosition": "left"
+    }
+   },
+   "issues": [
+    {
+     "path": "mods",
+     "message": "Invalid input"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "mods": {
+     "filterWord": 3
+    }
+   },
+   "issues": [
+    {
+     "path": "mods",
+     "message": "Invalid input"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "mods": {
+     "withFolders": "true",
+     "onlyImages": false,
+     "offset": "0"
+    }
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "dots": "false"
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "dots": "true"
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "dots": true
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "dots": "0"
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "dots": 1
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "name": "a.txt"
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "name": 5
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "name": null
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "url": "http://x/a.png"
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "url": 5
+   },
+   "issues": []
+  },
+  {
+   "schema": "files",
+   "input": {
+    "source": 1,
+    "path": 2,
+    "name": 3
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received number"
+    },
+    {
+     "path": "path",
+     "message": "Invalid input: expected string, received number"
+    }
+   ]
+  },
+  {
+   "schema": "files",
+   "input": {
+    "source": 1,
+    "mods": 5,
+    "dots": 1,
+    "url": []
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received number"
+    },
+    {
+     "path": "mods",
+     "message": "Invalid input"
+    }
+   ]
+  },
+  {
+   "schema": "folders",
+   "input": {},
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "source": "t"
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "source": 1
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received number"
+    }
+   ]
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "source": null
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received null"
+    }
+   ]
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "source": []
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received array"
+    }
+   ]
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "source": {}
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received object"
+    }
+   ]
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "source": true
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received boolean"
+    }
+   ]
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "path": 5
+   },
+   "issues": [
+    {
+     "path": "path",
+     "message": "Invalid input: expected string, received number"
+    }
+   ]
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "mods": "withFolders"
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "mods": {}
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "mods": 5
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "mods": []
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "mods": null
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "mods": {
+     "sortBy": "x"
+    }
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "mods": {
+     "sortBy": "name-asc",
+     "limit": 5
+    }
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "mods": {
+     "withFolders": 1
+    }
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "mods": {
+     "limit": true
+    }
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "mods": {
+     "foldersPosition": "left"
+    }
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "mods": {
+     "filterWord": 3
+    }
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "mods": {
+     "withFolders": "true",
+     "onlyImages": false,
+     "offset": "0"
+    }
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "dots": "false"
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "dots": "true"
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "dots": true
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "dots": "0"
+   },
+   "issues": [
+    {
+     "path": "dots",
+     "message": "Invalid input"
+    }
+   ]
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "dots": 1
+   },
+   "issues": [
+    {
+     "path": "dots",
+     "message": "Invalid input"
+    }
+   ]
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "name": "a.txt"
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "name": 5
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "name": null
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "url": "http://x/a.png"
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "url": 5
+   },
+   "issues": []
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "source": 1,
+    "path": 2,
+    "name": 3
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received number"
+    },
+    {
+     "path": "path",
+     "message": "Invalid input: expected string, received number"
+    }
+   ]
+  },
+  {
+   "schema": "folders",
+   "input": {
+    "source": 1,
+    "mods": 5,
+    "dots": 1,
+    "url": []
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received number"
+    },
+    {
+     "path": "dots",
+     "message": "Invalid input"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {},
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "source": "t"
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "source": 1
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received number"
+    },
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "source": null
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received null"
+    },
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "source": []
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received array"
+    },
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "source": {}
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received object"
+    },
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "source": true
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received boolean"
+    },
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "path": 5
+   },
+   "issues": [
+    {
+     "path": "path",
+     "message": "Invalid input: expected string, received number"
+    },
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "mods": "withFolders"
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "mods": {}
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "mods": 5
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "mods": []
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "mods": null
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "mods": {
+     "sortBy": "x"
+    }
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "mods": {
+     "sortBy": "name-asc",
+     "limit": 5
+    }
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "mods": {
+     "withFolders": 1
+    }
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "mods": {
+     "limit": true
+    }
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "mods": {
+     "foldersPosition": "left"
+    }
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "mods": {
+     "filterWord": 3
+    }
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "mods": {
+     "withFolders": "true",
+     "onlyImages": false,
+     "offset": "0"
+    }
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "dots": "false"
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "dots": "true"
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "dots": true
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "dots": "0"
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "dots": 1
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "name": "a.txt"
+   },
+   "issues": []
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "name": 5
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received number"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "name": null
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received null"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "url": "http://x/a.png"
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "url": 5
+   },
+   "issues": [
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "source": 1,
+    "path": 2,
+    "name": 3
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received number"
+    },
+    {
+     "path": "path",
+     "message": "Invalid input: expected string, received number"
+    },
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received number"
+    }
+   ]
+  },
+  {
+   "schema": "fileDownload",
+   "input": {
+    "source": 1,
+    "mods": 5,
+    "dots": 1,
+    "url": []
+   },
+   "issues": [
+    {
+     "path": "source",
+     "message": "Invalid input: expected string, received number"
+    },
+    {
+     "path": "name",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {},
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "source": "t"
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "source": 1
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "source": null
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "source": []
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "source": {}
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "source": true
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "path": 5
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "mods": "withFolders"
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "mods": {}
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "mods": 5
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "mods": []
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "mods": null
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "mods": {
+     "sortBy": "x"
+    }
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "mods": {
+     "sortBy": "name-asc",
+     "limit": 5
+    }
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "mods": {
+     "withFolders": 1
+    }
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "mods": {
+     "limit": true
+    }
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "mods": {
+     "foldersPosition": "left"
+    }
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "mods": {
+     "filterWord": 3
+    }
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "mods": {
+     "withFolders": "true",
+     "onlyImages": false,
+     "offset": "0"
+    }
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "dots": "false"
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "dots": "true"
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "dots": true
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "dots": "0"
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "dots": 1
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "name": "a.txt"
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "name": 5
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "name": null
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "url": "http://x/a.png"
+   },
+   "issues": []
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "url": 5
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received number"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "source": 1,
+    "path": 2,
+    "name": 3
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received undefined"
+    }
+   ]
+  },
+  {
+   "schema": "getLocalFileByUrl",
+   "input": {
+    "source": 1,
+    "mods": 5,
+    "dots": 1,
+    "url": []
+   },
+   "issues": [
+    {
+     "path": "url",
+     "message": "Invalid input: expected string, received array"
+    }
+   ]
+  }
+ ]
+}

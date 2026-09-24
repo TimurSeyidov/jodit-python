@@ -12,15 +12,19 @@ from jcpy import create_app
 from jcpy.config.loader import build_config
 from jcpy.connector import Connector
 from jcpy.errors import HttpError
+from jcpy.helpers.svg_icon import generate_icon
 from jcpy.responses import success_response
 from jcpy.v1 import ACTIONS
 
 if TYPE_CHECKING:
+    from pathlib import Path
+
     from starlette.responses import Response
 
     from jcpy.acl import AccessControlProtocol, RulesProvider
     from jcpy.context import ActionContext, ActionHandler
-    from jcpy.types import AuthCallback, JsonObject, OriginPredicate
+    from jcpy.helpers.svg_icon import SvgGenerator
+    from jcpy.types import AuthCallback, JsonObject, JsonValue, OriginPredicate
 
 ENV_VARS = (
     "CONFIG",
@@ -91,6 +95,7 @@ def make_app(
     allowed_origins: OriginPredicate | None = None,
     access_control: RulesProvider | None = None,
     access_control_instance: AccessControlProtocol | None = None,
+    svg_generator: SvgGenerator = generate_icon,
     actions: Mapping[str, ActionHandler] = TEST_ACTIONS,
     prefix: str = "",
 ) -> FastAPI:
@@ -102,6 +107,7 @@ def make_app(
         allowed_origins: CORS origin predicate.
         access_control: Access rules provider.
         access_control_instance: Custom access control.
+        svg_generator: Thumbnail icon renderer.
         actions: Action handlers.
         prefix: Mount point of the connector router.
 
@@ -114,6 +120,7 @@ def make_app(
         allowed_origins=allowed_origins,
         access_control=access_control,
         access_control_instance=access_control_instance,
+        svg_generator=svg_generator,
         actions=actions,
     )
     app = FastAPI()
@@ -173,3 +180,46 @@ async def client() -> AsyncIterator[AsyncClient]:
     """
     async with open_client(create_app()) as http:
         yield http
+
+
+BASEURL = "http://localhost:8081/files/test/"
+
+
+def source_config(root: Path, **settings: JsonValue) -> JsonObject:
+    """Configuration with one local source named ``test``.
+
+    Args:
+        root: Source root directory.
+        settings: Extra global settings.
+
+    Returns:
+        User configuration.
+    """
+    return {
+        "sources": {
+            "test": {
+                "title": "Test Files",
+                "root": str(root),
+                "baseurl": BASEURL,
+            }
+        },
+        **settings,
+    }
+
+
+def write_file(root: Path, relative: str, contents: bytes | str = b"") -> Path:
+    """Create a file with its parent directories.
+
+    Args:
+        root: Base directory.
+        relative: File path below ``root``.
+        contents: File contents.
+
+    Returns:
+        Created file.
+    """
+    path = root / relative
+    path.parent.mkdir(parents=True, exist_ok=True)
+    data = contents.encode() if isinstance(contents, str) else contents
+    path.write_bytes(data)
+    return path
