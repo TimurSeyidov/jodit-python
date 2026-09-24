@@ -86,6 +86,52 @@ async def load_rules() -> list[AccessControlRule]:
 app = create_app("config.json", access_control=load_rules)
 ```
 
+### S3 and S3-compatible storage
+
+```json
+{
+  "sources": {
+    "media": {
+      "title": "Media",
+      "baseurl": "https://my-bucket.s3.eu-central-1.amazonaws.com/media/",
+      "storageAdapter": "s3",
+      "s3": {"bucket": "my-bucket", "region": "eu-central-1", "prefix": "media"}
+    }
+  }
+}
+```
+
+Without `credentials` the AWS default chain is used (environment,
+profile, instance role). MinIO, Cloudflare R2, Yandex Object Storage and
+others work through `endpoint` (plus `forcePathStyle: true` where
+needed). Other backends implement `jcpy.StorageAdapter` and are
+registered with `register_storage_adapter("name", factory)`.
+
+### Multi-tenant sources
+
+```python
+from starlette.requests import Request
+
+from jcpy import ResolvedSources, create_app
+
+
+async def resolve_sources(request: Request) -> ResolvedSources | None:
+    tenant = await find_tenant(request.headers.get("x-tenant-id"))
+    if tenant is None:
+        return None  # static "sources" apply
+    return ResolvedSources(
+        id=f"{tenant.id}:{tenant.updated_at}",
+        sources={"files": tenant.source_settings},
+    )
+
+
+app = create_app("config.json", resolve_sources=resolve_sources)
+```
+
+The resolver runs on every request, before authentication; the built
+sources are cached by `id` (`dynamicSourcesCache`: 200 tenants, 60 s by
+default). Use `"sources": {}` for an instance that only serves tenants.
+
 Several independent instances can live in one application:
 
 ```python

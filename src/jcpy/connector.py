@@ -15,6 +15,7 @@ from jcpy.errors import HttpError
 from jcpy.helpers.svg_icon import generate_icon
 from jcpy.responses import error_response, internal_error_response
 from jcpy.sources import SourcePool
+from jcpy.tenants import TenantCache
 from jcpy.v1 import ACTIONS
 from jcpy.v1.ping.handler import PingResponse
 
@@ -25,6 +26,7 @@ if TYPE_CHECKING:
     from jcpy.config.models import AppConfig
     from jcpy.context import ActionHandler
     from jcpy.helpers.svg_icon import SvgGenerator
+    from jcpy.tenants import SourcesResolver
     from jcpy.types import AuthCallback, OriginPredicate
 
 logger = logging.getLogger("jcpy")
@@ -53,6 +55,8 @@ class Connector:
             replaces both rule sources above.
         svg_generator: Renders thumbnail icons of folders and non-image
             files.
+        resolve_sources: Picks per-request (tenant) sources; runs
+            before authentication, ``None`` keeps the static sources.
         actions: Action handlers by name.
     """
 
@@ -65,6 +69,7 @@ class Connector:
         access_control: RulesProvider | None = None,
         access_control_instance: AccessControlProtocol | None = None,
         svg_generator: SvgGenerator = generate_icon,
+        resolve_sources: SourcesResolver | None = None,
         actions: Mapping[str, ActionHandler] = ACTIONS,
     ) -> None:
         self.config = config
@@ -72,6 +77,8 @@ class Connector:
         self.allowed_origins = allowed_origins
         self.actions = actions
         self.sources = SourcePool(config, svg_generator=svg_generator)
+        self.resolve_sources = resolve_sources
+        self.tenants = TenantCache(config, svg_generator)
         self.access: AccessControlProtocol = (
             access_control_instance
             or AccessControl(access_control or config.access_control)
@@ -146,6 +153,7 @@ class Connector:
             cors_headers, early = await self._cors(request)
             if early is not None:
                 return early
+            sources = await self._request_sources(request)
             role = await self._authenticate(request)
             params = await RequestContext.from_request(request)
             action = params.action
@@ -160,7 +168,7 @@ class Connector:
                     role,
                     params,
                     self.access,
-                    self.sources,
+                    sources,
                 )
             )
         except HttpError as error:
@@ -171,6 +179,19 @@ class Connector:
             response = internal_error_response(str(error))
         response.headers.update(cors_headers)
         return response
+
+    def clear_dynamic_sources(self) -> None:
+        """Drop every cached tenant, e.g. after credentials changed."""
+        self.tenants.clear()
+
+    async def _request_sources(self, request: Request) -> SourcePool:
+        if self.resolve_sources is None:
+            return self.sources
+        result = self.resolve_sources(request)
+        resolved = await result if inspect.isawaitable(result) else result
+        if resolved is None:
+            return self.sources
+        return self.tenants.get(resolved)
 
     def _log(self, error: Exception) -> None:
         if self.config.debug:

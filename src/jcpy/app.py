@@ -17,6 +17,7 @@ if TYPE_CHECKING:
 
     from jcpy.acl import AccessControlProtocol, RulesProvider
     from jcpy.helpers.svg_icon import SvgGenerator
+    from jcpy.tenants import SourcesResolver
     from jcpy.types import AuthCallback, OriginPredicate
 
 VERSION_HEADER = b"x-app-version"
@@ -30,6 +31,7 @@ def create_router(
     access_control: RulesProvider | None = None,
     access_control_instance: AccessControlProtocol | None = None,
     svg_generator: SvgGenerator = generate_icon,
+    resolve_sources: SourcesResolver | None = None,
 ) -> APIRouter:
     """Build an isolated connector instance as a router.
 
@@ -52,6 +54,8 @@ def create_router(
             replacing both rule sources above.
         svg_generator: Renders thumbnail icons of folders and non-image
             files; receives the entry, width and height.
+        resolve_sources: Picks per-request (tenant) sources, cached by
+            the returned id; ``None`` keeps the configured sources.
 
     Returns:
         Router serving ``/ping``, ``/`` and ``/{action}``.
@@ -66,6 +70,7 @@ def create_router(
         access_control=access_control,
         access_control_instance=access_control_instance,
         svg_generator=svg_generator,
+        resolve_sources=resolve_sources,
     )
     return connector.build_router()
 
@@ -103,6 +108,7 @@ def create_app(
     access_control: RulesProvider | None = None,
     access_control_instance: AccessControlProtocol | None = None,
     svg_generator: SvgGenerator = generate_icon,
+    resolve_sources: SourcesResolver | None = None,
 ) -> FastAPI:
     """Build a standalone connector application.
 
@@ -121,6 +127,8 @@ def create_app(
             replacing both rule sources above.
         svg_generator: Renders thumbnail icons of folders and non-image
             files; receives the entry, width and height.
+        resolve_sources: Picks per-request (tenant) sources, cached by
+            the returned id; ``None`` keeps the configured sources.
 
     Returns:
         Application with the connector mounted at ``/`` and the
@@ -139,6 +147,7 @@ def create_app(
             access_control=access_control,
             access_control_instance=access_control_instance,
             svg_generator=svg_generator,
+            resolve_sources=resolve_sources,
         )
     )
     return app

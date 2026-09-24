@@ -26,6 +26,7 @@ if TYPE_CHECKING:
     from jcpy.acl import AccessControlProtocol, RulesProvider
     from jcpy.context import ActionContext, ActionHandler
     from jcpy.helpers.svg_icon import SvgGenerator
+    from jcpy.tenants import SourcesResolver
     from jcpy.types import AuthCallback, JsonObject, JsonValue, OriginPredicate
 
 ENV_VARS = (
@@ -100,6 +101,7 @@ def make_app(
     access_control: RulesProvider | None = None,
     access_control_instance: AccessControlProtocol | None = None,
     svg_generator: SvgGenerator = generate_icon,
+    resolve_sources: SourcesResolver | None = None,
     actions: Mapping[str, ActionHandler] = TEST_ACTIONS,
     prefix: str = "",
 ) -> FastAPI:
@@ -112,6 +114,7 @@ def make_app(
         access_control: Access rules provider.
         access_control_instance: Custom access control.
         svg_generator: Thumbnail icon renderer.
+        resolve_sources: Tenant sources resolver.
         actions: Action handlers.
         prefix: Mount point of the connector router.
 
@@ -125,6 +128,7 @@ def make_app(
         access_control=access_control,
         access_control_instance=access_control_instance,
         svg_generator=svg_generator,
+        resolve_sources=resolve_sources,
         actions=actions,
     )
     app = FastAPI()

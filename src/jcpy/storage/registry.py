@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 from jcpy.errors import HttpError
 from jcpy.storage.local import LocalStorageAdapter
+from jcpy.storage.s3 import S3StorageAdapter
 
 if TYPE_CHECKING:
     from jcpy.config.models import SourceConfig
@@ -34,7 +35,7 @@ def get_registered_storage_adapters() -> list[str]:
     """List registered adapter names.
 
     Returns:
-        Names in registration order; ``local`` is built in.
+        Names in registration order; ``local`` and ``s3`` are built in.
     """
     return list(_registry)
 
@@ -86,4 +87,15 @@ def _local_factory(source: SourceConfig) -> StorageAdapter:
     return LocalStorageAdapter(source.root)
 
 
+def _s3_factory(source: SourceConfig) -> StorageAdapter:
+    if source.s3 is None:
+        msg = (
+            f'Source "{source.name}" uses the s3 adapter and needs an '
+            '"s3" options block'
+        )
+        raise HttpError.bad_request(msg)
+    return S3StorageAdapter(source.s3)
+
+
 register_storage_adapter(LOCAL_ADAPTER, _local_factory)
+register_storage_adapter("s3", _s3_factory)

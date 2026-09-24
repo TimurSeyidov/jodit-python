@@ -8,6 +8,7 @@ authors = [{ name = "Timur Seiidov", email = "tim@jlabs.pro" }]
 requires-python = ">=3.14"
 keywords = ["jodit", "file-manager", "uploader", "fastapi"]
 dependencies = [
+    "boto3>=1.35",
     "fastapi>=0.115",
     "httpx>=0.28",
     "pillow>=11.0",
@@ -34,12 +35,14 @@ module-name = "jcpy"
 
 [dependency-groups]
 dev = [
+    "boto3-stubs[s3]>=1.35",
     "httpx>=0.28",
     "mypy>=1.15",
     "pytest>=8.3",
     "pytest-asyncio>=0.25",
     "pytest-cov>=6.0",
     "ruff>=0.11",
+    "testcontainers[minio]>=4.9",
 ]
 
 [tool.ruff]
@@ -93,6 +96,7 @@ init_typed = true
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers"
 testpaths = ["tests"]
+markers = ["docker: needs a Docker daemon (skipped when none is reachable)"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 cache_dir = ".cache/pytest"
