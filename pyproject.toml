@@ -10,6 +10,7 @@ keywords = ["jodit", "file-manager", "uploader", "fastapi"]
 dependencies = [
     "fastapi>=0.115",
     "pydantic>=2.11",
+    "python-multipart>=0.0.20",
     "uvicorn[standard]>=0.34",
 ]
 
@@ -57,6 +58,8 @@ ignore = [
 [tool.ruff.lint.flake8-type-checking]
 # Pydantic and FastAPI read annotations at runtime.
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
+# FastAPI inspects endpoint annotations such as `request: Request`.
+exempt-modules = ["typing", "fastapi", "starlette.requests"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101"]
@@ -70,8 +73,19 @@ files = ["src", "tests"]
 mypy_path = "src"
 explicit_package_bases = true
 strict = true
+plugins = ["pydantic.mypy"]
 warn_unreachable = true
 cache_dir = ".cache/mypy"
+
+[tool.pyright]
+pythonVersion = "3.14"
+venvPath = "."
+venv = ".venv"
+include = ["src", "tests"]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers"

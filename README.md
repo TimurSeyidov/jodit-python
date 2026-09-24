@@ -19,6 +19,63 @@ make run    # http://localhost:8081/ping
 make menu   # interactive list of commands
 ```
 
+## Usage
+
+```python
+# main.py
+from starlette.requests import Request
+
+from jcpy import create_app
+
+
+async def check_authentication(request: Request) -> str:
+    token = request.headers.get("authorization")
+    return "admin" if token == "Bearer secret" else "guest"
+
+
+app = create_app(
+    "config.json", check_authentication=check_authentication
+)
+```
+
+```bash
+uv run uvicorn main:app --port 8081
+```
+
+`config.json` overrides only what differs from the built-in defaults
+(camelCase keys, as in jodit-nodejs):
+
+```json
+{
+  "onlyPOST": true,
+  "sources": {
+    "uploads": {
+      "title": "Uploads",
+      "root": "/var/www/uploads",
+      "baseurl": "https://example.com/uploads/"
+    }
+  }
+}
+```
+
+Without an explicit path the configuration is read from the `CONFIG`
+environment variable (JSON text) or the file named by `CONFIG_FILE`.
+
+Several independent instances can live in one application:
+
+```python
+from fastapi import FastAPI
+
+from jcpy import create_router
+
+app = FastAPI()
+app.include_router(create_router("public.json"), prefix="/public")
+app.include_router(
+    create_router("admin.json", check_authentication=admin_auth),
+    prefix="/admin",
+)
+```
+
 ## Development
 
 ```bash
