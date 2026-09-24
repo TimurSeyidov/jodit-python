@@ -33,6 +33,7 @@ COLORS = {
 MAX_NAME = 12
 
 
+# --8<-- [start:build]
 def colored_icon(entry: StatEntry, width: int, height: int) -> str:
     """Render a tile colored by file type with the extension and name.
 
@@ -73,6 +74,8 @@ def build_app() -> FastAPI:
     """
     return create_app(CONFIG, svg_generator=colored_icon)
 
+
+# --8<-- [end:build]
 
 if __name__ == "__main__":
     uvicorn.run(build_app(), host="127.0.0.1", port=8081)

@@ -10,6 +10,7 @@ endif
 
 .PHONY: help menu sync run dev lint lint-fix format format-check \
 	typecheck test test-v coverage check clean openapi openapi-check \
+	docs docs-build \
 	dev-up dev-down dev-logs dev-shell prod-build prod-up prod-down \
 	prod-logs
 
@@ -63,15 +64,21 @@ test-v: ## Run tests verbosely
 coverage: ## Run tests with coverage (fails under 90%)
 	uv run pytest --cov --cov-report=term-missing --cov-report=html
 
-check: lint format-check typecheck openapi-check coverage ## Run everything (as in CI)
+check: lint format-check typecheck openapi-check docs-build coverage ## Run everything (as in CI)
 
 # --- docs ---------------------------------------------------------------
 
-openapi: ## Generate docs/openapi (JSON, YAML, Swagger UI)
+openapi: ## Generate the OpenAPI document (docs/content/api-swagger)
 	uv run python scripts/generate_openapi.py
 
-openapi-check: ## Fail when docs/openapi is out of date
+openapi-check: ## Fail when the OpenAPI document is out of date
 	uv run python scripts/generate_openapi.py --check
+
+docs: ## Serve the documentation with live reload (DOCS_PORT, default 8000)
+	uv run mkdocs serve -f docs/mkdocs.yml -a 127.0.0.1:$${DOCS_PORT:-8000}
+
+docs-build: ## Build the documentation into site/ (fails on warnings)
+	uv run mkdocs build -f docs/mkdocs.yml --strict
 
 # --- docker: dev ------------------------------------------------------
 
@@ -106,5 +113,5 @@ prod-logs: ## Follow prod container logs
 # --- misc -------------------------------------------------------------
 
 clean: ## Remove caches and build artifacts
-	rm -rf .cache dist build
+	rm -rf .cache dist build site
 	find . -name __pycache__ -type d -prune -exec rm -rf {} +

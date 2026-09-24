@@ -1,4 +1,4 @@
-"""Write the OpenAPI document and a Swagger UI page to docs/openapi.
+"""Write the OpenAPI document (JSON and YAML) into the documentation.
 
 Usage:
     python scripts/generate_openapi.py [--check]
@@ -17,30 +17,8 @@ from openapi_spec_validator import validate
 
 from jcpy.openapi.spec import build_openapi
 
-OUTPUT = Path(__file__).resolve().parent.parent / "docs" / "openapi"
-SWAGGER_VERSION = "5.17.14"
-SWAGGER_CDN = f"https://cdn.jsdelivr.net/npm/swagger-ui-dist@{SWAGGER_VERSION}"
-SWAGGER_HTML = f"""<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Jodit Connector API</title>
-  <link rel="stylesheet" href="{SWAGGER_CDN}/swagger-ui.css">
-</head>
-<body>
-  <div id="swagger-ui"></div>
-  <script src="{SWAGGER_CDN}/swagger-ui-bundle.js"></script>
-  <script>
-    window.ui = SwaggerUIBundle({{
-      url: "openapi.json",
-      dom_id: "#swagger-ui",
-      deepLinking: true,
-    }});
-  </script>
-</body>
-</html>
-"""
+ROOT = Path(__file__).resolve().parent.parent
+OUTPUT = ROOT / "docs" / "content" / "api-swagger"
 
 
 def render() -> dict[str, str]:
@@ -56,7 +34,6 @@ def render() -> dict[str, str]:
         "openapi.yaml": yaml.safe_dump(
             spec, sort_keys=False, allow_unicode=True, width=79
         ),
-        "index.html": SWAGGER_HTML,
     }
 
 
@@ -82,7 +59,7 @@ def main() -> int:
         else:
             OUTPUT.mkdir(parents=True, exist_ok=True)
             target.write_text(content, "utf-8")
-            print(f"wrote {target.relative_to(OUTPUT.parent.parent)}")
+            print(f"wrote {target.relative_to(ROOT)}")
     if stale:
         print(
             f"stale: {', '.join(stale)}; run 'make openapi'", file=sys.stderr

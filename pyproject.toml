@@ -54,12 +54,22 @@ dev = [
     "testcontainers[minio]>=4.9",
     "types-pyyaml>=6.0.12.20260906",
 ]
+docs = [
+    "mkdocs>=1.6.1,<2",
+    "mkdocs-material>=9.7.7",
+    "mkdocs-swagger-ui-tag>=0.8.1",
+    "pymdown-extensions>=12.1",
+]
 
 [tool.ruff]
 line-length = 79
 target-version = "py314"
 src = ["src", "tests"]
 cache-dir = ".cache/ruff"
+
+[tool.ruff.format]
+# Code blocks in the docs contain snippet markers ruff would rewrite.
+exclude = ["docs/**"]
 
 [tool.ruff.lint]
 select = [

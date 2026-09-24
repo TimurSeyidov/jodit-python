@@ -25,6 +25,7 @@ CONFIG = Path(__file__).parent / "config" / "roles.json"
 ROLE_COOKIE = "userRole"
 
 
+# --8<-- [start:build]
 def role_from_cookie(request: Request) -> str:
     """Read the role of the user from the ``userRole`` cookie.
 
@@ -45,6 +46,8 @@ def build_app() -> FastAPI:
     """
     return create_app(CONFIG, check_authentication=role_from_cookie)
 
+
+# --8<-- [end:build]
 
 if __name__ == "__main__":
     uvicorn.run(build_app(), host="127.0.0.1", port=8081)

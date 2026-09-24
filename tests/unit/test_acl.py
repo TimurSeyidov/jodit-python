@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from jcpy.acl import DEFAULT_RULES, AccessControl, normalize_path
+from jcpy.acl import DEFAULT_RULES, AccessControl, normalize_path, request_path
 from jcpy.config.models import AccessControlRule
 from jcpy.errors import HttpError
 
@@ -373,3 +373,21 @@ class TestRuleProviders:
 def test_json_rules_reject_non_boolean_actions() -> None:
     with pytest.raises(ValueError, match="must be true or false"):
         AccessControlRule.model_validate({"FILES": "yes"})
+
+
+@pytest.mark.parametrize(
+    ("raw", "expected"),
+    [
+        ("/", "/"),
+        ("", "/"),
+        ("private", "/private"),
+        ("./private", "/private"),
+        ("/public/../private", "/private"),
+        ("//private//sub/", "/private/sub"),
+        ("..", "/"),
+        ("/a/../../b", "/b"),
+        ("\\private\\sub", "/private/sub"),
+    ],
+)
+def test_request_path_is_canonical(raw: str, expected: str) -> None:
+    assert request_path(raw) == expected

@@ -1,0 +1,9 @@
+{
+  "sources": {
+    "scratch": {
+      "title": "Scratch (in memory)",
+      "baseurl": "http://localhost:8081/scratch/",
+      "storageAdapter": "memory"
+    }
+  }
+}

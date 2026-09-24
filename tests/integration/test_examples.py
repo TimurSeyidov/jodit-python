@@ -247,3 +247,41 @@ async def test_multi_tenant_sources(tmp_path: Path) -> None:
     assert [item["file"] for item in acme_source["files"]] == ["a.txt"]
     assert [item["file"] for item in shared_source["files"]] == ["s.txt"]
     assert unknown.status_code == 403
+
+
+async def test_custom_storage_round_trip() -> None:
+    module = load("custom_storage")
+    module._STORES.clear()
+
+    async with open_client(module.build_app()) as http:
+        uploaded = await http.post(
+            "/fileUpload", files={"files[0]": ("a.txt", b"hello")}
+        )
+        await http.get("/folderCreate", params={"name": "docs"})
+        await http.get("/folderCreate", params={"name": "old", "path": "docs"})
+        moved = await http.get(
+            "/fileMove", params={"from": "a.txt", "path": "docs/old"}
+        )
+        renamed = await http.get(
+            "/folderRename",
+            params={"name": "old", "newname": "new", "path": "docs"},
+        )
+        downloaded = await http.get(
+            "/fileDownload", params={"path": "docs/new", "name": "a.txt"}
+        )
+        listing = await http.get(
+            "/files", params={"path": "docs/new", "mods[withFolders]": "1"}
+        )
+        removed = await http.get("/folderRemove", params={"name": "docs"})
+        missing = await http.get(
+            "/fileDownload", params={"path": "docs/new", "name": "a.txt"}
+        )
+
+    assert uploaded.json()["data"]["files"] == ["a.txt"]
+    assert moved.status_code == 200
+    assert renamed.status_code == 200
+    assert downloaded.content == b"hello"
+    assert "a.txt" in _names(listing)
+    assert removed.status_code == 200
+    assert missing.status_code == 404
+    assert module._STORES["scratch"].files == {}

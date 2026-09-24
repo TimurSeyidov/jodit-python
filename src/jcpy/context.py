@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 from starlette.datastructures import UploadFile
+from starlette.exceptions import HTTPException
 
 from jcpy.errors import HttpError
 from jcpy.helpers import append_field, qs
@@ -227,7 +228,11 @@ async def _read_body(
             ) from None
 
     if media_type == _MULTIPART_TYPE and request.method == "POST":
-        form = await request.form()
+        try:
+            form = await request.form()
+        except HTTPException as error:
+            # Malformed multipart or a field over the parser's limits.
+            raise HttpError(error.status_code, error.detail) from None
         fields: list[tuple[str, str]] = []
         files: list[UploadedFile] = []
         for key, value in form.multi_items():

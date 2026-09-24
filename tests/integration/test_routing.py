@@ -318,3 +318,29 @@ async def test_uploaded_files_are_closed_after_the_answer(
     # A leaked temporary file would fail the test (ResourceWarning).
     assert denied.status_code == 403
     assert echoed.json()["data"]["files"] == ["a.txt"]
+
+
+async def test_multipart_field_over_parser_limit(
+    connector_client: ClientFactory,
+) -> None:
+    async with connector_client() as http:
+        response = await http.post(
+            "/echo", files={"html": (None, "x" * (1024 * 1024 + 1))}
+        )
+
+    assert response.status_code == 400
+    assert response.json()["data"]["messages"] == [
+        "Part exceeded maximum size of 1024KB."
+    ]
+
+
+async def test_malformed_multipart(connector_client: ClientFactory) -> None:
+    async with connector_client() as http:
+        response = await http.post(
+            "/echo",
+            content=b"--x\r\nbroken",
+            headers={"Content-Type": "multipart/form-data"},
+        )
+
+    assert response.status_code == 400
+    assert response.json()["success"] is False

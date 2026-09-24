@@ -165,19 +165,28 @@ repository root, e.g. `uv run python examples/basic.py`):
 | `multi_instance.py` | Two isolated connectors in one application |
 | `s3.py` | Files in an S3 bucket |
 | `multi_tenant.py` | Per-request (tenant) sources |
+| `custom_storage.py` | Custom storage adapter registered by name |
 
-## API reference
+## Documentation
+
+The full documentation (usage, configuration reference, API endpoints,
+Swagger UI) is an MkDocs site in [`docs/`](docs):
+
+```bash
+make docs        # http://127.0.0.1:8000
+make docs-build  # static site in site/
+```
 
 The OpenAPI 3.1 document is generated from Pydantic models into
-[`docs/openapi/`](docs/openapi) (`openapi.json`, `openapi.yaml` and a
-Swagger UI page `index.html`); `make openapi` regenerates it and CI
+[`docs/content/api-swagger/`](docs/content/api-swagger)
+(`openapi.json`, `openapi.yaml`); `make openapi` regenerates it and CI
 fails when it is stale. The connector itself does not serve `/docs` or
 `/openapi.json`: like jodit-nodejs, every path is an action name.
 
 ## Development
 
 ```bash
-make check  # lint, format check, mypy --strict, OpenAPI check, tests
+make check  # lint, format, mypy --strict, OpenAPI and docs checks, tests
 ```
 
 All caches (uv, ruff, mypy, pytest, coverage, bytecode) live in

@@ -51,6 +51,9 @@ jobs:
       - name: Check OpenAPI document
         run: make openapi-check
 
+      - name: Build documentation
+        run: make docs-build
+
       - name: Tests with coverage
         run: make coverage
 

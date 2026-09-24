@@ -1,6 +1,7 @@
 """Role, path and extension based access control."""
 
 import inspect
+import posixpath
 import re
 from collections.abc import Awaitable, Callable, Sequence
 from types import MappingProxyType
@@ -105,6 +106,23 @@ def normalize_path(path: str) -> str:
         Normalized path.
     """
     return _SLASHES.sub("/", path.replace("\\", "/"))
+
+
+def request_path(path: str) -> str:
+    """Canonical form of a requested directory for access checks.
+
+    Makes the path absolute, collapses repeated slashes and resolves
+    ``.`` and ``..``, so that ``private``, ``./private`` and
+    ``/public/../private`` are all checked as ``/private``.
+
+    Args:
+        path: ``path`` parameter of the request, relative to the source
+            root.
+
+    Returns:
+        Path starting with ``/``.
+    """
+    return posixpath.normpath(normalize_path(f"/{path}"))
 
 
 class AccessControl:

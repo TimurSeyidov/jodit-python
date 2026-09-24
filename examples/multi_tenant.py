@@ -43,6 +43,7 @@ TENANTS = {
 }
 
 
+# --8<-- [start:build]
 def tenant_sources(request: Request) -> ResolvedSources | None:
     """Pick the sources of the request's tenant.
 
@@ -81,6 +82,8 @@ def build_app() -> FastAPI:
     """
     return create_app(CONFIG, resolve_sources=tenant_sources)
 
+
+# --8<-- [end:build]
 
 if __name__ == "__main__":
     uvicorn.run(build_app(), host="127.0.0.1", port=8081)

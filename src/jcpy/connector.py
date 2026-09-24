@@ -9,7 +9,7 @@ from fastapi import APIRouter
 from starlette.requests import Request
 from starlette.responses import JSONResponse, PlainTextResponse, Response
 
-from jcpy.acl import AccessControl
+from jcpy.acl import AccessControl, request_path
 from jcpy.context import ActionContext, RequestContext
 from jcpy.errors import HttpError
 from jcpy.helpers.svg_icon import generate_icon
@@ -158,7 +158,9 @@ class Connector:
             role = await self._authenticate(request)
             params = await RequestContext.from_request(request)
             action = params.action
-            await self.access.check_permission(role, action, params.path)
+            await self.access.check_permission(
+                role, action, request_path(params.path)
+            )
             handler = self.actions.get(action)
             if handler is None:
                 raise HttpError.not_found(f'Action "{action}" not found')

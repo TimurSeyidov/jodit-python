@@ -28,6 +28,7 @@ ALGORITHM = "HS256"
 TOKEN_LIFETIME = 3600
 
 
+# --8<-- [start:build]
 def make_token(
     role: str, username: str, lifetime: int = TOKEN_LIFETIME
 ) -> str:
@@ -93,6 +94,8 @@ def build_app() -> FastAPI:
     """
     return create_app(CONFIG, check_authentication=role_from_jwt)
 
+
+# --8<-- [end:build]
 
 if __name__ == "__main__":
     for demo_role in ("editor", "admin"):

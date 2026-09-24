@@ -24,6 +24,7 @@ CONFIG_DIR = Path(__file__).parent / "config"
 ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "change-me")
 
 
+# --8<-- [start:build]
 def public_role(_request: Request) -> str:
     """Treat every visitor of the public connector as a guest.
 
@@ -69,6 +70,8 @@ def build_app() -> FastAPI:
     )
     return app
 
+
+# --8<-- [end:build]
 
 if __name__ == "__main__":
     uvicorn.run(build_app(), host="127.0.0.1", port=8081)

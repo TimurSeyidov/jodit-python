@@ -28,6 +28,7 @@ SECRET = os.environ.get("SESSION_SECRET", "change-me")
 SESSION_MAX_AGE = 24 * 60 * 60
 
 
+# --8<-- [start:build]
 def role_from_session(request: Request) -> str:
     """Read the role stored in the session.
 
@@ -74,6 +75,8 @@ def build_app() -> FastAPI:
     )
     return app
 
+
+# --8<-- [end:build]
 
 if __name__ == "__main__":
     uvicorn.run(build_app(), host="127.0.0.1", port=8081)
