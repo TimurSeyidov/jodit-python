@@ -24,7 +24,7 @@ _DOTS = any_of(is_boolean, one_of("false", "true"))
 
 
 def validate(data: JsonObject) -> list[Issue]:
-    """Check ``folders`` parameters like the original zod schema.
+    """Check ``folders`` parameters.
 
     Args:
         data: Request parameters.

@@ -131,11 +131,9 @@ def _comparator(sort_by: str) -> Callable[[_Item, _Item], int]:
 def sort_items(
     items: list[_Item], sort_by: str, folders_position: str
 ) -> None:
-    """Sort listing items in place exactly like jodit-nodejs.
+    """Sort listing items in place in the order clients expect.
 
-    The comparators, including their inconsistencies, are the original
-    ones; Python's ``list.sort`` is the algorithm V8 ports, so equal
-    inputs give equal orders.
+    ``list.sort`` is stable, so equal items keep their listing order.
 
     Args:
         items: Items to sort.
@@ -154,7 +152,7 @@ def sort_items(
             return -1 if top else 1
         if not a_dir and b_dir:
             return 1 if top else -1
-        # The original compares two objects here, which is always false.
+        # Two folders: the first one stays first.
         return -1 if a_dir and b_dir else 0
 
     items.sort(key=cmp_to_key(by_kind))

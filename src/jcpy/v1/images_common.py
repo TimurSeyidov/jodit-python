@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 def validate_edit(
     data: JsonObject, box_keys: tuple[str, ...]
 ) -> tuple[list[Issue], dict[str, int]]:
-    """Check resize/crop parameters like the original zod schemas.
+    """Check resize/crop parameters.
 
     Args:
         data: Request parameters.
@@ -33,7 +33,7 @@ def validate_edit(
 
 
 def validate_named(data: JsonObject, *, name_required: bool) -> list[Issue]:
-    """Check save/load parameters like the original zod schemas.
+    """Check save/load parameters.
 
     Args:
         data: Request parameters.

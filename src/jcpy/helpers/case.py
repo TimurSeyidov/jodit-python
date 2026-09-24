@@ -1,4 +1,4 @@
-"""Port of ``constantCase`` and ``camelCase`` from ``change-case`` 5."""
+"""``CONSTANT_CASE`` and ``camelCase`` conversion of names."""
 
 import unicodedata
 

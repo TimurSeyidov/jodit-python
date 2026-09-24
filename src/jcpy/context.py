@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from jcpy.types import JsonObject, JsonValue
 
 BODY_LIMIT = 100 * 1024
-"""Size limit of JSON and urlencoded bodies, as in Express."""
+"""Size limit of JSON and urlencoded bodies (100 KB)."""
 
 _JSON_TYPE = "application/json"
 _FORM_TYPE = "application/x-www-form-urlencoded"
@@ -32,7 +32,7 @@ _MULTIPART_TYPE = "multipart/form-data"
 
 
 def prepare_value(value: JsonValue) -> JsonValue:
-    """Convert a raw parameter the way jodit-nodejs does.
+    """Convert a raw parameter to the value actions work with.
 
     ``"true"``/``"false"`` become booleans, numeric strings become
     numbers (``parseFloat`` semantics), anything else is unchanged.

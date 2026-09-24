@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
 
 def deep_merge(target: JsonValue, source: JsonValue) -> JsonValue:
-    """Merge ``source`` into ``target`` like the Node.js ``deepmerge``.
+    """Merge ``source`` into ``target`` deeply.
 
     Objects are merged key by key, lists are concatenated, any other
     combination is resolved in favour of ``source``. Inputs are not

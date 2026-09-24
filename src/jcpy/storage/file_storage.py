@@ -20,7 +20,7 @@ class PathTraversalError(StorageError):
     def __init__(self, path: str) -> None:
         super().__init__(
             f"Path traversal detected for: {path}",
-            "flystorage.path_traversal_detected",
+            "storage.path_traversal_detected",
         )
 
 
@@ -30,12 +30,12 @@ class CorruptedPathError(StorageError):
     def __init__(self, path: str) -> None:
         super().__init__(
             f"Corrupted path detected with unexpected whitespace: {path}",
-            "flystorage.corrupted_path_detected",
+            "storage.corrupted_path_detected",
         )
 
 
 def normalize_storage_path(path: str) -> str:
-    """Normalize a storage path like flystorage's ``PathNormalizerV1``.
+    """Normalize a storage path, rejecting traversal and control chars.
 
     Args:
         path: Path relative to the storage root; a leading ``/`` is
@@ -107,9 +107,7 @@ class FileStorage:
             await self.adapter.write(normalize_storage_path(path), contents)
         except Exception as error:
             msg = f"Unable to write the file. Reason: {self._reason(error)}"
-            raise StorageError(
-                msg, "flystorage.unable_to_write_file"
-            ) from error
+            raise StorageError(msg, "storage.unable_to_write_file") from error
 
     async def read(self, path: str) -> bytes:
         """Read a whole file.
@@ -127,9 +125,7 @@ class FileStorage:
             return await self.adapter.read(normalize_storage_path(path))
         except Exception as error:
             msg = f"Unable to read the file. Reason: {self._reason(error)}"
-            raise StorageError(
-                msg, "flystorage.unable_to_read_file"
-            ) from error
+            raise StorageError(msg, "storage.unable_to_read_file") from error
 
     async def delete_file(self, path: str) -> None:
         """Delete a file.
@@ -144,9 +140,7 @@ class FileStorage:
             await self.adapter.delete_file(normalize_storage_path(path))
         except Exception as error:
             msg = f"Unable to delete file. Reason: {self._reason(error)}"
-            raise StorageError(
-                msg, "flystorage.unable_to_delete_file"
-            ) from error
+            raise StorageError(msg, "storage.unable_to_delete_file") from error
 
     async def create_directory(self, path: str) -> None:
         """Create a directory with its missing parents.
@@ -162,7 +156,7 @@ class FileStorage:
         except Exception as error:
             msg = f"Unable to create directory. Reason: {self._reason(error)}"
             raise StorageError(
-                msg, "flystorage.unable_to_create_directory"
+                msg, "storage.unable_to_create_directory"
             ) from error
 
     async def delete_directory(self, path: str) -> None:
@@ -179,7 +173,7 @@ class FileStorage:
         except Exception as error:
             msg = f"Unable to delete directory. Reason: {self._reason(error)}"
             raise StorageError(
-                msg, "flystorage.unable_to_delete_directory"
+                msg, "storage.unable_to_delete_directory"
             ) from error
 
     async def stat(self, path: str) -> StatEntry:
@@ -198,7 +192,7 @@ class FileStorage:
             return await self.adapter.stat(normalize_storage_path(path))
         except Exception as error:
             msg = f"Unable to get stat. Reason: {self._reason(error)}"
-            raise StorageError(msg, "flystorage.unable_to_get_stat") from error
+            raise StorageError(msg, "storage.unable_to_get_stat") from error
 
     async def list(
         self, path: str, *, deep: bool = False
@@ -223,7 +217,7 @@ class FileStorage:
             reason = self._reason(error)
             msg = f"Unable to list directory contents. Reason: {reason}"
             raise StorageError(
-                msg, "flystorage.unable_to_list_directory"
+                msg, "storage.unable_to_list_directory"
             ) from error
 
     async def file_exists(self, path: str) -> bool:
@@ -244,7 +238,7 @@ class FileStorage:
             reason = self._reason(error)
             msg = f"Unable to check file existence. Reason: {reason}"
             raise StorageError(
-                msg, "flystorage.unable_to_check_file_existence"
+                msg, "storage.unable_to_check_file_existence"
             ) from error
 
     async def directory_exists(self, path: str) -> bool:
@@ -269,7 +263,7 @@ class FileStorage:
                 f"Reason: {self._reason(error)}"
             )
             raise StorageError(
-                msg, "flystorage.unable_to_check_directory_existence"
+                msg, "storage.unable_to_check_directory_existence"
             ) from error
 
     async def copy_file(self, source: str, destination: str) -> None:
@@ -289,9 +283,7 @@ class FileStorage:
             )
         except Exception as error:
             msg = f"Unable to copy file. Reason: {self._reason(error)}"
-            raise StorageError(
-                msg, "flystorage.unable_to_copy_file"
-            ) from error
+            raise StorageError(msg, "storage.unable_to_copy_file") from error
 
     async def move_file(self, source: str, destination: str) -> None:
         """Move a file or directory.
@@ -310,6 +302,4 @@ class FileStorage:
             )
         except Exception as error:
             msg = f"Unable to move file. Reason: {self._reason(error)}"
-            raise StorageError(
-                msg, "flystorage.unable_to_move_file"
-            ) from error
+            raise StorageError(msg, "storage.unable_to_move_file") from error

@@ -5,28 +5,17 @@ description: Quick start for jodit-python - installation, first run and key feat
 
 # Getting Started
 
-jodit-python is a Python/FastAPI implementation of the
-[Jodit](https://xdsoft.net/jodit/) File Browser and Uploader connector.
-Its HTTP API is the same as that of
-[jodit-nodejs](https://github.com/jodit/jodit-nodejs): routes,
-parameters, response format and status codes. Jodit Editor works with it
-without any change on the client side.
+jodit-python is a Python/FastAPI implementation of the [Jodit](https://xdsoft.net/jodit/) File Browser and Uploader connector. The Jodit editor's file browser and uploader work with it without any change on the client side.
 
 ## Overview
 
-- **File operations**: browse, upload (from the browser or from a URL),
-  download, rename, move, copy, delete
+- **File operations**: browse, upload (from the browser or from a URL), download, rename, move, copy, delete
 - **Folder management**: create, rename, move, copy, delete, tree view
-- **Image processing**: resize, crop, save from the image editor,
-  thumbnails
+- **Image processing**: resize, crop, save from the image editor, thumbnails
 - **Document generation**: PDF and DOCX from HTML
-- **Authentication and ACL**: role per request, rules by role, path and
-  extension, static or loaded at runtime
-- **FastAPI integration**: standalone app or a router mounted into your
-  application, several isolated instances side by side
-- **Storage**: local filesystem or [AWS S3 / S3-compatible](aws-s3.md)
-  out of the box, [custom adapters](storage-adapters.md) for anything
-  else
+- **Authentication and ACL**: role per request, rules by role, path and extension, static or loaded at runtime
+- **FastAPI integration**: standalone app or a router mounted into your application, several isolated instances side by side
+- **Storage**: local filesystem or [AWS S3 / S3-compatible](aws-s3.md) out of the box, [custom adapters](storage-adapters.md) for anything else
 - **Multi-tenant**: [sources resolved per request](dynamic-sources.md)
 
 ## Installation
@@ -36,15 +25,9 @@ uv add "jodit-python[all]"        # or: pip install "jodit-python[all]"
 ```
 
 !!! note "Release status"
-    The PyPI package and the Docker Hub image are not published yet.
-    Until then install from the repository:
-    `uv add git+https://github.com/TimurSeyidov/jodit-python` and build
-    the image locally (see [Docker](docker.md)).
+    The PyPI package and the Docker Hub image are not published yet. Until then install from the repository: `uv add git+https://github.com/TimurSeyidov/jodit-python` and build the image locally (see [Docker](docker.md)).
 
-Python 3.14+ is required. `[all]` adds PDF export (WeasyPrint, which
-needs the Pango system library), DOCX export and S3 storage; each can
-also be installed alone (`[pdf]`, `[docx]`, `[s3]`), see
-[Installation](installation.md#installation).
+Python 3.14+ is required. `[all]` adds PDF export (WeasyPrint, which needs the Pango system library), DOCX export and S3 storage; each can also be installed alone (`[pdf]`, `[docx]`, `[s3]`), see [Installation](installation.md#installation).
 
 ## Quick Start
 
@@ -56,8 +39,7 @@ SOURCE_BASEURL=https://example.com/uploads/ \
 jcpy
 ```
 
-The `jcpy` command serves the connector on `http://0.0.0.0:8081`
-(`HOST` and `PORT` change it):
+The `jcpy` command serves the connector on `http://0.0.0.0:8081` (`HOST` and `PORT` change it):
 
 ```bash
 curl http://localhost:8081/ping
@@ -67,8 +49,7 @@ curl "http://localhost:8081/?action=files"
 
 ### From Python
 
-Settings live in a JSON file; only what differs from the
-[defaults](config.md) needs to be there:
+Settings live in a JSON file; only what differs from the [defaults](config.md) needs to be there:
 
 ```json title="config.json"
 {
@@ -82,8 +63,7 @@ Settings live in a JSON file; only what differs from the
 }
 ```
 
-Callbacks (authentication, dynamic rules, custom icons...) are passed in
-code:
+Callbacks (authentication, dynamic rules, custom icons...) are passed in code:
 
 ```python title="main.py"
 from starlette.requests import Request
@@ -105,9 +85,7 @@ uvicorn main:app --port 8081
 
 ### Serving the files
 
-The connector manages files but does not serve them: thumbnails and
-file links point to `baseurl`, which must be served by a web server or
-a CDN. With nginx:
+The connector manages files but does not serve them: thumbnails and file links point to `baseurl`, which must be served by a web server or a CDN. With nginx:
 
 ```nginx
 location /uploads/ {
@@ -143,26 +121,17 @@ From a checkout of the repository:
 make demo
 ```
 
-It opens `http://localhost:8080/demo/` in the browser (`NO_BROWSER=1` skips
-that): the Jodit PRO file browser (from a
-CDN, as in the jodit-nodejs demo) connected to jodit-python on port
-8081. Jodit PRO needs no license key on `localhost`; on other hosts it
-shows a "Trial version" notice. The page and the files (`./files`) are served on port 8080; the
-connector uses `demo/config.json`. Another connector can be tried with
-`http://localhost:8080/demo/?connector=https://example.com/connector/`.
+It opens `http://localhost:8080/demo/` in the browser (`NO_BROWSER=1` skips that): the Jodit PRO file browser (from a CDN) connected to jodit-python on port
+8081. Jodit PRO needs no license key on `localhost`; on other hosts it shows a "Trial version" notice. The page and the files (`./files`) are served on port 8080; the connector uses `demo/config.json`. Another connector can be tried with `http://localhost:8080/demo/?connector=https://example.com/connector/`.
 
-Jodit's uploader does not name the action, so its URL carries it:
-`uploader: { url: 'https://example.com/connector/?action=fileUpload' }`.
+Jodit's uploader does not name the action, so its URL carries it: `uploader: { url: 'https://example.com/connector/?action=fileUpload' }`.
 
 ## Next Steps
 
-- **[Installation & Setup](installation.md)**: environment variables and
-  configuration sources
+- **[Installation & Setup](installation.md)**: environment variables and configuration sources
 - **[Python API](usage.md)**: `create_app`, `create_router`, callbacks
-- **[FastAPI Integration](integration.md)**: mounting into an existing
-  application, several instances
+- **[FastAPI Integration](integration.md)**: mounting into an existing application, several instances
 - **[API Endpoints](api.md)**: every action with parameters and answers
-- **[Authentication](authentication.md)** and
-  **[Access Control](access-control.md)**
+- **[Authentication](authentication.md)** and **[Access Control](access-control.md)**
 - **[Configuration](config.md)**: every setting
 - **[Docker](docker.md)**

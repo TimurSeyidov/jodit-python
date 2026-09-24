@@ -20,7 +20,7 @@ FILE_NOT_FOUND = "File does not exist"
 
 
 def validate(data: JsonObject) -> list[Issue]:
-    """Check ``getLocalFileByUrl`` parameters like the original schema.
+    """Check ``getLocalFileByUrl`` parameters.
 
     Args:
         data: Request parameters.

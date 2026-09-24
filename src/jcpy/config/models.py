@@ -1,7 +1,6 @@
 """Connector configuration models.
 
-Field names are snake_case in Python and camelCase in JSON, exactly as
-in the jodit-nodejs configuration.
+Field names are snake_case in Python and camelCase in JSON.
 """
 
 import tempfile
@@ -142,7 +141,7 @@ class AccessControlRule(BaseModel):
 
 
 class AppConfig(_Model):
-    """Complete connector configuration with jodit-nodejs defaults."""
+    """Complete connector configuration with its defaults."""
 
     title: str = ""
     default_files_key: str = "default"

@@ -5,13 +5,11 @@ description: Access rules by role, path and extension; rules loaded at runtime; 
 
 # Access Control (ACL)
 
-Every request is checked against access rules before its action runs,
-and actions check again for each directory or file they touch.
+Every request is checked against access rules before its action runs, and actions check again for each directory or file they touch.
 
 ## Rules
 
-A rule selects requests by `role`, `path` and `extensions` (a missing
-selector matches everything) and sets actions to `true` or `false`:
+A rule selects requests by `role`, `path` and `extensions` (a missing selector matches everything) and sets actions to `true` or `false`:
 
 ```json
 {
@@ -39,26 +37,14 @@ selector matches everything) and sets actions to `true` or `false`:
 
 For each check (role, action, path, extension):
 
-1. A rule **applies** when its `role` is missing, `*` or equal to the
-   role; the path starts with its `path`; and its `extensions` contain
-   `*` or the extension of the file.
-2. Among the rules that apply and mention the action, **the last one
-   decides**. Put general rules first and exceptions after them.
-3. When no rule decides, the action is **allowed** (every entry of
-   `DEFAULT_RULES` is `true`, as in jodit-nodejs).
+1. A rule **applies** when its `role` is missing, `*` or equal to the role; the path starts with its `path`; and its `extensions` contain `*` or the extension of the file.
+2. Among the rules that apply and mention the action, **the last one decides**. Put general rules first and exceptions after them.
+3. When no rule decides, the action is **allowed** (every entry of `DEFAULT_RULES` is `true`).
 
 !!! warning "Allowed unless denied"
-    Without rules everything is allowed. To deny by default, start
-    with a rule that denies every action for every role and allow what
-    each role needs after it (see [deny by default](#deny-by-default)).
+    Without rules everything is allowed. To deny by default, start with a rule that denies every action for every role and allow what each role needs after it (see [deny by default](#deny-by-default)).
 
-The requested `path` is normalized before matching: `private`,
-`./private`, `//private` and `/public/../private` are all checked as
-`/private`. The path test is a plain prefix test (as in jodit-nodejs),
-so a rule for `/private` also covers `/private-2`; name folders
-accordingly. Extensions are only known when a file
-is involved (uploads, for instance); checks of whole directories use
-`*`, which a rule with a narrower `extensions` list does not match.
+The requested `path` is normalized before matching: `private`, `./private`, `//private` and `/public/../private` are all checked as `/private`. The path test is a plain prefix test, so a rule for `/private` also covers `/private-2`; name folders accordingly. Extensions are only known when a file is involved (uploads, for instance); checks of whole directories use `*`, which a rule with a narrower `extensions` list does not match.
 
 ## Actions
 
@@ -78,9 +64,7 @@ Rule keys are action names in CONSTANT_CASE:
 | `PERMISSIONS` | `permissions` | | `IMAGE_LOAD` | `imageLoad` |
 | `GENERATE_PDF` | `generatePdf` | | `GENERATE_DOCX` | `generateDocx` |
 
-`FOLDER_TREE` is reported by `permissions` for Jodit's folder tree.
-The `permissions` action tells the client what the current role may do
-in a directory, so Jodit hides buttons of denied actions.
+`FOLDER_TREE` is reported by `permissions` for Jodit's folder tree. The `permissions` action tells the client what the current role may do in a directory, so Jodit hides buttons of denied actions.
 
 ## Deny by default
 
@@ -105,8 +89,7 @@ in a directory, so Jodit hides buttons of denied actions.
 
 ## Rules computed in code
 
-JSON holds flags only. In rules built in code an action may be a
-function, and `extensions` may be computed:
+JSON holds flags only. In rules built in code an action may be a function, and `extensions` may be computed:
 
 ```python
 from jcpy import AccessControlRule, create_app
@@ -141,16 +124,11 @@ RULES = [
 app = create_app("config.json", access_control=lambda: RULES)
 ```
 
-Both functions get the action (CONSTANT_CASE), the rule, the path and
-the extension (`*` when unknown). A predicate that returns something
-other than a boolean allows the action.
+Both functions get the action (CONSTANT_CASE), the rule, the path and the extension (`*` when unknown). A predicate that returns something other than a boolean allows the action.
 
 ## Rules loaded at runtime
 
-`access_control=` takes a function (plain or `async`) called on
-**every check**; it replaces the `accessControl` list of the
-configuration. Rules can come from a database, a cache or an API and
-change without a restart:
+`access_control=` takes a function (plain or `async`) called on **every check**; it replaces the `accessControl` list of the configuration. Rules can come from a database, a cache or an API and change without a restart:
 
 ```python
 from jcpy import AccessControlRule, create_app
@@ -176,8 +154,7 @@ app = create_app("config.json", access_control=load_rules)
 
 ### Caching
 
-A request can run several checks, so cache what is slow to load, and
-keep the last good rules when loading fails:
+A request can run several checks, so cache what is slow to load, and keep the last good rules when loading fails:
 
 ```python
 import logging
@@ -211,8 +188,7 @@ async def cached_rules() -> list[AccessControlRule]:
 
 ## Custom implementation
 
-`access_control_instance=` replaces the rule engine altogether. It is an
-object with two async methods (`jcpy.AccessControlProtocol`):
+`access_control_instance=` replaces the rule engine altogether. It is an object with two async methods (`jcpy.AccessControlProtocol`):
 
 ```python
 from jcpy import HttpError, create_app
@@ -243,13 +219,8 @@ class PolicyServiceAccess:
 app = create_app("config.json", access_control_instance=PolicyServiceAccess())
 ```
 
-`action` arrives in the spelling of the call site (`fileUpload` or
-`FILE_UPLOAD`); `jcpy.AccessControl` normalizes it with a CONSTANT_CASE
-conversion, and so should a custom implementation.
+`action` arrives in the spelling of the call site (`fileUpload` or `FILE_UPLOAD`); `jcpy.AccessControl` normalizes it with a CONSTANT_CASE conversion, and so should a custom implementation.
 
 ## Per source
 
-Rules are per connector instance, not per source. Different rules for
-different sources are made with separate instances
-([FastAPI Integration](integration.md#5-several-instances)) or with
-[dynamic sources](dynamic-sources.md) together with a role per tenant.
+Rules are per connector instance, not per source. Different rules for different sources are made with separate instances ([FastAPI Integration](integration.md#5-several-instances)) or with [dynamic sources](dynamic-sources.md) together with a role per tenant.

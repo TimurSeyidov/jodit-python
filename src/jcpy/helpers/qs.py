@@ -1,9 +1,9 @@
-"""Port of ``qs.parse`` (qs 6.16) used by Express for query strings.
+"""Parse bracket-notation query strings (``box[w]=1&tags[]=a``).
 
-Supported options are the ones Express uses: ``depth``,
-``arrayLimit``, ``parameterLimit``, ``allowPrototypes`` and
-``strictDepth``; the rest keep their ``qs`` defaults (``&`` delimiter,
-UTF-8, no dot notation, no comma arrays, ``duplicates: 'combine'``).
+Configurable: ``depth``, ``arrayLimit``, ``parameterLimit``,
+``allowPrototypes`` and ``strictDepth``; otherwise ``&`` delimits,
+values are UTF-8, there is no dot notation or comma arrays, and
+duplicate keys are combined into lists.
 """
 
 import re

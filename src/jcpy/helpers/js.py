@@ -363,7 +363,7 @@ def parse_bytes(value: str) -> int | None:
 
 
 def node_extname(path: str) -> str:
-    """Mirror Node's ``path.posix.extname``.
+    """Return the extension of a path, with the dot (``.tar.gz`` → ``.gz``).
 
     Args:
         path: File path.
@@ -407,7 +407,7 @@ def node_extname(path: str) -> str:
 
 
 def node_basename(path: str, suffix: str = "") -> str:
-    """Mirror Node's ``path.posix.basename`` for the common cases.
+    """Return the last path segment, without ``suffix`` when it ends so.
 
     Args:
         path: File path.

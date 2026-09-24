@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 
 
 def validate(data: JsonObject) -> list[Issue]:
-    """Check parameters like the original zod schema (``url`` required).
+    """Check parameters (``url`` required).
 
     Args:
         data: Request parameters.

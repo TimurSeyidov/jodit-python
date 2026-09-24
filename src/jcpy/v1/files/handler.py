@@ -44,7 +44,7 @@ _MODS = object_of(
 
 
 def validate(data: JsonObject) -> list[Issue]:
-    """Check ``files`` parameters like the original zod schema.
+    """Check ``files`` parameters.
 
     Args:
         data: Request parameters.

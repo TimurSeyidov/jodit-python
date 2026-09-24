@@ -120,7 +120,7 @@ async def upload_from_url(
             network_timeout=config.timeout_limit,
         )
     except ssrf.DownloadTooLargeError:
-        # The original checks the extension before the size.
+        # The extension is checked before the size.
         if not source.is_safe_file(safe_name):
             raise HttpError.forbidden(NOT_WHITELISTED) from None
         raise

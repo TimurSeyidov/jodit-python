@@ -1,4 +1,4 @@
-"""Request parameter checks producing zod 4 style issues."""
+"""Request parameter checks producing ``path: message`` issues."""
 
 import math
 from collections.abc import Callable, Sequence
@@ -23,7 +23,7 @@ class Issue:
 
     Attributes:
         path: Dotted parameter path.
-        message: zod-compatible message.
+        message: Human-readable problem.
     """
 
     path: str
@@ -39,7 +39,7 @@ class Issue:
 
 
 def js_type(value: object) -> str:
-    """Name a value's type as zod reports it.
+    """Name a value's type for messages (``received undefined``...).
 
     Args:
         value: JSON-like value or ``MISSING``.
@@ -81,7 +81,7 @@ def is_boolean(value: JsonValue) -> bool:
 
 
 def one_of(*allowed: str) -> Check:
-    """Accept one of the given strings (zod ``enum``/``literal``).
+    """Accept one of the given strings.
 
     Args:
         allowed: Accepted values.
@@ -93,7 +93,7 @@ def one_of(*allowed: str) -> Check:
 
 
 def any_of(*checks: Check) -> Check:
-    """Accept a value any check accepts (zod ``union``).
+    """Accept a value any check accepts.
 
     Args:
         checks: Alternatives.

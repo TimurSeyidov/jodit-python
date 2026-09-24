@@ -430,7 +430,7 @@ def build_openapi(
             "title": "Jodit Connector API",
             "version": version("jodit-python"),
             "description": "Jodit FileBrowser and Uploader connector for "
-            "Python, API-compatible with jodit-nodejs.",
+            "Python.",
             "license": {"name": "MIT", "identifier": "MIT"},
         },
         "servers": servers

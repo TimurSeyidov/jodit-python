@@ -79,3 +79,11 @@ def test_demo_configuration_loads() -> None:
     assert "action=fileUpload" in (ROOT / "demo" / "index.html").read_text(
         "utf-8"
     )
+
+
+def test_readme_lists_every_action() -> None:
+    readme = (ROOT / "README.md").read_text("utf-8")
+    functions = readme[readme.index("## Implemented Functions") :]
+    listed = set(re.findall(r"^- \*\*(\w+)\*\*", functions, re.MULTILINE))
+
+    assert listed == {*ACTIONS, "ping"}

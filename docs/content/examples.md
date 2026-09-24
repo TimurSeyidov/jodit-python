@@ -5,10 +5,7 @@ description: Runnable examples from the examples/ directory of the repository.
 
 # Examples
 
-Complete programs from [`examples/`](https://github.com/TimurSeyidov/jodit-python/tree/main/examples).
-Run them from the repository root, e.g. `uv run python examples/basic.py`;
-each module docstring lists `curl` commands to try. Every example is
-type-checked and covered by the test suite.
+Complete programs from [`examples/`](https://github.com/TimurSeyidov/jodit-python/tree/main/examples). Run them from the repository root, e.g. `uv run python examples/basic.py`; each module docstring lists `curl` commands to try. Every example is type-checked and covered by the test suite.
 
 ## Basic
 
@@ -60,7 +57,7 @@ Role from a signed JWT (PyJWT); bad tokens get `401`.
 
 ## Session authentication
 
-Role kept in a signed Starlette session, with login and logout routes; the closest analog of PHP `$_SESSION` and express-session.
+Role kept in a signed Starlette session, with login and logout routes.
 
 === "session_auth.py"
 

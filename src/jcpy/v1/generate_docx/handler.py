@@ -23,7 +23,7 @@ DOCX_TYPE = (
 
 
 def validate(data: JsonObject) -> list[Issue]:
-    """Check parameters like the original zod schema.
+    """Check parameters.
 
     Args:
         data: Request parameters.

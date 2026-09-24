@@ -7,13 +7,9 @@ description: The check_authentication callback, with cookie, JWT and session exa
 
 ## Overview
 
-The connector does not log users in. Your application does, and tells
-the connector the **role** of the user on every request through the
-`check_authentication` callback. The role then selects the
-[access rules](access-control.md).
+The connector does not log users in. Your application does, and tells the connector the **role** of the user on every request through the `check_authentication` callback. The role then selects the [access rules](access-control.md).
 
-Every request is authenticated on its own, so one connector serves
-different users with different roles at the same time.
+Every request is authenticated on its own, so one connector serves different users with different roles at the same time.
 
 ### Request pipeline
 
@@ -32,15 +28,10 @@ different users with different roles at the same time.
 type AuthCallback = Callable[[Request], str | Awaitable[str]]
 ```
 
-- Receives the Starlette `Request` (headers, cookies, `request.session`,
-  `request.state`...).
-- Returns the role as a string. Plain functions and coroutine functions
-  both work.
-- Raise [`HttpError`](usage.md#errors) to reject the request with a
-  status of your choice (`401`, `403`...). Any other exception becomes
-  `500`; so does a non-string result.
-- Without the callback every request gets
-  [`defaultRole`](config.md#defaultRole) (`guest`).
+- Receives the Starlette `Request` (headers, cookies, `request.session`, `request.state`...).
+- Returns the role as a string. Plain functions and coroutine functions both work.
+- Raise [`HttpError`](usage.md#errors) to reject the request with a status of your choice (`401`, `403`...). Any other exception becomes `500`; so does a non-string result.
+- Without the callback every request gets [`defaultRole`](config.md#defaultRole) (`guest`).
 
 ```python
 from starlette.requests import Request
@@ -60,15 +51,11 @@ app = create_app("config.json", check_authentication=check_authentication)
 ```
 
 !!! note "Role only"
-    The callback returns a role, not a user. Per-user folders are made
-    with [dynamic sources](dynamic-sources.md), which also receive the
-    request.
+    The callback returns a role, not a user. Per-user folders are made with [dynamic sources](dynamic-sources.md), which also receive the request.
 
 ## Cookie
 
-The role comes from a cookie. The client can set any cookie, so use
-this only where the client is trusted, or keep the role server side
-(sessions, below).
+The role comes from a cookie. The client can set any cookie, so use this only where the client is trusted, or keep the role server side (sessions, below).
 
 ```python
 --8<-- "examples/cookie_auth.py:build"
@@ -83,9 +70,7 @@ Full program: [`examples/cookie_auth.py`](examples.md#cookie-authentication).
 
 ## JWT
 
-The token is verified (signature, expiry, required claims) with
-[PyJWT](https://pyjwt.readthedocs.io/); a bad token is answered with
-`401`.
+The token is verified (signature, expiry, required claims) with [PyJWT](https://pyjwt.readthedocs.io/); a bad token is answered with `401`.
 
 ```python
 --8<-- "examples/jwt_auth.py:build"
@@ -100,9 +85,7 @@ Full program: [`examples/jwt_auth.py`](examples.md#jwt-authentication).
 
 ## Session
 
-The role lives in a session signed by the server, set by your login
-route: the closest analog of PHP `$_SESSION` and express-session. The
-connector is mounted into the application that owns the middleware:
+The role lives in a session signed by the server, set by your login route. The connector is mounted into the application that owns the middleware:
 
 ```python
 --8<-- "examples/session_auth.py:build"
@@ -143,18 +126,9 @@ The callback runs on every request; cache lookups that are expensive.
 ## Security practices
 
 1. **Use HTTPS** so tokens and cookies cannot be read on the way.
-2. **Verify, do not decode.** Check signatures and expiry of tokens;
-   never trust a role the client sent in plain form.
-3. **Keep secrets out of code**: read signing keys from the
-   environment or a secret store.
-4. **Deny by default.** Give `defaultRole` (the role of anonymous
-   requests) as little as possible, and allow more per role; see
-   [Access Control](access-control.md).
-5. **Rate-limit** login and upload endpoints at the proxy or with
-   middleware.
-6. **Consider [`onlyPOST`](config.md#onlyPOST)** when cookies
-   authenticate requests: it keeps other sites from triggering actions
-   with plain links and images.
-7. **Restrict CORS** with [`allowedOrigins`](config.md#allowedOrigins)
-   when `allowCrossOrigin` is on, especially together with cookies
-   (credentials are allowed for accepted origins).
+2. **Verify, do not decode.** Check signatures and expiry of tokens; never trust a role the client sent in plain form.
+3. **Keep secrets out of code**: read signing keys from the environment or a secret store.
+4. **Deny by default.** Give `defaultRole` (the role of anonymous requests) as little as possible, and allow more per role; see [Access Control](access-control.md).
+5. **Rate-limit** login and upload endpoints at the proxy or with middleware.
+6. **Consider [`onlyPOST`](config.md#onlyPOST)** when cookies authenticate requests: it keeps other sites from triggering actions with plain links and images.
+7. **Restrict CORS** with [`allowedOrigins`](config.md#allowedOrigins) when `allowCrossOrigin` is on, especially together with cookies (credentials are allowed for accepted origins).

@@ -14,13 +14,9 @@ make sync        # uv sync --all-groups
 make menu        # interactive list of every command
 ```
 
-Or open the folder in VS Code (or another IDE with Dev Containers) and
-choose **Reopen in Container**; everything below works inside.
+Or open the folder in VS Code (or another IDE with Dev Containers) and choose **Reopen in Container**; everything below works inside.
 
-All caches (uv, ruff, mypy, pytest, coverage, bytecode) live in
-`.cache/`. On macOS the Makefile points WeasyPrint to Homebrew's
-libraries (`DYLD_FALLBACK_LIBRARY_PATH`); export it yourself when
-running `uv run ...` directly.
+All caches (uv, ruff, mypy, pytest, coverage, bytecode) live in `.cache/`. On macOS the Makefile points WeasyPrint to Homebrew's libraries (`DYLD_FALLBACK_LIBRARY_PATH`); export it yourself when running `uv run ...` directly.
 
 ## Commands
 
@@ -35,8 +31,7 @@ running `uv run ...` directly.
 | `make docs` / `make docs-build` | Serve / build this site (`--strict`) |
 | `make check` | Everything CI runs |
 
-Code style: 79-character lines, Google-style docstrings stating what a
-function does and its contract (`Args`, `Returns`, `Raises`).
+Code style: 79-character lines, Google-style docstrings stating what a function does and its contract (`Args`, `Returns`, `Raises`).
 
 ## Tests
 
@@ -48,17 +43,10 @@ tests/
 └── conftest.py    # app/client factories, temporary sources
 ```
 
-- Requests go through the real application in-process
-  (`httpx.ASGITransport`), with sources in `tmp_path`.
-- Ported JavaScript behaviour (`qs` parsing, `bytes`, Day.js formats,
-  slugify, change-case, Node's `path`, sorting, the SVG icon...) is
-  checked against fixtures produced by the original npm packages; the
-  generators are in `scripts/fixtures/`.
-- S3 tests run against MinIO in Docker (Testcontainers) and are skipped
-  when no Docker daemon is reachable; unit tests of the adapter use
-  botocore's `Stubber`.
-- Unclosed files and sockets fail the test that leaks them
-  (`ResourceWarning` is an error).
+- Requests go through the real application in-process (`httpx.ASGITransport`), with sources in `tmp_path`.
+- Client-visible formats (bracket parameters, sizes, dates, safe names, slugs, paths, sort order, the SVG icon...) are checked against reference fixtures; the generators are in `scripts/fixtures/`.
+- S3 tests run against MinIO in Docker (Testcontainers) and are skipped when no Docker daemon is reachable; unit tests of the adapter use botocore's `Stubber`.
+- Unclosed files and sockets fail the test that leaks them (`ResourceWarning` is an error).
 - Every program in `examples/` is imported and exercised.
 
 ```bash
@@ -91,25 +79,6 @@ async def test_lists_uploaded_file(
     assert [item["file"] for item in source["files"]] == ["a.txt"]
 ```
 
-## Parity with jodit-nodejs
-
-Three tools check the port against a checkout of
-[jodit-nodejs](https://github.com/jodit/jodit-nodejs) (copied to
-`.cache/parity`, never modified):
-
-| Command | What it does |
-|---|---|
-| `make parity` | Runs the jodit-nodejs Jest suite with its test server replaced by jodit-python connectors (`scripts/parity/test-server.ts` asks `scripts/parity/server.py` for an instance per test) |
-| `make parity-compare` | Sends the same edge-case requests to both connectors and diffs the answers |
-| `make parity-demo` | Opens the jodit-nodejs demo (Jodit PRO file browser) in headless Chrome against both, lists, opens a folder and uploads a file, and records every request, answer and a screenshot |
-
-`NODEJS=path/to/jodit-nodejs` points to another checkout (default
-`../jodit-nodejs`); `make parity ARGS=src/v1/files` runs part of the
-suite. Tests whose configuration holds functions or adapter objects
-cannot cross the process boundary; they are mirrored in
-`tests/integration/test_nodejs_parity.py`. Deliberate differences are
-listed in `scripts/parity/compare.py` (`KNOWN`).
-
 ## Documentation
 
 The site is built with MkDocs Material from `docs/`:
@@ -120,10 +89,7 @@ docs/
 └── content/        # pages; api-swagger/openapi.{json,yaml} are generated
 ```
 
-Code on the pages is included from `examples/` (snippets between
-`# --8<-- [start:build]` and `# --8<-- [end:build]`), so it is the
-tested code. `make docs-build` fails on broken links and missing
-snippets, and runs in CI.
+Code on the pages is included from `examples/` (snippets between `# --8<-- [start:build]` and `# --8<-- [end:build]`), so it is the tested code. `make docs-build` fails on broken links and missing snippets, and runs in CI.
 
 ## Continuous integration
 
@@ -138,17 +104,11 @@ snippets, and runs in CI.
 
 One-time setup:
 
-1. **PyPI** → Account settings → Publishing → *Add a pending publisher*:
-   project `jodit-python`, owner `TimurSeyidov`, repository
-   `jodit-python`, workflow `release.yml`, environment `pypi`.
+1. **PyPI** → Account settings → Publishing → *Add a pending publisher*: project `jodit-python`, owner `TimurSeyidov`, repository `jodit-python`, workflow `release.yml`, environment `pypi`.
 2. **GitHub** → Settings → Environments → create `pypi`.
-3. **Docker Hub** → Account settings → Personal access tokens: a token
-   with read and write access. **GitHub** → Settings → Secrets and
-   variables → Actions: secrets `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`
-   and the variable `DOCKERHUB_IMAGE` (e.g. `user/jodit-python`).
+3. **Docker Hub** → Account settings → Personal access tokens: a token with read and write access. **GitHub** → Settings → Secrets and variables → Actions: secrets `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN` and the variable `DOCKERHUB_IMAGE` (e.g. `user/jodit-python`).
 4. **GitHub** → Settings → Pages → Source: *GitHub Actions*.
-5. **Codecov**: sign in with GitHub and enable the repository (uploads
-   use OIDC, no token needed).
+5. **Codecov**: sign in with GitHub and enable the repository (uploads use OIDC, no token needed).
 
 Each release:
 

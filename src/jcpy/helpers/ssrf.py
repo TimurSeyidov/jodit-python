@@ -24,8 +24,8 @@ type Resolver = Callable[[str, int], Awaitable[list[str]]]
 """Resolve a host name and port to IP addresses."""
 
 _NAT64 = ipaddress.ip_network("64:ff9b::/96")
-# Ranges jodit-nodejs blocks; kept in case the stdlib considers any
-# of their members global.
+# Blocked explicitly in case the stdlib considers any of their members
+# global.
 _BLOCKED_IPV4 = tuple(
     ipaddress.ip_network(network)
     for network in (

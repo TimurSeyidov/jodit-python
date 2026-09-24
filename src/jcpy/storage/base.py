@@ -55,7 +55,7 @@ class FileWasNotFoundError(StorageError):
     def __init__(self, path: str) -> None:
         super().__init__(
             f"File was not found at location: {path}",
-            "flystorage.file_was_not_found",
+            "storage.file_was_not_found",
         )
 
 

@@ -2,8 +2,7 @@ openapi: 3.1.0
 info:
   title: Jodit Connector API
   version: 0.1.0
-  description: Jodit FileBrowser and Uploader connector for Python, API-compatible
-    with jodit-nodejs.
+  description: Jodit FileBrowser and Uploader connector for Python.
   license:
     name: MIT
     identifier: MIT

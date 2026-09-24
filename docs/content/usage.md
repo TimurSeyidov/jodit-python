@@ -9,8 +9,7 @@ Everything below is importable from `jcpy`.
 
 ## `create_app()`
 
-Builds a standalone FastAPI application with the connector mounted at
-`/` and the `X-App-version` response header.
+Builds a standalone FastAPI application with the connector mounted at `/` and the `X-App-version` response header.
 
 ```python
 from jcpy import create_app
@@ -20,8 +19,7 @@ app = create_app("config.json")
 
 ## `create_router()`
 
-Builds one connector instance as an `APIRouter`, to mount into your own
-application (see [FastAPI Integration](integration.md)):
+Builds one connector instance as an `APIRouter`, to mount into your own application (see [FastAPI Integration](integration.md)):
 
 ```python
 from fastapi import FastAPI
@@ -32,13 +30,11 @@ app = FastAPI()
 app.include_router(create_router("config.json"), prefix="/connector")
 ```
 
-Every call creates an independent instance: its own configuration,
-callbacks, access rules, sources and caches.
+Every call creates an independent instance: its own configuration, callbacks, access rules, sources and caches.
 
 ## Arguments
 
-Both functions take the same arguments; only `config_file` is
-positional.
+Both functions take the same arguments; only `config_file` is positional.
 
 | Argument | Type | Meaning |
 |---|---|---|
@@ -50,8 +46,7 @@ positional.
 | `svg_generator` | `SvgGenerator` | Renders icons of folders and non-image files ([details](config.md#svg-icons)) |
 | `resolve_sources` | `SourcesResolver` | Picks sources per request ([Dynamic Sources](dynamic-sources.md)) |
 
-Every callback may be a plain function or a coroutine function (except
-`svg_generator`, which is always synchronous):
+Every callback may be a plain function or a coroutine function (except `svg_generator`, which is always synchronous):
 
 ```python
 from collections.abc import Awaitable, Callable
@@ -70,14 +65,11 @@ type SourcesResolver = Callable[
 ```
 
 !!! warning "Open by default"
-    Without `check_authentication` and without access rules every
-    client may run every action, as in jodit-nodejs. The connector logs
-    a warning at start in that case.
+    Without `check_authentication` and without access rules every client may run every action. The connector logs a warning at start in that case.
 
 ## Errors
 
-Raise `HttpError` from any callback to answer with that status and the
-connector's error envelope:
+Raise `HttpError` from any callback to answer with that status and the connector's error envelope:
 
 ```python
 from http import HTTPStatus
@@ -94,23 +86,17 @@ raise HttpError.bad_request("Bad header")  # 400
 {"success": false, "data": {"code": 401, "messages": ["Invalid or expired token"]}}
 ```
 
-Any other exception becomes `500` with the exception text as the
-message; with `debug: true` the traceback is logged to the `jcpy`
-logger.
+Any other exception becomes `500` with the exception text as the message; with `debug: true` the traceback is logged to the `jcpy` logger.
 
 ## Configuration objects
 
-- `load_config(config_file=None) -> AppConfig` reads the configuration
-  the way `create_app()` does.
-- `AppConfig` and `SourceConfig` are the validated (frozen) Pydantic
-  models; attributes are snake_case (`config.max_upload_file_size`),
-  JSON keys camelCase.
+- `load_config(config_file=None) -> AppConfig` reads the configuration the way `create_app()` does.
+- `AppConfig` and `SourceConfig` are the validated (frozen) Pydantic models; attributes are snake_case (`config.max_upload_file_size`), JSON keys camelCase.
 - `AccessControlRule` is one access rule.
 
 ## `Connector`
 
-The class behind both factories, for code that needs the instance
-itself:
+The class behind both factories, for code that needs the instance itself:
 
 ```python
 from jcpy import Connector, load_config
@@ -122,14 +108,11 @@ app.include_router(connector.build_router(), prefix="/files")
 connector.clear_dynamic_sources()
 ```
 
-It takes the configuration model and the same keyword arguments as
-`create_router()`.
+It takes the configuration model and the same keyword arguments as `create_router()`.
 
 ## Logging
 
-Messages go to the standard `logging` logger `jcpy`: the open-access
-warning at start, failed requests when `debug` is on, sources skipped by
-access rules.
+Messages go to the standard `logging` logger `jcpy`: the open-access warning at start, failed requests when `debug` is on, sources skipped by access rules.
 
 ```python
 import logging

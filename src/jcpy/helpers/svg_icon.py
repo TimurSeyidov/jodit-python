@@ -63,7 +63,7 @@ def generate_icon(
         height: SVG height.
 
     Returns:
-        SVG markup, byte-identical to jodit-nodejs ``generateIcon``.
+        SVG markup.
     """
     if entry.is_directory:
         word = "folder"

@@ -26,8 +26,8 @@ class UnsupportedEntryError(OSError):
 class LocalStorageAdapter:
     """Storage adapter for a directory on the local filesystem.
 
-    Mirrors ``@flystorage/local-fs``: stats follow symlinks, listings
-    refuse entries that are neither files nor directories.
+    Stats follow symlinks; listings refuse entries that are neither
+    files nor directories.
 
     Args:
         root_dir: Directory holding the files; created on first write.

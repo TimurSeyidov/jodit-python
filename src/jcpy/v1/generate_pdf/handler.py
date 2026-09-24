@@ -36,7 +36,7 @@ _OPTIONS = object_of(
 
 
 def validate(data: JsonObject) -> list[Issue]:
-    """Check parameters like the original zod schema.
+    """Check parameters.
 
     Args:
         data: Request parameters.

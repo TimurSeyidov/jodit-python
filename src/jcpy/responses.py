@@ -14,7 +14,7 @@ SUCCESS_CODE = 220
 class JsonResponse(JSONResponse):
     """JSON response labelled ``application/json; charset=utf-8``.
 
-    The body is compact UTF-8 JSON, as Express's ``res.json()`` sends.
+    The body is compact UTF-8 JSON.
     """
 
     media_type = "application/json; charset=utf-8"

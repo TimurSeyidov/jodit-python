@@ -14,8 +14,7 @@ A source keeps its files in a **storage adapter**. Two are built in:
 | `local` (default) | Directory on the server | `root` |
 | `s3` | AWS S3 or an S3-compatible service | `s3` block ([AWS S3](aws-s3.md)); needs the `s3` extra |
 
-Anything else (a database, another object store, a remote API) plugs
-in as a custom adapter registered under a name.
+Anything else (a database, another object store, a remote API) plugs in as a custom adapter registered under a name.
 
 ## How it works
 
@@ -25,14 +24,9 @@ action → Source (root confinement, name checks, thumbnails)
        → StorageAdapter (your backend)
 ```
 
-Adapters see **normalized relative paths**: `/` separators, no leading
-slash, no `.` or `..`, the empty string for the root. Everything above
-them (access checks, confinement to the source, safe names, thumbnail
-folders) is the connector's job, and an adapter only stores bytes.
+Adapters see **normalized relative paths**: `/` separators, no leading slash, no `.` or `..`, the empty string for the root. Everything above them (access checks, confinement to the source, safe names, thumbnail folders) is the connector's job, and an adapter only stores bytes.
 
-For non-local adapters `root` is a virtual prefix (default `/`); the
-real location, e.g. the key prefix of a bucket, belongs to the
-adapter's own options.
+For non-local adapters `root` is a virtual prefix (default `/`); the real location, e.g. the key prefix of a bucket, belongs to the adapter's own options.
 
 ## Selecting an adapter
 
@@ -59,13 +53,11 @@ adapter's own options.
 }
 ```
 
-A name that is not registered fails the request that uses the source
-with `400 Unknown storage adapter "..."`, listing the registered names.
+A name that is not registered fails the request that uses the source with `400 Unknown storage adapter "..."`, listing the registered names.
 
 ## The interface
 
-`jcpy.StorageAdapter` is a `Protocol`: any class with these methods
-works, no base class needed.
+`jcpy.StorageAdapter` is a `Protocol`: any class with these methods works, no base class needed.
 
 | Method | Contract |
 |---|---|
@@ -81,14 +73,9 @@ works, no base class needed.
 | `async copy_file(source, destination)` | Copy a file, creating the destination's parents |
 | `async move_file(source, destination)` | Move a file **or a directory** |
 
-`StatEntry(path, is_file, size=None, last_modified_ms=None)` is in
-`jcpy.storage`, next to `StorageError` and `FileWasNotFoundError`.
-Exceptions raised by an adapter are wrapped with the operation
-(`Unable to write the file. Reason: ...`) and answered with `500` or
-`400` depending on the action.
+`StatEntry(path, is_file, size=None, last_modified_ms=None)` is in `jcpy.storage`, next to `StorageError` and `FileWasNotFoundError`. Exceptions raised by an adapter are wrapped with the operation (`Unable to write the file. Reason: ...`) and answered with `500` or `400` depending on the action.
 
-Blocking libraries should run in threads (`anyio.to_thread.run_sync`),
-as the built-in adapters do, to keep the event loop free.
+Blocking libraries should run in threads (`anyio.to_thread.run_sync`), as the built-in adapters do, to keep the event loop free.
 
 ## Registering an adapter
 
@@ -104,21 +91,13 @@ register_storage_adapter("mine", my_adapter)
 app = create_app("config.json")
 ```
 
-The factory gets the source settings and returns an adapter. Adapters
-of all sources are built once, on the first request that needs
-sources, and kept for the life of the instance (for
-[dynamic sources](dynamic-sources.md): until the tenant leaves the
-cache). Register before the first request; the
-registry is global to the process.
+The factory gets the source settings and returns an adapter. Adapters of all sources are built once, on the first request that needs sources, and kept for the life of the instance (for [dynamic sources](dynamic-sources.md): until the tenant leaves the cache). Register before the first request; the registry is global to the process.
 
-Settings for your adapter can be read from the source: unknown keys are
-rejected, so either keep them in your code (keyed by `source.name`) or
-reuse an existing field such as `root`.
+Settings for your adapter can be read from the source: unknown keys are rejected, so either keep them in your code (keyed by `source.name`) or reuse an existing field such as `root`.
 
 ## Example: in-memory adapter
 
-A complete adapter, used by [`examples/custom_storage.py`](examples.md#custom-storage-adapter)
-and covered by the test suite:
+A complete adapter, used by [`examples/custom_storage.py`](examples.md#custom-storage-adapter) and covered by the test suite:
 
 ```python
 --8<-- "examples/custom_storage.py:build"
@@ -126,8 +105,7 @@ and covered by the test suite:
 
 ## Testing an adapter
 
-Run the connector over it and exercise the actions, as the example's
-test does:
+Run the connector over it and exercise the actions, as the example's test does:
 
 ```python
 from httpx import ASGITransport, AsyncClient
@@ -156,13 +134,8 @@ async def test_round_trip() -> None:
 
 ## Pitfalls
 
-1. **The root is the empty string.** `directory_exists("")` must be
-   `True` and `list("")` must list the top level.
-2. **Parents appear implicitly.** `write("a/b/c.txt", ...)` must make
-   `a` and `a/b` exist, and `list` must report them.
-3. **`deep` listings** return every level, with paths relative to the
-   root, not to the listed directory.
-4. **`move_file` moves directories too** (`fileMove` and `folderMove`
-   use it).
-5. **Missing is not an error** for `delete_file` and
-   `delete_directory`.
+1. **The root is the empty string.** `directory_exists("")` must be `True` and `list("")` must list the top level.
+2. **Parents appear implicitly.** `write("a/b/c.txt", ...)` must make `a` and `a/b` exist, and `list` must report them.
+3. **`deep` listings** return every level, with paths relative to the root, not to the listed directory.
+4. **`move_file` moves directories too** (`fileMove` and `folderMove` use it).
+5. **Missing is not an error** for `delete_file` and `delete_directory`.

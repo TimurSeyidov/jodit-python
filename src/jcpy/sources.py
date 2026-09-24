@@ -34,14 +34,14 @@ _SLASHES = re.compile(r"/+")
 
 
 def _resolve(path: str) -> str:
-    """Mirror Node's ``path.resolve`` for a single POSIX path."""
+    """Make a POSIX path absolute (against the working directory)."""
     if not path.startswith("/"):
         path = f"{Path.cwd()}/{path}"
     return posixpath.normpath(_SLASHES.sub("/", path))
 
 
 def node_join(root: str, relative: str) -> str:
-    """Mirror Node's ``path.join(root, relative)``.
+    """Join two path segments and normalize the result.
 
     Args:
         root: First segment.
@@ -277,7 +277,7 @@ class Source:
         )
 
     def storage_path(self, pathname: str) -> str:
-        """Strip the root from a path like the original ``replace`` does.
+        """Turn an absolute path into a path relative to the storage.
 
         The first occurrence of the root is removed, then one leading
         ``/``; paths outside the root pass through relative-looking.

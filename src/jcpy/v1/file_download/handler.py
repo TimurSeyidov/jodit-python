@@ -37,7 +37,7 @@ def content_disposition(name: str) -> str:
 
 
 def validate(data: JsonObject) -> list[Issue]:
-    """Check ``fileDownload`` parameters like the original zod schema.
+    """Check ``fileDownload`` parameters.
 
     Args:
         data: Request parameters.

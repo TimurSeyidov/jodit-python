@@ -1,4 +1,4 @@
-"""Port of the ``append-field`` package that multer uses for form fields.
+"""Build nested data from multipart form field names.
 
 ``mods[sortBy]`` becomes ``{"mods": {"sortBy": ...}}``, ``files[0]``
 builds a list, ``tags[]`` appends and repeated scalar keys collect
@@ -153,8 +153,8 @@ def build(fields: list[tuple[str, str]]) -> JsonObject:
         fields: Field names and values in their original order.
 
     Returns:
-        Nested object as multer stores it in ``req.body``; holes of
-        sparse lists become ``None`` (``null`` in JSON).
+        Nested parameters; holes of sparse lists become ``None``
+        (``null`` in JSON).
     """
     store: dict[str, _Value] = {}
     for key, value in fields:

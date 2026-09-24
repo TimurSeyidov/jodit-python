@@ -5,10 +5,7 @@ description: Storing files in AWS S3, MinIO, Cloudflare R2 and other S3-compatib
 
 # AWS S3 and S3-compatible storage
 
-The built-in `s3` adapter keeps a source in a bucket (optionally under
-a key prefix) through boto3. It needs the `s3` extra:
-`pip install "jodit-python[s3]"` (or `[all]`); without it requests to
-S3 sources answer `501`, while other sources keep working.
+The built-in `s3` adapter keeps a source in a bucket (optionally under a key prefix) through boto3. It needs the `s3` extra: `pip install "jodit-python[s3]"` (or `[all]`); without it requests to S3 sources answer `501`, while other sources keep working.
 
 ## Quick start
 
@@ -43,23 +40,17 @@ All options live under `sources.<name>.s3`.
 | `credentials` | `object` | AWS default chain | `accessKeyId`, `secretAccessKey`, optional `sessionToken` |
 | `publicBaseUrl` | `string` | bucket URL | Base of `S3StorageAdapter.public_url()`; the connector's answers use the source `baseurl` |
 
-`baseurl` of the source is what file paths in answers are relative to:
-the public URL of the prefix, ending with `/`.
+`baseurl` of the source is what file paths in answers are relative to: the public URL of the prefix, ending with `/`.
 
 ## Credentials
 
 Without `credentials` boto3 looks in the standard places:
 
-1. `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` (and
-   `AWS_SESSION_TOKEN`)
-2. the shared files `~/.aws/credentials` / `~/.aws/config` and
-   `AWS_PROFILE`
+1. `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` (and `AWS_SESSION_TOKEN`)
+2. the shared files `~/.aws/credentials` / `~/.aws/config` and `AWS_PROFILE`
 3. the instance, task or pod role (EC2, ECS, EKS/IRSA)
 
-This keeps secrets out of configuration files. Use `credentials` when
-one connector serves buckets with different keys; the values can come
-from your secret store through a [dynamic source](dynamic-sources.md)
-instead of a file.
+This keeps secrets out of configuration files. Use `credentials` when one connector serves buckets with different keys; the values can come from your secret store through a [dynamic source](dynamic-sources.md) instead of a file.
 
 ## S3-compatible services
 
@@ -93,14 +84,11 @@ MinIO next to the connector in Docker Compose:
 }
 ```
 
-The connector talks to MinIO at `minio:9000` inside the network; the
-browser loads files from `localhost:9000` (`baseurl`).
+The connector talks to MinIO at `minio:9000` inside the network; the browser loads files from `localhost:9000` (`baseurl`).
 
 ## Serving the files
 
-The connector never streams files to the browser: answers contain paths
-and the editor loads `baseurl + path`. The objects under the prefix must
-be readable by browsers.
+The connector never streams files to the browser: answers contain paths and the editor loads `baseurl + path`. The objects under the prefix must be readable by browsers.
 
 **Public read on the prefix**, with a bucket policy:
 
@@ -117,15 +105,11 @@ be readable by browsers.
 }
 ```
 
-On AWS this also needs "Block public access" relaxed for bucket
-policies (`BlockPublicPolicy`, `RestrictPublicBuckets`).
+On AWS this also needs "Block public access" relaxed for bucket policies (`BlockPublicPolicy`, `RestrictPublicBuckets`).
 
-**A CDN in front of the bucket** (CloudFront with origin access
-control, or your provider's CDN): `baseurl` points at the CDN and the
-bucket stays private.
+**A CDN in front of the bucket** (CloudFront with origin access control, or your provider's CDN): `baseurl` points at the CDN and the bucket stays private.
 
-The adapter never sets object ACLs; buckets created since April 2023
-have ACLs disabled, and access goes through the bucket policy.
+The adapter never sets object ACLs; buckets created since April 2023 have ACLs disabled, and access goes through the bucket policy.
 
 ## IAM policy
 
@@ -152,54 +136,37 @@ have ACLs disabled, and access goes through the bucket policy.
 
 ## Bucket layout
 
-S3 has keys, not folders; the adapter follows the AWS console
-convention:
+S3 has keys, not folders; the adapter follows the AWS console convention:
 
-- `/photos/cat.jpg` in the browser is the object
-  `<prefix>/photos/cat.jpg`.
-- Creating a folder writes an empty `<prefix>/photos/` object. Folders
-  that exist only because objects sit under them are listed too.
-- Thumbnails go to `<prefix>/photos/_thumbs/cat.jpg`, as on disk; the
-  `_thumbs` folder is hidden from listings.
-- Rename and move are copy plus delete; moving a folder copies every
-  object under it.
+- `/photos/cat.jpg` in the browser is the object `<prefix>/photos/cat.jpg`.
+- Creating a folder writes an empty `<prefix>/photos/` object. Folders that exist only because objects sit under them are listed too.
+- Thumbnails go to `<prefix>/photos/_thumbs/cat.jpg`, as on disk; the `_thumbs` folder is hidden from listings.
+- Rename and move are copy plus delete; moving a folder copies every object under it.
 - Removing a folder deletes every key under it, 1000 per request.
 
-Objects uploaded by other tools appear when they are under the prefix
-and their extension is in `extensions`.
+Objects uploaded by other tools appear when they are under the prefix and their extension is in `extensions`.
 
-Thumbnails cost one `GetObject` and one `PutObject` per image on the
-first listing of a folder (at most `safeThumbsCountInOneTime` per
-request). Set `createThumb: false` on the source for large buckets or
-when a CDN resizes images.
+Thumbnails cost one `GetObject` and one `PutObject` per image on the first listing of a folder (at most `safeThumbsCountInOneTime` per request). Set `createThumb: false` on the source for large buckets or when a CDN resizes images.
 
 ## Limits
 
-- `CopyObject` is limited to 5 GB, so larger objects cannot be renamed
-  or moved. Uploads are multipart and have no such limit.
-- Signed URLs are not generated: files must be readable through
-  `baseurl`.
-- `fileUploadRemote` downloads through the connector's memory, bounded
-  by `maxUploadFileSize`.
+- `CopyObject` is limited to 5 GB, so larger objects cannot be renamed or moved. Uploads are multipart and have no such limit.
+- Signed URLs are not generated: files must be readable through `baseurl`.
+- `fileUploadRemote` downloads through the connector's memory, bounded by `maxUploadFileSize`.
 
 ## Troubleshooting
 
 `AccessDenied` on listing
-:   `s3:ListBucket` must be granted on the bucket ARN (not `bucket/*`)
-    and the `s3:prefix` condition must match the prefix.
+:   `s3:ListBucket` must be granted on the bucket ARN (not `bucket/*`) and the `s3:prefix` condition must match the prefix.
 
 Files upload but do not show in the editor
-:   Open `baseurl` + a file name in a browser. A `403` there means the
-    bucket policy or the CDN is missing.
+:   Open `baseurl` + a file name in a browser. A `403` there means the bucket policy or the CDN is missing.
 
 MinIO answers `NoSuchBucket` or `301`
-:   Set `forcePathStyle: true`; otherwise boto3 addresses
-    `bucket.minio:9000`, which does not resolve.
+:   Set `forcePathStyle: true`; otherwise boto3 addresses `bucket.minio:9000`, which does not resolve.
 
 Wrong region
-:   AWS answers `PermanentRedirect` naming the right region; set
-    `region` to it.
+:   AWS answers `PermanentRedirect` naming the right region; set `region` to it.
 
 Two sources on one bucket
-:   Give them different prefixes, or each sees the other's `_thumbs`
-    folder as data.
+:   Give them different prefixes, or each sees the other's `_thumbs` folder as data.

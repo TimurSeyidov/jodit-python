@@ -33,8 +33,7 @@ docker run --rm -p 8081:8081 \
   jodit-python
 ```
 
-With `root` in the file pointing to `/app/files` (or wherever the files
-are mounted).
+With `root` in the file pointing to `/app/files` (or wherever the files are mounted).
 
 ### Environment variables
 
@@ -69,8 +68,7 @@ See [AWS S3](aws-s3.md) for `s3.json`.
 
 ### Your own `main.py`
 
-Callbacks (authentication, tenants...) live in code, so an application
-with them gets a small derived image:
+Callbacks (authentication, tenants...) live in code, so an application with them gets a small derived image:
 
 ```dockerfile
 FROM jodit-python
@@ -78,9 +76,7 @@ COPY main.py config.json /app/
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8081"]
 ```
 
-Priority of the configuration: the argument of `create_app()`, then
-`CONFIG`, then `CONFIG_FILE`, then defaults
-([details](installation.md#configuration-sources)).
+Priority of the configuration: the argument of `create_app()`, then `CONFIG`, then `CONFIG_FILE`, then defaults ([details](installation.md#configuration-sources)).
 
 ## Image
 
@@ -95,9 +91,7 @@ Priority of the configuration: the argument of `create_app()`, then
 | Extras | All Python extras (`[all]`: PDF, DOCX, S3), Pango, DejaVu and Liberation fonts |
 | Size | about 330 MB |
 
-Mounted directories must be writable by the `app` user (uid of the
-image's `app` account), e.g. `chown` them or run with
-`--user $(id -u):$(id -g)`.
+Mounted directories must be writable by the `app` user (uid of the image's `app` account), e.g. `chown` them or run with `--user $(id -u):$(id -g)`.
 
 ## Stages
 
@@ -128,5 +122,4 @@ location /uploads/ {
 }
 ```
 
-Point Jodit to `/jodit/connector/` and set each source's `baseurl` to
-the public URL of its files (`https://example.com/uploads/`).
+Point Jodit to `/jodit/connector/` and set each source's `baseurl` to the public URL of its files (`https://example.com/uploads/`).

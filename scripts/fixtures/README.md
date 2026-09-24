@@ -1,22 +1,12 @@
 # Fixture generators
 
-Parts of jodit-python reproduce JavaScript libraries whose results
-clients see: how `qs` parses `box[w]=1&mods[sortBy]=...`, how `bytes`
-and Day.js format `size` and `changed`, how uploaded names are made
-safe, the zod error texts, Node's `path` handling, the sort order and
-the SVG icons of jodit-nodejs.
+Parts of jodit-python reproduce JavaScript libraries whose results clients see: how `qs` parses `box[w]=1&mods[sortBy]=...`, how `bytes` and Day.js format `size` and `changed`, how uploaded names are made safe, the zod error texts, Node's `path` handling, the sort order and the SVG icons of jodit-nodejs.
 
-These scripts run the **original** packages (or jodit-nodejs code) on
-many inputs and store the results in `tests/fixtures/*.json`; the
-Python tests compare the port with them.
+These scripts run the **original** packages (or jodit-nodejs code) on many inputs and store the results in `tests/fixtures/*.json`; the Python tests compare the port with them.
 
-Node.js is only needed to regenerate a fixture, e.g. after moving to a
-new version of the library. Running the tests, `make check` and CI use
-the committed JSON files and do not need Node.
+Node.js is only needed to regenerate a fixture, e.g. after moving to a new version of the library. Running the tests, `make check` and CI use the committed JSON files and do not need Node.
 
-Each script's header shows how to run it: which package version to
-install (`npm install --no-save ...`, in a scratch directory) and where
-the output goes. Run them from the repository root.
+Each script's header shows how to run it: which package version to install (`npm install --no-save ...`, in a scratch directory) and where the output goes. Run them from the repository root.
 
 | Script | Reproduces | Fixture | Test |
 |---|---|---|---|
@@ -33,7 +23,4 @@ the output goes. Run them from the repository root.
 | `generate_image_schema_fixtures.mjs` | jodit-nodejs image schemas (zod 4) | `image_schema_cases.json` | `test_image_validation.py` |
 | `generate_document_schema_fixtures.mjs` | jodit-nodejs PDF/DOCX schemas (zod 4) | `document_schema_cases.json` | `test_documents.py` |
 
-`.cjs` files are CommonJS (`require`), for packages published that way
-and Node built-ins; `.mjs` files are ES modules (`import`), for
-ESM-only packages (`change-case` 5) and for importing jodit-nodejs
-TypeScript sources with `node --experimental-strip-types`.
+`.cjs` files are CommonJS (`require`), for packages published that way and Node built-ins; `.mjs` files are ES modules (`import`), for ESM-only packages (`change-case` 5) and for importing jodit-nodejs TypeScript sources with `node --experimental-strip-types`.
