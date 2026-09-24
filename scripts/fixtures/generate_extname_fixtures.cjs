@@ -1,7 +1,7 @@
 // Reference outputs of Node's path.extname / path.basename(p, ext) for
 // tests/unit/test_upload_helpers.py.
 //
-//   node scripts/generate_extname_fixtures.cjs \
+//   node scripts/fixtures/generate_extname_fixtures.cjs \
 //     > tests/fixtures/extname_cases.json
 const path = require('node:path');
 

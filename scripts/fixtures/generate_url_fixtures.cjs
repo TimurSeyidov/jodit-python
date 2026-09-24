@@ -1,7 +1,7 @@
 // Reference WHATWG URL parsing (new URL(url).pathname) for
-// tests/unit/test_resolve_url.py.
+// tests/unit/test_listing_helpers.py.
 //
-//   node scripts/generate_url_fixtures.cjs > tests/fixtures/url_cases.json
+//   node scripts/fixtures/generate_url_fixtures.cjs > tests/fixtures/url_cases.json
 const urls = [
   'http://localhost:8081/files/test/a.txt', 'http://x', 'http://x/',
   'https://x/a/b/../c', 'http://x/a/./b/.', 'http://x/a/%2e%2e/b',

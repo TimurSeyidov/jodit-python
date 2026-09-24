@@ -2,7 +2,7 @@
 // tests/unit/test_append_field.py.
 //
 //   npm install --no-save append-field@1.0.0
-//   node scripts/generate_append_field_fixtures.cjs \
+//   node scripts/fixtures/generate_append_field_fixtures.cjs \
 //     > tests/fixtures/append_field_cases.json
 const appendField = require('append-field');
 

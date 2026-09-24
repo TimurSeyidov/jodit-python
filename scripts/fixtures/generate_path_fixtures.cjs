@@ -3,7 +3,7 @@
 //   - BaseSource.getPath: path.resolve(normalizePath(path.join(root, rel)))
 //   - flystorage PathNormalizerV1.normalizePath
 //
-//   node scripts/generate_path_fixtures.cjs > tests/fixtures/path_cases.json
+//   node scripts/fixtures/generate_path_fixtures.cjs > tests/fixtures/path_cases.json
 const path = require('node:path');
 
 const normalizePath = p => p.replace(/\\/g, '/').replace(/\/+/g, '/');

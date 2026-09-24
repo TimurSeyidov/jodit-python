@@ -2,7 +2,7 @@
 // tests/unit/test_formatting.py.
 //
 //   npm install --no-save bytes@3.1.2 dayjs@1.11.18 slugify@1.6.6 zod@4.1.12
-//   TZ=Europe/Moscow node scripts/generate_format_fixtures.mjs \
+//   TZ=Europe/Moscow node scripts/fixtures/generate_format_fixtures.mjs \
 //     > tests/fixtures/format_cases.json
 import bytes from 'bytes';
 import dayjs from 'dayjs';

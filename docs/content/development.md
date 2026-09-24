@@ -53,7 +53,7 @@ tests/
 - Ported JavaScript behaviour (`qs` parsing, `bytes`, Day.js formats,
   slugify, change-case, Node's `path`, sorting, the SVG icon...) is
   checked against fixtures produced by the original npm packages; the
-  generators are in `scripts/`.
+  generators are in `scripts/fixtures/`.
 - S3 tests run against MinIO in Docker (Testcontainers) and are skipped
   when no Docker daemon is reachable; unit tests of the adapter use
   botocore's `Stubber`.

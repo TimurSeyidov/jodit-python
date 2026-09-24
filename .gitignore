@@ -12,3 +12,6 @@ site/
 .DS_Store
 .idea/
 .vscode/
+
+# Default source root of local runs
+/files/

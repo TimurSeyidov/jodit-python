@@ -1,7 +1,7 @@
 // Reference outputs of qs.parse for tests/unit/test_qs.py.
 //
 //   npm install --no-save qs@6.16.0
-//   node scripts/generate_qs_fixtures.cjs > tests/fixtures/qs_cases.json
+//   node scripts/fixtures/generate_qs_fixtures.cjs > tests/fixtures/qs_cases.json
 //
 // "query" uses the qs defaults (Express query strings), "body" uses the
 // options body-parser passes for extended urlencoded bodies.

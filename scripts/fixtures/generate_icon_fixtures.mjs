@@ -1,7 +1,7 @@
 // Reference SVG icons from jodit-nodejs src/helpers/image.ts for
-// tests/unit/test_svg_icon.py.
+// tests/unit/test_formatting.py.
 //
-//   node --experimental-strip-types scripts/generate_icon_fixtures.mjs \
+//   node --experimental-strip-types scripts/fixtures/generate_icon_fixtures.mjs \
 //     ../jodit-nodejs/src/helpers/image.ts > tests/fixtures/icon_cases.json
 const { generateIcon } = await import(new URL(process.argv[2], `file://${process.cwd()}/`).href);
 

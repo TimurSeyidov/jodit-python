@@ -1,7 +1,7 @@
 // Reference outputs of change-case for tests/unit/test_case.py.
 //
 //   npm install --no-save change-case@5.4.4
-//   node scripts/generate_case_fixtures.mjs > tests/fixtures/case_cases.json
+//   node scripts/fixtures/generate_case_fixtures.mjs > tests/fixtures/case_cases.json
 import { camelCase, constantCase } from 'change-case';
 
 const manual = [

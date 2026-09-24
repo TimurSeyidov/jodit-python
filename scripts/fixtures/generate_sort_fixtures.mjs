@@ -1,7 +1,7 @@
 // Reference orders of jodit-nodejs sortByMode for
-// tests/unit/test_sort.py.
+// tests/unit/test_listing_helpers.py.
 //
-//   node --experimental-strip-types scripts/generate_sort_fixtures.mjs \
+//   node --experimental-strip-types scripts/fixtures/generate_sort_fixtures.mjs \
 //     ../jodit-nodejs/src/services/file-manager/sort-files.ts \
 //     > tests/fixtures/sort_cases.json
 const { sortByMode } = await import(new URL(process.argv[2], `file://${process.cwd()}/`).href);

@@ -2,7 +2,7 @@
 // tests/unit/test_upload_helpers.py.
 //
 //   npm install --no-save sanitize-filename@1.6.3 bytes@3.1.2
-//   node scripts/generate_upload_fixtures.cjs \
+//   node scripts/fixtures/generate_upload_fixtures.cjs \
 //     > tests/fixtures/upload_cases.json
 const sanitize = require('sanitize-filename');
 const bytes = require('bytes');
