@@ -1,5 +1,11 @@
 # jodit-python
 
+[![CI](https://github.com/TimurSeyidov/jodit-python/actions/workflows/ci.yml/badge.svg)](https://github.com/TimurSeyidov/jodit-python/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.14+](https://img.shields.io/badge/python-3.14%2B-blue.svg)](https://www.python.org/)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![mypy: strict](https://img.shields.io/badge/mypy-strict-blue.svg)](https://mypy-lang.org/)
+
 Python/FastAPI implementation of the
 [Jodit](https://xdsoft.net/jodit/) File Browser and Uploader connector,
 API-compatible with [jodit-nodejs](https://github.com/jodit/jodit-nodejs).
@@ -227,4 +233,4 @@ does not clash with a local `.venv`. Start the server with `make dev`.
 
 ## License
 
-MIT
+[MIT](LICENSE)
