@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from fastapi import APIRouter
     from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
+    from jcpy.acl import AccessControlProtocol, RulesProvider
     from jcpy.types import AuthCallback, OriginPredicate
 
 VERSION_HEADER = b"x-app-version"
@@ -24,6 +25,8 @@ def create_router(
     *,
     check_authentication: AuthCallback | None = None,
     allowed_origins: OriginPredicate | None = None,
+    access_control: RulesProvider | None = None,
+    access_control_instance: AccessControlProtocol | None = None,
 ) -> APIRouter:
     """Build an isolated connector instance as a router.
 
@@ -39,6 +42,11 @@ def create_router(
             request; without it every request gets ``defaultRole``.
         allowed_origins: CORS origin predicate replacing the
             ``allowedOrigins`` list of the configuration.
+        access_control: Callable (sync or async) loading the access
+            rules on every check, replacing the ``accessControl`` list
+            of the configuration.
+        access_control_instance: Custom access control implementation
+            replacing both rule sources above.
 
     Returns:
         Router serving ``/ping``, ``/`` and ``/{action}``.
@@ -50,6 +58,8 @@ def create_router(
         load_config(config_file),
         check_authentication=check_authentication,
         allowed_origins=allowed_origins,
+        access_control=access_control,
+        access_control_instance=access_control_instance,
     )
     return connector.build_router()
 
@@ -84,6 +94,8 @@ def create_app(
     *,
     check_authentication: AuthCallback | None = None,
     allowed_origins: OriginPredicate | None = None,
+    access_control: RulesProvider | None = None,
+    access_control_instance: AccessControlProtocol | None = None,
 ) -> FastAPI:
     """Build a standalone connector application.
 
@@ -95,6 +107,11 @@ def create_app(
             request; without it every request gets ``defaultRole``.
         allowed_origins: CORS origin predicate replacing the
             ``allowedOrigins`` list of the configuration.
+        access_control: Callable (sync or async) loading the access
+            rules on every check, replacing the ``accessControl`` list
+            of the configuration.
+        access_control_instance: Custom access control implementation
+            replacing both rule sources above.
 
     Returns:
         Application with the connector mounted at ``/`` and the
@@ -110,6 +127,8 @@ def create_app(
             config_file,
             check_authentication=check_authentication,
             allowed_origins=allowed_origins,
+            access_control=access_control,
+            access_control_instance=access_control_instance,
         )
     )
     return app

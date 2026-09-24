@@ -17,6 +17,7 @@ from jcpy.responses import success_response
 if TYPE_CHECKING:
     from starlette.responses import Response
 
+    from jcpy.acl import AccessControlProtocol, RulesProvider
     from jcpy.context import ActionContext, ActionHandler
     from jcpy.types import AuthCallback, JsonObject, OriginPredicate
 
@@ -86,6 +87,8 @@ def make_app(
     *,
     check_authentication: AuthCallback | None = None,
     allowed_origins: OriginPredicate | None = None,
+    access_control: RulesProvider | None = None,
+    access_control_instance: AccessControlProtocol | None = None,
     actions: Mapping[str, ActionHandler] = TEST_ACTIONS,
     prefix: str = "",
 ) -> FastAPI:
@@ -95,6 +98,8 @@ def make_app(
         config: User configuration (JSON names).
         check_authentication: Authentication callback.
         allowed_origins: CORS origin predicate.
+        access_control: Access rules provider.
+        access_control_instance: Custom access control.
         actions: Action handlers.
         prefix: Mount point of the connector router.
 
@@ -105,6 +110,8 @@ def make_app(
         build_config(config or {}),
         check_authentication=check_authentication,
         allowed_origins=allowed_origins,
+        access_control=access_control,
+        access_control_instance=access_control_instance,
         actions=actions,
     )
     app = FastAPI()

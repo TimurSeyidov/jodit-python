@@ -33,9 +33,7 @@ async def check_authentication(request: Request) -> str:
     return "admin" if token == "Bearer secret" else "guest"
 
 
-app = create_app(
-    "config.json", check_authentication=check_authentication
-)
+app = create_app("config.json", check_authentication=check_authentication)
 ```
 
 ```bash
@@ -60,6 +58,33 @@ uv run uvicorn main:app --port 8081
 
 Without an explicit path the configuration is read from the `CONFIG`
 environment variable (JSON text) or the file named by `CONFIG_FILE`.
+
+Access rules live in `accessControl` (the last matching rule wins,
+unlisted actions are allowed):
+
+```json
+{
+  "defaultRole": "guest",
+  "accessControl": [
+    { "role": "guest", "FILE_UPLOAD": false, "FILE_REMOVE": false },
+    { "role": "admin", "path": "/private", "FILES": true }
+  ]
+}
+```
+
+They can also be loaded per check from code, e.g. from a database:
+
+```python
+from jcpy import AccessControlRule, create_app
+
+
+async def load_rules() -> list[AccessControlRule]:
+    rows = await db.fetch_rules()
+    return [AccessControlRule.model_validate(row) for row in rows]
+
+
+app = create_app("config.json", access_control=load_rules)
+```
 
 Several independent instances can live in one application:
 

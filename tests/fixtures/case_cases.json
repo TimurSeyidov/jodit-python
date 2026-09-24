@@ -1,0 +1,5127 @@
+[
+ {
+  "input": "",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "files",
+  "constant": "FILES",
+  "camel": "files"
+ },
+ {
+  "input": "fileUpload",
+  "constant": "FILE_UPLOAD",
+  "camel": "fileUpload"
+ },
+ {
+  "input": "file-upload",
+  "constant": "FILE_UPLOAD",
+  "camel": "fileUpload"
+ },
+ {
+  "input": "FILE_UPLOAD",
+  "constant": "FILE_UPLOAD",
+  "camel": "fileUpload"
+ },
+ {
+  "input": "getLocalFileByUrl",
+  "constant": "GET_LOCAL_FILE_BY_URL",
+  "camel": "getLocalFileByUrl"
+ },
+ {
+  "input": "fileUploadRemote",
+  "constant": "FILE_UPLOAD_REMOTE",
+  "camel": "fileUploadRemote"
+ },
+ {
+  "input": "generatePdf",
+  "constant": "GENERATE_PDF",
+  "camel": "generatePdf"
+ },
+ {
+  "input": "allow_FILE_UPLOAD",
+  "constant": "ALLOW_FILE_UPLOAD",
+  "camel": "allowFileUpload"
+ },
+ {
+  "input": "allow_FOLDER_TREE",
+  "constant": "ALLOW_FOLDER_TREE",
+  "camel": "allowFolderTree"
+ },
+ {
+  "input": "allow_GENERATE_DOCX",
+  "constant": "ALLOW_GENERATE_DOCX",
+  "camel": "allowGenerateDocx"
+ },
+ {
+  "input": "XMLHttpRequest",
+  "constant": "XML_HTTP_REQUEST",
+  "camel": "xmlHttpRequest"
+ },
+ {
+  "input": "version2Beta",
+  "constant": "VERSION2_BETA",
+  "camel": "version2Beta"
+ },
+ {
+  "input": "a1B2C",
+  "constant": "A1_B2_C",
+  "camel": "a1B2C"
+ },
+ {
+  "input": "ABCdef",
+  "constant": "AB_CDEF",
+  "camel": "abCdef"
+ },
+ {
+  "input": "  spaced  words ",
+  "constant": "SPACED_WORDS",
+  "camel": "spacedWords"
+ },
+ {
+  "input": "__proto__",
+  "constant": "PROTO",
+  "camel": "proto"
+ },
+ {
+  "input": "foo--bar__baz",
+  "constant": "FOO_BAR_BAZ",
+  "camel": "fooBarBaz"
+ },
+ {
+  "input": "é-Ümlaut",
+  "constant": "É_ÜMLAUT",
+  "camel": "éÜmlaut"
+ },
+ {
+  "input": "straße",
+  "constant": "STRASSE",
+  "camel": "straße"
+ },
+ {
+  "input": "ÀÉÎõü",
+  "constant": "ÀÉ_ÎÕÜ",
+  "camel": "àéÎõü"
+ },
+ {
+  "input": "x9",
+  "constant": "X9",
+  "camel": "x9"
+ },
+ {
+  "input": "9x",
+  "constant": "9X",
+  "camel": "9x"
+ },
+ {
+  "input": "allow_2FA",
+  "constant": "ALLOW_2_FA",
+  "camel": "allow_2Fa"
+ },
+ {
+  "input": "HTML5Parser",
+  "constant": "HTML5_PARSER",
+  "camel": "html5Parser"
+ },
+ {
+  "input": "DxYxY_D_",
+  "constant": "DX_YX_Y_D",
+  "camel": "dxYxYD"
+ },
+ {
+  "input": " D .ßD-",
+  "constant": "D_SS_D",
+  "camel": "dSSD"
+ },
+ {
+  "input": "_éÉ",
+  "constant": "É_É",
+  "camel": "éÉ"
+ },
+ {
+  "input": "DxYBZZZZa",
+  "constant": "DX_YBZZZ_ZA",
+  "camel": "dxYbzzzZa"
+ },
+ {
+  "input": "ZZ1É-éaÉD_B",
+  "constant": "ZZ1_É_ÉA_ÉD_B",
+  "camel": "zz1ÉÉaÉdB"
+ },
+ {
+  "input": "É_1.",
+  "constant": "É_1",
+  "camel": "é_1"
+ },
+ {
+  "input": "D BéBß1ZZ",
+  "constant": "D_BÉ_BSS1_ZZ",
+  "camel": "dBéBß1Zz"
+ },
+ {
+  "input": "D",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "c1éBxY",
+  "constant": "C1É_BX_Y",
+  "camel": "c1éBxY"
+ },
+ {
+  "input": "axY_cB",
+  "constant": "AX_Y_C_B",
+  "camel": "axYCB"
+ },
+ {
+  "input": "ßxY1ZZ",
+  "constant": "SSX_Y1_ZZ",
+  "camel": "ßxY1Zz"
+ },
+ {
+  "input": "ÉxY-_ß.-.",
+  "constant": "ÉX_Y_SS",
+  "camel": "éxYSS"
+ },
+ {
+  "input": "ÉD_",
+  "constant": "ÉD",
+  "camel": "éd"
+ },
+ {
+  "input": "_",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "- ",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "D ",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "-BßÉécB a",
+  "constant": "BSS_ÉÉC_B_A",
+  "camel": "bßÉécBA"
+ },
+ {
+  "input": "ÉB11ßc1éaB",
+  "constant": "ÉB11SSC1ÉA_B",
+  "camel": "éb11ßc1éaB"
+ },
+ {
+  "input": "xY B1É",
+  "constant": "X_Y_B1_É",
+  "camel": "xYB1É"
+ },
+ {
+  "input": "-1éÉDßxYDB",
+  "constant": "1É_É_DSSX_YDB",
+  "camel": "1éÉDßxYdb"
+ },
+ {
+  "input": "xYß__c",
+  "constant": "X_YSS_C",
+  "camel": "xYßC"
+ },
+ {
+  "input": "1xYZZBD1ZZ.éc",
+  "constant": "1X_YZZBD1_ZZ_ÉC",
+  "camel": "1xYzzbd1ZzÉc"
+ },
+ {
+  "input": "-xY",
+  "constant": "X_Y",
+  "camel": "xY"
+ },
+ {
+  "input": "ZZaD DB",
+  "constant": "Z_ZA_D_DB",
+  "camel": "zZaDDb"
+ },
+ {
+  "input": "c-BccZZcac1",
+  "constant": "C_BCC_Z_ZCAC1",
+  "camel": "cBccZZcac1"
+ },
+ {
+  "input": "xY DBßB  ",
+  "constant": "X_Y_D_BSS_B",
+  "camel": "xYDBßB"
+ },
+ {
+  "input": ". c1_ ZZ_",
+  "constant": "C1_ZZ",
+  "camel": "c1Zz"
+ },
+ {
+  "input": "1É_ZZéBB",
+  "constant": "1_É_Z_ZÉ_BB",
+  "camel": "1ÉZZéBb"
+ },
+ {
+  "input": "xYß",
+  "constant": "X_YSS",
+  "camel": "xYß"
+ },
+ {
+  "input": "__a1B.",
+  "constant": "A1_B",
+  "camel": "a1B"
+ },
+ {
+  "input": "a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "-",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "D ",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "BxY",
+  "constant": "BX_Y",
+  "camel": "bxY"
+ },
+ {
+  "input": "-.ßéxY",
+  "constant": "SSÉX_Y",
+  "camel": "ßéxY"
+ },
+ {
+  "input": "a_É",
+  "constant": "A_É",
+  "camel": "aÉ"
+ },
+ {
+  "input": "ZZ_ ÉZZ_",
+  "constant": "ZZ_ÉZZ",
+  "camel": "zzÉzz"
+ },
+ {
+  "input": "-.éé-é",
+  "constant": "ÉÉ_É",
+  "camel": "ééÉ"
+ },
+ {
+  "input": "ÉÉa",
+  "constant": "É_ÉA",
+  "camel": "éÉa"
+ },
+ {
+  "input": "D1aDxYÉÉ1é_",
+  "constant": "D1A_DX_YÉÉ1É",
+  "camel": "d1aDxYéé1é"
+ },
+ {
+  "input": "É",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "_axYÉB ZZ",
+  "constant": "AX_YÉB_ZZ",
+  "camel": "axYébZz"
+ },
+ {
+  "input": "-ZZ.",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": " cßZZZZ",
+  "constant": "CSS_ZZZZ",
+  "camel": "cßZzzz"
+ },
+ {
+  "input": "é",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "éaé",
+  "constant": "ÉAÉ",
+  "camel": "éaé"
+ },
+ {
+  "input": "xYéc.ßéD1B",
+  "constant": "X_YÉC_SSÉ_D1_B",
+  "camel": "xYécSSéD1B"
+ },
+ {
+  "input": "Éß-xY_--Éé.",
+  "constant": "ÉSS_X_Y_ÉÉ",
+  "camel": "éßXYÉé"
+ },
+ {
+  "input": "-a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "_É. _é",
+  "constant": "É_É",
+  "camel": "éÉ"
+ },
+ {
+  "input": "_",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "ÉÉZZ",
+  "constant": "ÉÉZZ",
+  "camel": "éézz"
+ },
+ {
+  "input": " ßa Éß",
+  "constant": "SSA_ÉSS",
+  "camel": "ßaÉß"
+ },
+ {
+  "input": ".ZZDD1é.B-",
+  "constant": "ZZDD1É_B",
+  "camel": "zzdd1éB"
+ },
+ {
+  "input": "B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "xY-_aß1é",
+  "constant": "X_Y_ASS1É",
+  "camel": "xYAß1é"
+ },
+ {
+  "input": "Béa ",
+  "constant": "BÉA",
+  "camel": "béa"
+ },
+ {
+  "input": ".",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "aÉxY xY",
+  "constant": "A_ÉX_Y_X_Y",
+  "camel": "aÉxYXY"
+ },
+ {
+  "input": "c",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": ". c.DBZZDéD",
+  "constant": "C_DBZZ_DÉ_D",
+  "camel": "cDbzzDéD"
+ },
+ {
+  "input": "aa1éxYZZ1 ",
+  "constant": "AA1ÉX_YZZ1",
+  "camel": "aa1éxYzz1"
+ },
+ {
+  "input": "_",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": " _ É",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "É_",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": " ",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": ".ÉZZß",
+  "constant": "ÉZ_ZSS",
+  "camel": "ézZß"
+ },
+ {
+  "input": "ZZZZa-_1 -",
+  "constant": "ZZZ_ZA_1",
+  "camel": "zzzZa_1"
+ },
+ {
+  "input": "D-É.",
+  "constant": "D_É",
+  "camel": "dÉ"
+ },
+ {
+  "input": "ÉZZ",
+  "constant": "ÉZZ",
+  "camel": "ézz"
+ },
+ {
+  "input": "ZZBaa1É-B.",
+  "constant": "ZZ_BAA1_É_B",
+  "camel": "zzBaa1ÉB"
+ },
+ {
+  "input": "ZZécÉccD1-",
+  "constant": "Z_ZÉC_ÉCC_D1",
+  "camel": "zZécÉccD1"
+ },
+ {
+  "input": "c ßc-_Dé é",
+  "constant": "C_SSC_DÉ_É",
+  "camel": "cSScDéÉ"
+ },
+ {
+  "input": "-xY",
+  "constant": "X_Y",
+  "camel": "xY"
+ },
+ {
+  "input": " ééÉÉ.",
+  "constant": "ÉÉ_ÉÉ",
+  "camel": "ééÉé"
+ },
+ {
+  "input": "-ÉZZéß",
+  "constant": "ÉZ_ZÉSS",
+  "camel": "ézZéß"
+ },
+ {
+  "input": "é",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "-Éé  xYÉ1 ",
+  "constant": "ÉÉ_X_YÉ1",
+  "camel": "ééXYé1"
+ },
+ {
+  "input": "-ZZ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": " .1",
+  "constant": "1",
+  "camel": "1"
+ },
+ {
+  "input": " é_BZZcÉZZ-é",
+  "constant": "É_BZ_ZC_ÉZZ_É",
+  "camel": "éBzZcÉzzÉ"
+ },
+ {
+  "input": "_é ",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": ".D1ÉxYéBxYaZZ",
+  "constant": "D1_ÉX_YÉ_BX_YA_ZZ",
+  "camel": "d1ÉxYéBxYaZz"
+ },
+ {
+  "input": "a ß",
+  "constant": "A_SS",
+  "camel": "aSS"
+ },
+ {
+  "input": "B1É.DxY_B_",
+  "constant": "B1_É_DX_Y_B",
+  "camel": "b1ÉDxYB"
+ },
+ {
+  "input": ".xYZZ.ZZxYéßé",
+  "constant": "X_YZZ_Z_ZX_YÉSSÉ",
+  "camel": "xYzzZZxYéßé"
+ },
+ {
+  "input": "Ba",
+  "constant": "BA",
+  "camel": "ba"
+ },
+ {
+  "input": "_xY",
+  "constant": "X_Y",
+  "camel": "xY"
+ },
+ {
+  "input": "a_ZZDécBa xY",
+  "constant": "A_ZZ_DÉC_BA_X_Y",
+  "camel": "aZzDécBaXY"
+ },
+ {
+  "input": "DxYß",
+  "constant": "DX_YSS",
+  "camel": "dxYß"
+ },
+ {
+  "input": "DÉBc-",
+  "constant": "DÉ_BC",
+  "camel": "déBc"
+ },
+ {
+  "input": "ZZ1É1ß.ééc_",
+  "constant": "ZZ1_É1SS_ÉÉC",
+  "camel": "zz1É1ßÉéc"
+ },
+ {
+  "input": "1xY ",
+  "constant": "1X_Y",
+  "camel": "1xY"
+ },
+ {
+  "input": " é.  _BDcB",
+  "constant": "É_B_DC_B",
+  "camel": "éBDcB"
+ },
+ {
+  "input": "..xYa _écÉ.",
+  "constant": "X_YA_ÉC_É",
+  "camel": "xYaÉcÉ"
+ },
+ {
+  "input": "ZZ1a-ßBÉ",
+  "constant": "ZZ1A_SS_BÉ",
+  "camel": "zz1aSSBé"
+ },
+ {
+  "input": "É_.xY_",
+  "constant": "É_X_Y",
+  "camel": "éXY"
+ },
+ {
+  "input": " cBD1 ",
+  "constant": "C_BD1",
+  "camel": "cBd1"
+ },
+ {
+  "input": "Ba 1D-Éaa",
+  "constant": "BA_1_D_ÉAA",
+  "camel": "ba_1DÉaa"
+ },
+ {
+  "input": "-axYD--ß -é",
+  "constant": "AX_YD_SS_É",
+  "camel": "axYdSSÉ"
+ },
+ {
+  "input": " ßD--ZZBZZ_",
+  "constant": "SS_D_ZZBZZ",
+  "camel": "ßDZzbzz"
+ },
+ {
+  "input": "ac-  ßÉ",
+  "constant": "AC_SS_É",
+  "camel": "acSSÉ"
+ },
+ {
+  "input": "ßé1DDxYaaZZ_",
+  "constant": "SSÉ1_D_DX_YAA_ZZ",
+  "camel": "ßé1DDxYaaZz"
+ },
+ {
+  "input": " aéD",
+  "constant": "AÉ_D",
+  "camel": "aéD"
+ },
+ {
+  "input": "ZZéa1D",
+  "constant": "Z_ZÉA1_D",
+  "camel": "zZéa1D"
+ },
+ {
+  "input": "éßDZZ  xYxY1é",
+  "constant": "ÉSS_DZZ_X_YX_Y1É",
+  "camel": "éßDzzXYxY1é"
+ },
+ {
+  "input": "ZZDcÉ-DxY",
+  "constant": "ZZ_DC_É_DX_Y",
+  "camel": "zzDcÉDxY"
+ },
+ {
+  "input": "cBD1D",
+  "constant": "C_BD1_D",
+  "camel": "cBd1D"
+ },
+ {
+  "input": "- É1ß-.ZZ",
+  "constant": "É1SS_ZZ",
+  "camel": "é1ßZz"
+ },
+ {
+  "input": "D1ZZxY-",
+  "constant": "D1_Z_ZX_Y",
+  "camel": "d1ZZxY"
+ },
+ {
+  "input": "D ",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": ".1.1xY",
+  "constant": "1_1X_Y",
+  "camel": "1_1xY"
+ },
+ {
+  "input": "-B-c-éB_ ",
+  "constant": "B_C_É_B",
+  "camel": "bCÉB"
+ },
+ {
+  "input": "É",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "ZZ1.É xY",
+  "constant": "ZZ1_É_X_Y",
+  "camel": "zz1ÉXY"
+ },
+ {
+  "input": "ZZéééß",
+  "constant": "Z_ZÉÉÉSS",
+  "camel": "zZéééß"
+ },
+ {
+  "input": "É",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "xYé",
+  "constant": "X_YÉ",
+  "camel": "xYé"
+ },
+ {
+  "input": "ßß  D ",
+  "constant": "SSSS_D",
+  "camel": "ßßD"
+ },
+ {
+  "input": "1-ß _",
+  "constant": "1_SS",
+  "camel": "1SS"
+ },
+ {
+  "input": "ßaÉZZcß",
+  "constant": "SSA_ÉZ_ZCSS",
+  "camel": "ßaÉzZcß"
+ },
+ {
+  "input": "--É_a._D",
+  "constant": "É_A_D",
+  "camel": "éAD"
+ },
+ {
+  "input": "-DZZ1",
+  "constant": "DZZ1",
+  "camel": "dzz1"
+ },
+ {
+  "input": "ZZ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "É",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "a11É-",
+  "constant": "A11_É",
+  "camel": "a11É"
+ },
+ {
+  "input": " ",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "ß_cÉc..1éé",
+  "constant": "SS_C_ÉC_1ÉÉ",
+  "camel": "ßCÉc_1éé"
+ },
+ {
+  "input": " aB",
+  "constant": "A_B",
+  "camel": "aB"
+ },
+ {
+  "input": "1_",
+  "constant": "1",
+  "camel": "1"
+ },
+ {
+  "input": "_1D_ÉZZé_ß",
+  "constant": "1_D_ÉZ_ZÉ_SS",
+  "camel": "1DÉzZéSS"
+ },
+ {
+  "input": "xY1BÉa._",
+  "constant": "X_Y1_B_ÉA",
+  "camel": "xY1BÉa"
+ },
+ {
+  "input": "É",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": " 1",
+  "constant": "1",
+  "camel": "1"
+ },
+ {
+  "input": "c11éaxYßÉé",
+  "constant": "C11ÉAX_YSS_ÉÉ",
+  "camel": "c11éaxYßÉé"
+ },
+ {
+  "input": "ßé",
+  "constant": "SSÉ",
+  "camel": "ßé"
+ },
+ {
+  "input": " ÉBxY B _xY",
+  "constant": "É_BX_Y_B_X_Y",
+  "camel": "éBxYBXY"
+ },
+ {
+  "input": "é_ D_D_a",
+  "constant": "É_D_D_A",
+  "camel": "éDDA"
+ },
+ {
+  "input": "DxYaZZ",
+  "constant": "DX_YA_ZZ",
+  "camel": "dxYaZz"
+ },
+ {
+  "input": "ééDßc",
+  "constant": "ÉÉ_DSSC",
+  "camel": "ééDßc"
+ },
+ {
+  "input": ".BxY",
+  "constant": "BX_Y",
+  "camel": "bxY"
+ },
+ {
+  "input": "DBcB",
+  "constant": "D_BC_B",
+  "camel": "dBcB"
+ },
+ {
+  "input": "B_aß-",
+  "constant": "B_ASS",
+  "camel": "bAß"
+ },
+ {
+  "input": "ZZB1cÉ",
+  "constant": "ZZB1C_É",
+  "camel": "zzb1cÉ"
+ },
+ {
+  "input": "-B B.B",
+  "constant": "B_B_B",
+  "camel": "bBB"
+ },
+ {
+  "input": "xY éÉ",
+  "constant": "X_Y_É_É",
+  "camel": "xYÉÉ"
+ },
+ {
+  "input": "cDD-ZZZZé ÉÉ",
+  "constant": "C_DD_ZZZ_ZÉ_ÉÉ",
+  "camel": "cDdZzzZéÉé"
+ },
+ {
+  "input": "Da",
+  "constant": "DA",
+  "camel": "da"
+ },
+ {
+  "input": "Éc",
+  "constant": "ÉC",
+  "camel": "éc"
+ },
+ {
+  "input": "é",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "DcDc-1a",
+  "constant": "DC_DC_1A",
+  "camel": "dcDc_1a"
+ },
+ {
+  "input": ".Ba",
+  "constant": "BA",
+  "camel": "ba"
+ },
+ {
+  "input": "1é",
+  "constant": "1É",
+  "camel": "1é"
+ },
+ {
+  "input": "aZZcxY",
+  "constant": "A_Z_ZCX_Y",
+  "camel": "aZZcxY"
+ },
+ {
+  "input": "éZZ1É.",
+  "constant": "É_ZZ1_É",
+  "camel": "éZz1É"
+ },
+ {
+  "input": "xY.cécc1É1.",
+  "constant": "X_Y_CÉCC1_É1",
+  "camel": "xYCécc1É1"
+ },
+ {
+  "input": "ßxY1ßaa",
+  "constant": "SSX_Y1SSAA",
+  "camel": "ßxY1ßaa"
+ },
+ {
+  "input": "a.DxYa",
+  "constant": "A_DX_YA",
+  "camel": "aDxYa"
+ },
+ {
+  "input": ".xYxYa-ZZa",
+  "constant": "X_YX_YA_Z_ZA",
+  "camel": "xYxYaZZa"
+ },
+ {
+  "input": "c",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": "1éxY_c- .éZZ",
+  "constant": "1ÉX_Y_C_É_ZZ",
+  "camel": "1éxYCÉZz"
+ },
+ {
+  "input": "é1BDacÉc_",
+  "constant": "É1_B_DAC_ÉC",
+  "camel": "é1BDacÉc"
+ },
+ {
+  "input": "ÉxY",
+  "constant": "ÉX_Y",
+  "camel": "éxY"
+ },
+ {
+  "input": ".éßa_éxYÉÉ",
+  "constant": "ÉSSA_ÉX_YÉÉ",
+  "camel": "éßaÉxYéé"
+ },
+ {
+  "input": "aé Éß1",
+  "constant": "AÉ_ÉSS1",
+  "camel": "aéÉß1"
+ },
+ {
+  "input": "ÉÉß1Éc1éB",
+  "constant": "É_ÉSS1_ÉC1É_B",
+  "camel": "éÉß1Éc1éB"
+ },
+ {
+  "input": " éß",
+  "constant": "ÉSS",
+  "camel": "éß"
+ },
+ {
+  "input": "ZZxY.aaéD",
+  "constant": "Z_ZX_Y_AAÉ_D",
+  "camel": "zZxYAaéD"
+ },
+ {
+  "input": "1é1",
+  "constant": "1É1",
+  "camel": "1é1"
+ },
+ {
+  "input": "xY.ÉZZ.-xY_",
+  "constant": "X_Y_ÉZZ_X_Y",
+  "camel": "xYÉzzXY"
+ },
+ {
+  "input": " É1a c",
+  "constant": "É1A_C",
+  "camel": "é1aC"
+ },
+ {
+  "input": "D_aéBß_",
+  "constant": "D_AÉ_BSS",
+  "camel": "dAéBß"
+ },
+ {
+  "input": ".1céB",
+  "constant": "1CÉ_B",
+  "camel": "1céB"
+ },
+ {
+  "input": "c",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": "DaéxY.1DD",
+  "constant": "DAÉX_Y_1_DD",
+  "camel": "daéxY_1Dd"
+ },
+ {
+  "input": "-D-B.",
+  "constant": "D_B",
+  "camel": "dB"
+ },
+ {
+  "input": "xYxY",
+  "constant": "X_YX_Y",
+  "camel": "xYxY"
+ },
+ {
+  "input": "éÉßéxYZZac_",
+  "constant": "É_ÉSSÉX_YZ_ZAC",
+  "camel": "éÉßéxYzZac"
+ },
+ {
+  "input": "éaé ÉZZcZZ",
+  "constant": "ÉAÉ_ÉZ_ZC_ZZ",
+  "camel": "éaéÉzZcZz"
+ },
+ {
+  "input": "BxYxYD.ac. xY",
+  "constant": "BX_YX_YD_AC_X_Y",
+  "camel": "bxYxYdAcXY"
+ },
+ {
+  "input": "-_xY",
+  "constant": "X_Y",
+  "camel": "xY"
+ },
+ {
+  "input": "1",
+  "constant": "1",
+  "camel": "1"
+ },
+ {
+  "input": "c. -",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": "1DaDaZZD_B",
+  "constant": "1_DA_DA_ZZD_B",
+  "camel": "1DaDaZzdB"
+ },
+ {
+  "input": "a1éa-é ._ß",
+  "constant": "A1ÉA_É_SS",
+  "camel": "a1éaÉSS"
+ },
+ {
+  "input": "aDBc1 1éé1",
+  "constant": "A_D_BC1_1ÉÉ1",
+  "camel": "aDBc1_1éé1"
+ },
+ {
+  "input": "_ZZé",
+  "constant": "Z_ZÉ",
+  "camel": "zZé"
+ },
+ {
+  "input": "-BB",
+  "constant": "BB",
+  "camel": "bb"
+ },
+ {
+  "input": "c.B",
+  "constant": "C_B",
+  "camel": "cB"
+ },
+ {
+  "input": "cxY- .",
+  "constant": "CX_Y",
+  "camel": "cxY"
+ },
+ {
+  "input": ".xYßB",
+  "constant": "X_YSS_B",
+  "camel": "xYßB"
+ },
+ {
+  "input": " é",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "cé_ZZéa",
+  "constant": "CÉ_Z_ZÉA",
+  "camel": "céZZéa"
+ },
+ {
+  "input": "Déa",
+  "constant": "DÉA",
+  "camel": "déa"
+ },
+ {
+  "input": "xY_.-ß",
+  "constant": "X_Y_SS",
+  "camel": "xYSS"
+ },
+ {
+  "input": "ß ",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "DÉ1DBZZ é",
+  "constant": "DÉ1_DBZZ_É",
+  "camel": "dé1DbzzÉ"
+ },
+ {
+  "input": "..xYBÉ-c_D",
+  "constant": "X_YBÉ_C_D",
+  "camel": "xYbéCD"
+ },
+ {
+  "input": "cZZaé1ßZZ",
+  "constant": "C_Z_ZAÉ1SS_ZZ",
+  "camel": "cZZaé1ßZz"
+ },
+ {
+  "input": "ZZßßBxYcxYÉc",
+  "constant": "Z_ZSSSS_BX_YCX_Y_ÉC",
+  "camel": "zZßßBxYcxYÉc"
+ },
+ {
+  "input": "ZZ ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "-.a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "BZZßaé_-a-",
+  "constant": "BZ_ZSSAÉ_A",
+  "camel": "bzZßaéA"
+ },
+ {
+  "input": "1ZZÉZZa-a",
+  "constant": "1_ZZÉZ_ZA_A",
+  "camel": "1ZzézZaA"
+ },
+ {
+  "input": "céÉ-BD_éß_",
+  "constant": "CÉ_É_BD_ÉSS",
+  "camel": "céÉBdÉß"
+ },
+ {
+  "input": "ß cB_ aZZ..",
+  "constant": "SS_C_B_A_ZZ",
+  "camel": "ßCBAZz"
+ },
+ {
+  "input": "1. é",
+  "constant": "1_É",
+  "camel": "1É"
+ },
+ {
+  "input": "c__",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": "_",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "cZZéa",
+  "constant": "C_Z_ZÉA",
+  "camel": "cZZéa"
+ },
+ {
+  "input": "xY. DcBÉxY",
+  "constant": "X_Y_DC_B_ÉX_Y",
+  "camel": "xYDcBÉxY"
+ },
+ {
+  "input": "a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "c  1 1",
+  "constant": "C_1_1",
+  "camel": "c_1_1"
+ },
+ {
+  "input": "--é.",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "_ßcé",
+  "constant": "SSCÉ",
+  "camel": "ßcé"
+ },
+ {
+  "input": "B É_BcD 1",
+  "constant": "B_É_BC_D_1",
+  "camel": "bÉBcD_1"
+ },
+ {
+  "input": "a1",
+  "constant": "A1",
+  "camel": "a1"
+ },
+ {
+  "input": "a-xYxY",
+  "constant": "A_X_YX_Y",
+  "camel": "aXYxY"
+ },
+ {
+  "input": "_1acé-a-xY",
+  "constant": "1ACÉ_A_X_Y",
+  "camel": "1acéAXY"
+ },
+ {
+  "input": " B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "_.ßD_xY",
+  "constant": "SS_D_X_Y",
+  "camel": "ßDXY"
+ },
+ {
+  "input": "1Dßé-é",
+  "constant": "1_DSSÉ_É",
+  "camel": "1DßéÉ"
+ },
+ {
+  "input": "ßZZxYca",
+  "constant": "SS_Z_ZX_YCA",
+  "camel": "ßZZxYca"
+ },
+ {
+  "input": "-",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "BZZD1.",
+  "constant": "BZZD1",
+  "camel": "bzzd1"
+ },
+ {
+  "input": ".D",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "ßÉaßßßcDZZ",
+  "constant": "SS_ÉASSSSSSC_DZZ",
+  "camel": "ßÉaßßßcDzz"
+ },
+ {
+  "input": "ZZc",
+  "constant": "Z_ZC",
+  "camel": "zZc"
+ },
+ {
+  "input": "ÉacaÉ",
+  "constant": "ÉACA_É",
+  "camel": "éacaÉ"
+ },
+ {
+  "input": "1BxYÉ. B",
+  "constant": "1_BX_YÉ_B",
+  "camel": "1BxYéB"
+ },
+ {
+  "input": "aÉD--",
+  "constant": "A_ÉD",
+  "camel": "aÉd"
+ },
+ {
+  "input": "BÉcxY-",
+  "constant": "B_ÉCX_Y",
+  "camel": "bÉcxY"
+ },
+ {
+  "input": "_Dc1É-B-é",
+  "constant": "DC1_É_B_É",
+  "camel": "dc1ÉBÉ"
+ },
+ {
+  "input": " xY D",
+  "constant": "X_Y_D",
+  "camel": "xYD"
+ },
+ {
+  "input": "ZZcD1_xY",
+  "constant": "Z_ZC_D1_X_Y",
+  "camel": "zZcD1XY"
+ },
+ {
+  "input": "aZZßéBßa",
+  "constant": "A_Z_ZSSÉ_BSSA",
+  "camel": "aZZßéBßa"
+ },
+ {
+  "input": "- D",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "ZZB1BßßZZ.1 ",
+  "constant": "ZZB1_BSSSS_ZZ_1",
+  "camel": "zzb1BßßZz_1"
+ },
+ {
+  "input": "B a1",
+  "constant": "B_A1",
+  "camel": "bA1"
+ },
+ {
+  "input": "D.-ÉcD_Bé",
+  "constant": "D_ÉC_D_BÉ",
+  "camel": "dÉcDBé"
+ },
+ {
+  "input": ".é",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "ZZxY B",
+  "constant": "Z_ZX_Y_B",
+  "camel": "zZxYB"
+ },
+ {
+  "input": " ",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "B_ß--1D",
+  "constant": "B_SS_1_D",
+  "camel": "bSS_1D"
+ },
+ {
+  "input": "B1.ÉDaZZÉß",
+  "constant": "B1_É_DA_ZZ_ÉSS",
+  "camel": "b1ÉDaZzÉß"
+ },
+ {
+  "input": "ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "__",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": " ZZÉ1ß",
+  "constant": "ZZÉ1SS",
+  "camel": "zzé1ß"
+ },
+ {
+  "input": "xYé.D ",
+  "constant": "X_YÉ_D",
+  "camel": "xYéD"
+ },
+ {
+  "input": " . a__ZZ",
+  "constant": "A_ZZ",
+  "camel": "aZz"
+ },
+ {
+  "input": "ÉßxY-",
+  "constant": "ÉSSX_Y",
+  "camel": "éßxY"
+ },
+ {
+  "input": ".ßZZ1aBBÉ",
+  "constant": "SS_ZZ1A_BBÉ",
+  "camel": "ßZz1aBbé"
+ },
+ {
+  "input": "-",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "-é. DD",
+  "constant": "É_DD",
+  "camel": "éDd"
+ },
+ {
+  "input": "_xYÉé_cxYxY",
+  "constant": "X_Y_ÉÉ_CX_YX_Y",
+  "camel": "xYÉéCxYxY"
+ },
+ {
+  "input": "é1ÉBcÉÉ",
+  "constant": "É1_É_BC_ÉÉ",
+  "camel": "é1ÉBcÉé"
+ },
+ {
+  "input": "a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "-_É.axY- D ",
+  "constant": "É_AX_Y_D",
+  "camel": "éAxYD"
+ },
+ {
+  "input": " ._.._ßxYÉ",
+  "constant": "SSX_YÉ",
+  "camel": "ßxYé"
+ },
+ {
+  "input": "D",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "ZZ.-ÉB  D",
+  "constant": "ZZ_ÉB_D",
+  "camel": "zzÉbD"
+ },
+ {
+  "input": "BxYa1 .",
+  "constant": "BX_YA1",
+  "camel": "bxYa1"
+ },
+ {
+  "input": "DBa-ZZé",
+  "constant": "D_BA_Z_ZÉ",
+  "camel": "dBaZZé"
+ },
+ {
+  "input": "cé.Bßßcß ZZ",
+  "constant": "CÉ_BSSSSCSS_ZZ",
+  "camel": "céBßßcßZz"
+ },
+ {
+  "input": "é_-ß",
+  "constant": "É_SS",
+  "camel": "éSS"
+ },
+ {
+  "input": "é_a",
+  "constant": "É_A",
+  "camel": "éA"
+ },
+ {
+  "input": "éé1xYéZZ a",
+  "constant": "ÉÉ1X_YÉ_ZZ_A",
+  "camel": "éé1xYéZzA"
+ },
+ {
+  "input": "éca",
+  "constant": "ÉCA",
+  "camel": "éca"
+ },
+ {
+  "input": "1BßBZZB1_É",
+  "constant": "1_BSS_BZZB1_É",
+  "camel": "1BßBzzb1É"
+ },
+ {
+  "input": "caxYcZZÉZZ-Dß",
+  "constant": "CAX_YC_ZZÉZZ_DSS",
+  "camel": "caxYcZzézzDß"
+ },
+ {
+  "input": "-aa. xYaß1",
+  "constant": "AA_X_YASS1",
+  "camel": "aaXYaß1"
+ },
+ {
+  "input": "ßa_",
+  "constant": "SSA",
+  "camel": "ßa"
+ },
+ {
+  "input": "ZZaxY_BZZ.ßßa",
+  "constant": "Z_ZAX_Y_BZZ_SSSSA",
+  "camel": "zZaxYBzzSSßa"
+ },
+ {
+  "input": "-_c1D",
+  "constant": "C1_D",
+  "camel": "c1D"
+ },
+ {
+  "input": "B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "aZZ.1D_é_-",
+  "constant": "A_ZZ_1_D_É",
+  "camel": "aZz_1DÉ"
+ },
+ {
+  "input": "acÉß-é éÉxY",
+  "constant": "AC_ÉSS_É_É_ÉX_Y",
+  "camel": "acÉßÉÉÉxY"
+ },
+ {
+  "input": "xY",
+  "constant": "X_Y",
+  "camel": "xY"
+ },
+ {
+  "input": "éZZß1 ß",
+  "constant": "É_Z_ZSS1_SS",
+  "camel": "éZZß1SS"
+ },
+ {
+  "input": "-",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "-É__ééBß-ZZ",
+  "constant": "É_ÉÉ_BSS_ZZ",
+  "camel": "éÉéBßZz"
+ },
+ {
+  "input": "BÉxY ",
+  "constant": "B_ÉX_Y",
+  "camel": "bÉxY"
+ },
+ {
+  "input": "B.a1B-DÉZZé",
+  "constant": "B_A1_B_DÉZ_ZÉ",
+  "camel": "bA1BDézZé"
+ },
+ {
+  "input": "D",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": ".",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "ßxY",
+  "constant": "SSX_Y",
+  "camel": "ßxY"
+ },
+ {
+  "input": "DDcß",
+  "constant": "D_DCSS",
+  "camel": "dDcß"
+ },
+ {
+  "input": "ÉéZZBxY1a_",
+  "constant": "ÉÉ_ZZ_BX_Y1A",
+  "camel": "ééZzBxY1a"
+ },
+ {
+  "input": "-.",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "éÉ-.ZZZZ1xY.",
+  "constant": "É_É_ZZZZ1X_Y",
+  "camel": "éÉZzzz1xY"
+ },
+ {
+  "input": "1",
+  "constant": "1",
+  "camel": "1"
+ },
+ {
+  "input": "cc1B.ÉßDB",
+  "constant": "CC1_B_ÉSS_DB",
+  "camel": "cc1BÉßDb"
+ },
+ {
+  "input": "  ",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "_a..",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "_ B1 ß-1",
+  "constant": "B1_SS_1",
+  "camel": "b1SS_1"
+ },
+ {
+  "input": "cD1aD-",
+  "constant": "C_D1A_D",
+  "camel": "cD1aD"
+ },
+ {
+  "input": "1-B.-ßB é",
+  "constant": "1_B_SS_B_É",
+  "camel": "1BSSBÉ"
+ },
+ {
+  "input": "Éaa",
+  "constant": "ÉAA",
+  "camel": "éaa"
+ },
+ {
+  "input": "É_éxY.1D1",
+  "constant": "É_ÉX_Y_1_D1",
+  "camel": "éÉxY_1D1"
+ },
+ {
+  "input": "xYB_cZZccxY-_",
+  "constant": "X_YB_C_Z_ZCCX_Y",
+  "camel": "xYbCZZccxY"
+ },
+ {
+  "input": "ZZßa _ß",
+  "constant": "Z_ZSSA_SS",
+  "camel": "zZßaSS"
+ },
+ {
+  "input": " .ZZ  -",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": ".aß ßxY1",
+  "constant": "ASS_SSX_Y1",
+  "camel": "aßSSxY1"
+ },
+ {
+  "input": "_._BZZZZc",
+  "constant": "BZZZ_ZC",
+  "camel": "bzzzZc"
+ },
+ {
+  "input": "ZZZZßZZxYa",
+  "constant": "ZZZ_ZSS_Z_ZX_YA",
+  "camel": "zzzZßZZxYa"
+ },
+ {
+  "input": "_É_ZZaa. ",
+  "constant": "É_Z_ZAA",
+  "camel": "éZZaa"
+ },
+ {
+  "input": "ZZa.D",
+  "constant": "Z_ZA_D",
+  "camel": "zZaD"
+ },
+ {
+  "input": "_c.ßaß.",
+  "constant": "C_SSASS",
+  "camel": "cSSaß"
+ },
+ {
+  "input": "é xYßa  B ",
+  "constant": "É_X_YSSA_B",
+  "camel": "éXYßaB"
+ },
+ {
+  "input": " ",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "1ßcc B1",
+  "constant": "1SSCC_B1",
+  "camel": "1ßccB1"
+ },
+ {
+  "input": "DÉ.ßxY",
+  "constant": "DÉ_SSX_Y",
+  "camel": "déSSxY"
+ },
+ {
+  "input": "_BÉ._ßé",
+  "constant": "BÉ_SSÉ",
+  "camel": "béSSé"
+ },
+ {
+  "input": "ß-",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "a_1_BßéxYé",
+  "constant": "A_1_BSSÉX_YÉ",
+  "camel": "a_1BßéxYé"
+ },
+ {
+  "input": "aD_Da1é",
+  "constant": "A_D_DA1É",
+  "camel": "aDDa1é"
+ },
+ {
+  "input": ".aD  ",
+  "constant": "A_D",
+  "camel": "aD"
+ },
+ {
+  "input": "ÉxYD.DB",
+  "constant": "ÉX_YD_DB",
+  "camel": "éxYdDb"
+ },
+ {
+  "input": "B1Éé-Dé ",
+  "constant": "B1_ÉÉ_DÉ",
+  "camel": "b1ÉéDé"
+ },
+ {
+  "input": "D_.Éc",
+  "constant": "D_ÉC",
+  "camel": "dÉc"
+ },
+ {
+  "input": "B-1É c",
+  "constant": "B_1_É_C",
+  "camel": "b_1ÉC"
+ },
+ {
+  "input": "xYxYa .D.B",
+  "constant": "X_YX_YA_D_B",
+  "camel": "xYxYaDB"
+ },
+ {
+  "input": "ß1 éD ",
+  "constant": "SS1_É_D",
+  "camel": "ß1ÉD"
+ },
+ {
+  "input": "ZZ-xYÉc1éß",
+  "constant": "ZZ_X_Y_ÉC1ÉSS",
+  "camel": "zzXYÉc1éß"
+ },
+ {
+  "input": "a-_",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "a .ZZ",
+  "constant": "A_ZZ",
+  "camel": "aZz"
+ },
+ {
+  "input": "cBaéZZ1",
+  "constant": "C_BAÉ_ZZ1",
+  "camel": "cBaéZz1"
+ },
+ {
+  "input": "Éa.Béa.ZZé",
+  "constant": "ÉA_BÉA_Z_ZÉ",
+  "camel": "éaBéaZZé"
+ },
+ {
+  "input": ".BxYD",
+  "constant": "BX_YD",
+  "camel": "bxYd"
+ },
+ {
+  "input": "ZZ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "c",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": "Dß",
+  "constant": "DSS",
+  "camel": "dß"
+ },
+ {
+  "input": "1ßc-ßéß_",
+  "constant": "1SSC_SSÉSS",
+  "camel": "1ßcSSéß"
+ },
+ {
+  "input": "-ZZa",
+  "constant": "Z_ZA",
+  "camel": "zZa"
+ },
+ {
+  "input": "1ÉD1ZZ-",
+  "constant": "1_ÉD1_ZZ",
+  "camel": "1Éd1Zz"
+ },
+ {
+  "input": "Dßé1_xYB_a ",
+  "constant": "DSSÉ1_X_YB_A",
+  "camel": "dßé1XYbA"
+ },
+ {
+  "input": "DDa",
+  "constant": "D_DA",
+  "camel": "dDa"
+ },
+ {
+  "input": ".éDé_",
+  "constant": "É_DÉ",
+  "camel": "éDé"
+ },
+ {
+  "input": "a 1",
+  "constant": "A_1",
+  "camel": "a_1"
+ },
+ {
+  "input": "ß ßxY",
+  "constant": "SS_SSX_Y",
+  "camel": "ßSSxY"
+ },
+ {
+  "input": "xYÉéc-é",
+  "constant": "X_Y_ÉÉC_É",
+  "camel": "xYÉécÉ"
+ },
+ {
+  "input": "ZZ-",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "ZZß-aDac",
+  "constant": "Z_ZSS_A_DAC",
+  "camel": "zZßADac"
+ },
+ {
+  "input": ".",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": ".cDa--",
+  "constant": "C_DA",
+  "camel": "cDa"
+ },
+ {
+  "input": "xY1axY1ßxYé",
+  "constant": "X_Y1AX_Y1SSX_YÉ",
+  "camel": "xY1axY1ßxYé"
+ },
+ {
+  "input": "cÉ",
+  "constant": "C_É",
+  "camel": "cÉ"
+ },
+ {
+  "input": "a1ZZZZ._Ééß.",
+  "constant": "A1_ZZZZ_ÉÉSS",
+  "camel": "a1ZzzzÉéß"
+ },
+ {
+  "input": "xY -xY",
+  "constant": "X_Y_X_Y",
+  "camel": "xYXY"
+ },
+ {
+  "input": "1",
+  "constant": "1",
+  "camel": "1"
+ },
+ {
+  "input": "_ ",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "Dßa",
+  "constant": "DSSA",
+  "camel": "dßa"
+ },
+ {
+  "input": "ZZa. BB",
+  "constant": "Z_ZA_BB",
+  "camel": "zZaBb"
+ },
+ {
+  "input": "cD-xYxYaZZ",
+  "constant": "C_D_X_YX_YA_ZZ",
+  "camel": "cDXYxYaZz"
+ },
+ {
+  "input": "c",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": "_--ééZZÉ",
+  "constant": "ÉÉ_ZZÉ",
+  "camel": "ééZzé"
+ },
+ {
+  "input": "1DÉéÉBßxYcc",
+  "constant": "1_D_ÉÉ_É_BSSX_YCC",
+  "camel": "1DÉéÉBßxYcc"
+ },
+ {
+  "input": "DZZZZÉ_ÉB",
+  "constant": "DZZZZÉ_ÉB",
+  "camel": "dzzzzéÉb"
+ },
+ {
+  "input": "BÉD cc",
+  "constant": "BÉD_CC",
+  "camel": "bédCc"
+ },
+ {
+  "input": "éZZ.ÉaBBZZ",
+  "constant": "É_ZZ_ÉA_BBZZ",
+  "camel": "éZzÉaBbzz"
+ },
+ {
+  "input": "ZZÉ",
+  "constant": "ZZÉ",
+  "camel": "zzé"
+ },
+ {
+  "input": "É",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": ".-ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "_éÉ",
+  "constant": "É_É",
+  "camel": "éÉ"
+ },
+ {
+  "input": "1B-ZZZZ.é",
+  "constant": "1_B_ZZZZ_É",
+  "camel": "1BZzzzÉ"
+ },
+ {
+  "input": "ßéxY ",
+  "constant": "SSÉX_Y",
+  "camel": "ßéxY"
+ },
+ {
+  "input": "1xYxYÉD",
+  "constant": "1X_YX_YÉD",
+  "camel": "1xYxYéd"
+ },
+ {
+  "input": "ÉxY",
+  "constant": "ÉX_Y",
+  "camel": "éxY"
+ },
+ {
+  "input": "1éaÉZZxY.xY",
+  "constant": "1ÉA_ÉZ_ZX_Y_X_Y",
+  "camel": "1éaÉzZxYXY"
+ },
+ {
+  "input": "D",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "ZZ.ÉDécZZ",
+  "constant": "ZZ_É_DÉC_ZZ",
+  "camel": "zzÉDécZz"
+ },
+ {
+  "input": "ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "_DB -ccc",
+  "constant": "DB_CCC",
+  "camel": "dbCcc"
+ },
+ {
+  "input": "_",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "1ÉZZ1",
+  "constant": "1_ÉZZ1",
+  "camel": "1Ézz1"
+ },
+ {
+  "input": ".aD 1D",
+  "constant": "A_D_1_D",
+  "camel": "aD_1D"
+ },
+ {
+  "input": ".B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "_ xYcéDxY-1é",
+  "constant": "X_YCÉ_DX_Y_1É",
+  "camel": "xYcéDxY_1é"
+ },
+ {
+  "input": "éZZxYca",
+  "constant": "É_Z_ZX_YCA",
+  "camel": "éZZxYca"
+ },
+ {
+  "input": "É",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "_c",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": "D",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "BxYDé.1.ß",
+  "constant": "BX_Y_DÉ_1_SS",
+  "camel": "bxYDé_1SS"
+ },
+ {
+  "input": "-1_. BZZcc",
+  "constant": "1_BZ_ZCC",
+  "camel": "1BzZcc"
+ },
+ {
+  "input": "ß 1-._ßB",
+  "constant": "SS_1_SS_B",
+  "camel": "ß_1SSB"
+ },
+ {
+  "input": "DxYÉ.aééD1 ",
+  "constant": "DX_YÉ_AÉÉ_D1",
+  "camel": "dxYéAééD1"
+ },
+ {
+  "input": ".a-D ",
+  "constant": "A_D",
+  "camel": "aD"
+ },
+ {
+  "input": "ÉDDxY.xYB1Ba",
+  "constant": "ÉD_DX_Y_X_YB1_BA",
+  "camel": "édDxYXYb1Ba"
+ },
+ {
+  "input": "éZZDéB1ß.1ß",
+  "constant": "É_ZZ_DÉ_B1SS_1SS",
+  "camel": "éZzDéB1ß_1ß"
+ },
+ {
+  "input": "__BÉD1c1",
+  "constant": "BÉD1C1",
+  "camel": "béd1c1"
+ },
+ {
+  "input": "ZZxYcßÉa-",
+  "constant": "Z_ZX_YCSS_ÉA",
+  "camel": "zZxYcßÉa"
+ },
+ {
+  "input": "1Dé_-- 11.",
+  "constant": "1_DÉ_11",
+  "camel": "1Dé_11"
+ },
+ {
+  "input": ".BécZZ",
+  "constant": "BÉC_ZZ",
+  "camel": "bécZz"
+ },
+ {
+  "input": "aDÉcB..DxY",
+  "constant": "A_D_ÉC_B_DX_Y",
+  "camel": "aDÉcBDxY"
+ },
+ {
+  "input": "-BBß-éÉ-1É",
+  "constant": "B_BSS_É_É_1_É",
+  "camel": "bBßÉÉ_1É"
+ },
+ {
+  "input": "éDaB.",
+  "constant": "É_DA_B",
+  "camel": "éDaB"
+ },
+ {
+  "input": "ZZ B11",
+  "constant": "ZZ_B11",
+  "camel": "zzB11"
+ },
+ {
+  "input": " BZZ_a-",
+  "constant": "BZZ_A",
+  "camel": "bzzA"
+ },
+ {
+  "input": "a  Éa",
+  "constant": "A_ÉA",
+  "camel": "aÉa"
+ },
+ {
+  "input": "D.1 a..a1",
+  "constant": "D_1_A_A1",
+  "camel": "d_1AA1"
+ },
+ {
+  "input": "Dß DDcé1_",
+  "constant": "DSS_D_DCÉ1",
+  "camel": "dßDDcé1"
+ },
+ {
+  "input": "_1 caßa1xYZZ",
+  "constant": "1_CASSA1X_YZZ",
+  "camel": "1Caßa1xYzz"
+ },
+ {
+  "input": "B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "BcDB 1_",
+  "constant": "BC_DB_1",
+  "camel": "bcDb_1"
+ },
+ {
+  "input": ".É.Dc_éa",
+  "constant": "É_DC_ÉA",
+  "camel": "éDcÉa"
+ },
+ {
+  "input": " DDa -a1.B",
+  "constant": "D_DA_A1_B",
+  "camel": "dDaA1B"
+ },
+ {
+  "input": "ßé B cßB B",
+  "constant": "SSÉ_B_CSS_B_B",
+  "camel": "ßéBCßBB"
+ },
+ {
+  "input": "aÉ",
+  "constant": "A_É",
+  "camel": "aÉ"
+ },
+ {
+  "input": "B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "a1xYcB._",
+  "constant": "A1X_YC_B",
+  "camel": "a1xYcB"
+ },
+ {
+  "input": " -a1xY_.a",
+  "constant": "A1X_Y_A",
+  "camel": "a1xYA"
+ },
+ {
+  "input": "1_Éßcé-ZZ",
+  "constant": "1_ÉSSCÉ_ZZ",
+  "camel": "1ÉßcéZz"
+ },
+ {
+  "input": "ZZZZD1É",
+  "constant": "ZZZZD1_É",
+  "camel": "zzzzd1É"
+ },
+ {
+  "input": "B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": ".Éé DßßxYD",
+  "constant": "ÉÉ_DSSSSX_YD",
+  "camel": "ééDßßxYd"
+ },
+ {
+  "input": "1.-c",
+  "constant": "1_C",
+  "camel": "1C"
+ },
+ {
+  "input": ".---",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "-Éß1É.",
+  "constant": "ÉSS1_É",
+  "camel": "éß1É"
+ },
+ {
+  "input": "ZZDaé",
+  "constant": "ZZ_DAÉ",
+  "camel": "zzDaé"
+ },
+ {
+  "input": "ßÉéaDcÉ",
+  "constant": "SS_ÉÉA_DC_É",
+  "camel": "ßÉéaDcÉ"
+ },
+ {
+  "input": "ß .BD_",
+  "constant": "SS_BD",
+  "camel": "ßBd"
+ },
+ {
+  "input": "ZZ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "1D  ß- ZZ.",
+  "constant": "1_D_SS_ZZ",
+  "camel": "1DSSZz"
+ },
+ {
+  "input": "a11 ß",
+  "constant": "A11_SS",
+  "camel": "a11SS"
+ },
+ {
+  "input": "1",
+  "constant": "1",
+  "camel": "1"
+ },
+ {
+  "input": "ZZÉ1ca_",
+  "constant": "ZZÉ1CA",
+  "camel": "zzé1ca"
+ },
+ {
+  "input": "_a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "1Bcß-",
+  "constant": "1_BCSS",
+  "camel": "1Bcß"
+ },
+ {
+  "input": "xYaÉB",
+  "constant": "X_YA_ÉB",
+  "camel": "xYaÉb"
+ },
+ {
+  "input": "aD DZZé1xY1",
+  "constant": "A_D_DZ_ZÉ1X_Y1",
+  "camel": "aDDzZé1xY1"
+ },
+ {
+  "input": "ÉD-c.",
+  "constant": "ÉD_C",
+  "camel": "édC"
+ },
+ {
+  "input": "Éß ZZ 1-c.",
+  "constant": "ÉSS_ZZ_1_C",
+  "camel": "éßZz_1C"
+ },
+ {
+  "input": "a_cZZ.ZZZZ_É-",
+  "constant": "A_C_ZZ_ZZZZ_É",
+  "camel": "aCZzZzzzÉ"
+ },
+ {
+  "input": "1.c",
+  "constant": "1_C",
+  "camel": "1C"
+ },
+ {
+  "input": "-.ZZ1é",
+  "constant": "ZZ1É",
+  "camel": "zz1é"
+ },
+ {
+  "input": "1ZZxY_.xY1-xY",
+  "constant": "1_Z_ZX_Y_X_Y1_X_Y",
+  "camel": "1ZZxYXY1XY"
+ },
+ {
+  "input": "-éBZZc",
+  "constant": "É_BZ_ZC",
+  "camel": "éBzZc"
+ },
+ {
+  "input": "ZZ. DBB",
+  "constant": "ZZ_DBB",
+  "camel": "zzDbb"
+ },
+ {
+  "input": "BxY",
+  "constant": "BX_Y",
+  "camel": "bxY"
+ },
+ {
+  "input": "D.ß",
+  "constant": "D_SS",
+  "camel": "dSS"
+ },
+ {
+  "input": "éÉZZ D_ aDé",
+  "constant": "É_ÉZZ_D_A_DÉ",
+  "camel": "éÉzzDADé"
+ },
+ {
+  "input": " _éD .ß",
+  "constant": "É_D_SS",
+  "camel": "éDSS"
+ },
+ {
+  "input": "_é_BaDZZD-ß",
+  "constant": "É_BA_DZZD_SS",
+  "camel": "éBaDzzdSS"
+ },
+ {
+  "input": "- ZZéDxY  ",
+  "constant": "Z_ZÉ_DX_Y",
+  "camel": "zZéDxY"
+ },
+ {
+  "input": "É.",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "1cZZ",
+  "constant": "1C_ZZ",
+  "camel": "1cZz"
+ },
+ {
+  "input": "ZZ_É éD_",
+  "constant": "ZZ_É_É_D",
+  "camel": "zzÉÉD"
+ },
+ {
+  "input": "ß-_é.ZZc_",
+  "constant": "SS_É_Z_ZC",
+  "camel": "ßÉZZc"
+ },
+ {
+  "input": "aßÉß",
+  "constant": "ASS_ÉSS",
+  "camel": "aßÉß"
+ },
+ {
+  "input": " 1..ZZ",
+  "constant": "1_ZZ",
+  "camel": "1Zz"
+ },
+ {
+  "input": ".xY1-ZZ_cBZZ",
+  "constant": "X_Y1_ZZ_C_BZZ",
+  "camel": "xY1ZzCBzz"
+ },
+ {
+  "input": "_D-c_ß-ß",
+  "constant": "D_C_SS_SS",
+  "camel": "dCSSSS"
+ },
+ {
+  "input": "ZZé_BDD",
+  "constant": "Z_ZÉ_BDD",
+  "camel": "zZéBdd"
+ },
+ {
+  "input": "xYc 1",
+  "constant": "X_YC_1",
+  "camel": "xYc_1"
+ },
+ {
+  "input": ".BZZZZ",
+  "constant": "BZZZZ",
+  "camel": "bzzzz"
+ },
+ {
+  "input": "Dßß1",
+  "constant": "DSSSS1",
+  "camel": "dßß1"
+ },
+ {
+  "input": "BZZa",
+  "constant": "BZ_ZA",
+  "camel": "bzZa"
+ },
+ {
+  "input": "1cé.ÉaéZZßé",
+  "constant": "1CÉ_ÉAÉ_Z_ZSSÉ",
+  "camel": "1céÉaéZZßé"
+ },
+ {
+  "input": ".aa ßc.B",
+  "constant": "AA_SSC_B",
+  "camel": "aaSScB"
+ },
+ {
+  "input": "Éß aZZ",
+  "constant": "ÉSS_A_ZZ",
+  "camel": "éßAZz"
+ },
+ {
+  "input": "-.-a1a-D-",
+  "constant": "A1A_D",
+  "camel": "a1aD"
+ },
+ {
+  "input": "aa ",
+  "constant": "AA",
+  "camel": "aa"
+ },
+ {
+  "input": "xYxYÉBZZ",
+  "constant": "X_YX_YÉBZZ",
+  "camel": "xYxYébzz"
+ },
+ {
+  "input": "11DacÉ",
+  "constant": "11_DAC_É",
+  "camel": "11DacÉ"
+ },
+ {
+  "input": "ßB-ZZ1ZZ_",
+  "constant": "SS_B_ZZ1_ZZ",
+  "camel": "ßBZz1Zz"
+ },
+ {
+  "input": " a.c.DBß",
+  "constant": "A_C_D_BSS",
+  "camel": "aCDBß"
+ },
+ {
+  "input": "ZZÉaxYZZB.a",
+  "constant": "ZZ_ÉAX_YZZB_A",
+  "camel": "zzÉaxYzzbA"
+ },
+ {
+  "input": "É.",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": ".ÉcaDBaD",
+  "constant": "ÉCA_D_BA_D",
+  "camel": "écaDBaD"
+ },
+ {
+  "input": "c.",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": "BxY.DaBD",
+  "constant": "BX_Y_DA_BD",
+  "camel": "bxYDaBd"
+ },
+ {
+  "input": ".a xYDa1c",
+  "constant": "A_X_Y_DA1C",
+  "camel": "aXYDa1c"
+ },
+ {
+  "input": "é1BxYZZ",
+  "constant": "É1_BX_YZZ",
+  "camel": "é1BxYzz"
+ },
+ {
+  "input": "xY",
+  "constant": "X_Y",
+  "camel": "xY"
+ },
+ {
+  "input": "acDZZÉ",
+  "constant": "AC_DZZÉ",
+  "camel": "acDzzé"
+ },
+ {
+  "input": "a1a",
+  "constant": "A1A",
+  "camel": "a1a"
+ },
+ {
+  "input": "cßc.éDß..ß",
+  "constant": "CSSC_É_DSS_SS",
+  "camel": "cßcÉDßSS"
+ },
+ {
+  "input": "a.B. .D1_-",
+  "constant": "A_B_D1",
+  "camel": "aBD1"
+ },
+ {
+  "input": "xYcÉ",
+  "constant": "X_YC_É",
+  "camel": "xYcÉ"
+ },
+ {
+  "input": "11c",
+  "constant": "11C",
+  "camel": "11c"
+ },
+ {
+  "input": "ZZ.-",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "cxYß B",
+  "constant": "CX_YSS_B",
+  "camel": "cxYßB"
+ },
+ {
+  "input": "_a 1Éßßcc",
+  "constant": "A_1_ÉSSSSCC",
+  "camel": "a_1Éßßcc"
+ },
+ {
+  "input": "ÉaZZ",
+  "constant": "ÉA_ZZ",
+  "camel": "éaZz"
+ },
+ {
+  "input": "ÉZZBaßé",
+  "constant": "ÉZZ_BASSÉ",
+  "camel": "ézzBaßé"
+ },
+ {
+  "input": "c ",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": "é_a.D_c ",
+  "constant": "É_A_D_C",
+  "camel": "éADC"
+ },
+ {
+  "input": "Déc.aDÉc",
+  "constant": "DÉC_A_D_ÉC",
+  "camel": "décADÉc"
+ },
+ {
+  "input": "ß_Bé1ZZ",
+  "constant": "SS_BÉ1_ZZ",
+  "camel": "ßBé1Zz"
+ },
+ {
+  "input": "-DZZaB1ÉBxYB",
+  "constant": "DZ_ZA_B1_É_BX_YB",
+  "camel": "dzZaB1ÉBxYb"
+ },
+ {
+  "input": "_.",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "ZZ1",
+  "constant": "ZZ1",
+  "camel": "zz1"
+ },
+ {
+  "input": "1ßD",
+  "constant": "1SS_D",
+  "camel": "1ßD"
+ },
+ {
+  "input": "_.é-D.É",
+  "constant": "É_D_É",
+  "camel": "éDÉ"
+ },
+ {
+  "input": "xY.ca 1-ßc.",
+  "constant": "X_Y_CA_1_SSC",
+  "camel": "xYCa_1SSc"
+ },
+ {
+  "input": "xYZZcBZZZZé_a",
+  "constant": "X_YZ_ZC_BZZZ_ZÉ_A",
+  "camel": "xYzZcBzzzZéA"
+ },
+ {
+  "input": "éxY._-",
+  "constant": "ÉX_Y",
+  "camel": "éxY"
+ },
+ {
+  "input": "é.éZZéßa",
+  "constant": "É_É_Z_ZÉSSA",
+  "camel": "éÉZZéßa"
+ },
+ {
+  "input": "axYé-c .éaÉ",
+  "constant": "AX_YÉ_C_ÉA_É",
+  "camel": "axYéCÉaÉ"
+ },
+ {
+  "input": "ßxYB-",
+  "constant": "SSX_YB",
+  "camel": "ßxYb"
+ },
+ {
+  "input": "-a.xYÉß",
+  "constant": "A_X_Y_ÉSS",
+  "camel": "aXYÉß"
+ },
+ {
+  "input": "1a_",
+  "constant": "1A",
+  "camel": "1a"
+ },
+ {
+  "input": "ßé",
+  "constant": "SSÉ",
+  "camel": "ßé"
+ },
+ {
+  "input": ".ÉcB",
+  "constant": "ÉC_B",
+  "camel": "écB"
+ },
+ {
+  "input": "-É_xYÉ-c.",
+  "constant": "É_X_YÉ_C",
+  "camel": "éXYéC"
+ },
+ {
+  "input": "xYÉ.-",
+  "constant": "X_YÉ",
+  "camel": "xYé"
+ },
+ {
+  "input": "xY c1- ZZ a-",
+  "constant": "X_Y_C1_ZZ_A",
+  "camel": "xYC1ZzA"
+ },
+ {
+  "input": "1B.B. ",
+  "constant": "1_B_B",
+  "camel": "1BB"
+ },
+ {
+  "input": "céB",
+  "constant": "CÉ_B",
+  "camel": "céB"
+ },
+ {
+  "input": "ß_éDa",
+  "constant": "SS_É_DA",
+  "camel": "ßÉDa"
+ },
+ {
+  "input": "-aé..D ac.",
+  "constant": "AÉ_D_AC",
+  "camel": "aéDAc"
+ },
+ {
+  "input": "1_.BBc ",
+  "constant": "1_B_BC",
+  "camel": "1BBc"
+ },
+ {
+  "input": "B 1 ß1xYxY",
+  "constant": "B_1_SS1X_YX_Y",
+  "camel": "b_1SS1xYxY"
+ },
+ {
+  "input": ".Bc_",
+  "constant": "BC",
+  "camel": "bc"
+ },
+ {
+  "input": "ßZZa",
+  "constant": "SS_Z_ZA",
+  "camel": "ßZZa"
+ },
+ {
+  "input": "ccB",
+  "constant": "CC_B",
+  "camel": "ccB"
+ },
+ {
+  "input": "1_",
+  "constant": "1",
+  "camel": "1"
+ },
+ {
+  "input": "é1xY",
+  "constant": "É1X_Y",
+  "camel": "é1xY"
+ },
+ {
+  "input": "ZZ1",
+  "constant": "ZZ1",
+  "camel": "zz1"
+ },
+ {
+  "input": "aaÉD._",
+  "constant": "AA_ÉD",
+  "camel": "aaÉd"
+ },
+ {
+  "input": "-",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "DDß ",
+  "constant": "D_DSS",
+  "camel": "dDß"
+ },
+ {
+  "input": "ZZ_ßxYB",
+  "constant": "ZZ_SSX_YB",
+  "camel": "zzSSxYb"
+ },
+ {
+  "input": "É ",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "1é  _",
+  "constant": "1É",
+  "camel": "1é"
+ },
+ {
+  "input": "ZZ-_",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "xY.ß--D1",
+  "constant": "X_Y_SS_D1",
+  "camel": "xYSSD1"
+ },
+ {
+  "input": "D.D_-ß._ZZa",
+  "constant": "D_D_SS_Z_ZA",
+  "camel": "dDSSZZa"
+ },
+ {
+  "input": "caZZ DxYaZZaé",
+  "constant": "CA_ZZ_DX_YA_Z_ZAÉ",
+  "camel": "caZzDxYaZZaé"
+ },
+ {
+  "input": "ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "1éÉxYé1D.",
+  "constant": "1É_ÉX_YÉ1_D",
+  "camel": "1éÉxYé1D"
+ },
+ {
+  "input": "DcB-xYcaBxY",
+  "constant": "DC_B_X_YCA_BX_Y",
+  "camel": "dcBXYcaBxY"
+ },
+ {
+  "input": "ZZ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": ".ééZZ. ß",
+  "constant": "ÉÉ_ZZ_SS",
+  "camel": "ééZzSS"
+ },
+ {
+  "input": "É_1 ß-",
+  "constant": "É_1_SS",
+  "camel": "é_1SS"
+ },
+ {
+  "input": "D _-",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "xY1éZZZZZZ",
+  "constant": "X_Y1É_ZZZZZZ",
+  "camel": "xY1éZzzzzz"
+ },
+ {
+  "input": "c-cDÉ",
+  "constant": "C_C_DÉ",
+  "camel": "cCDé"
+ },
+ {
+  "input": "ßBÉZZBD1DxY",
+  "constant": "SS_BÉZZBD1_DX_Y",
+  "camel": "ßBézzbd1DxY"
+ },
+ {
+  "input": "ßxYBxYéé",
+  "constant": "SSX_Y_BX_YÉÉ",
+  "camel": "ßxYBxYéé"
+ },
+ {
+  "input": "1ß-DxY.",
+  "constant": "1SS_DX_Y",
+  "camel": "1ßDxY"
+ },
+ {
+  "input": "_ßcßBéÉé",
+  "constant": "SSCSS_BÉ_ÉÉ",
+  "camel": "ßcßBéÉé"
+ },
+ {
+  "input": " ",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "c.ß._ZZßBé",
+  "constant": "C_SS_Z_ZSS_BÉ",
+  "camel": "cSSZZßBé"
+ },
+ {
+  "input": "B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "DcÉ",
+  "constant": "DC_É",
+  "camel": "dcÉ"
+ },
+ {
+  "input": "-",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "ß1-ZZ1ß",
+  "constant": "SS1_ZZ1SS",
+  "camel": "ß1Zz1ß"
+ },
+ {
+  "input": "xYxY",
+  "constant": "X_YX_Y",
+  "camel": "xYxY"
+ },
+ {
+  "input": " -ßÉc-_",
+  "constant": "SS_ÉC",
+  "camel": "ßÉc"
+ },
+ {
+  "input": "..Éa",
+  "constant": "ÉA",
+  "camel": "éa"
+ },
+ {
+  "input": "aBßBß1",
+  "constant": "A_BSS_BSS1",
+  "camel": "aBßBß1"
+ },
+ {
+  "input": "cxYßB",
+  "constant": "CX_YSS_B",
+  "camel": "cxYßB"
+ },
+ {
+  "input": " 1ß ZZcc1DB",
+  "constant": "1SS_Z_ZCC1_DB",
+  "camel": "1ßZZcc1Db"
+ },
+ {
+  "input": "BB 1",
+  "constant": "BB_1",
+  "camel": "bb_1"
+ },
+ {
+  "input": "1 cxYé",
+  "constant": "1_CX_YÉ",
+  "camel": "1CxYé"
+ },
+ {
+  "input": "_ZZéß_cZZ",
+  "constant": "Z_ZÉSS_C_ZZ",
+  "camel": "zZéßCZz"
+ },
+ {
+  "input": "-ßc-_",
+  "constant": "SSC",
+  "camel": "ßc"
+ },
+ {
+  "input": "1",
+  "constant": "1",
+  "camel": "1"
+ },
+ {
+  "input": "1Éé",
+  "constant": "1_ÉÉ",
+  "camel": "1Éé"
+ },
+ {
+  "input": "aÉB_1.-",
+  "constant": "A_ÉB_1",
+  "camel": "aÉb_1"
+ },
+ {
+  "input": "ÉaB",
+  "constant": "ÉA_B",
+  "camel": "éaB"
+ },
+ {
+  "input": "a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "B1éB_",
+  "constant": "B1É_B",
+  "camel": "b1éB"
+ },
+ {
+  "input": "BD_a",
+  "constant": "BD_A",
+  "camel": "bdA"
+ },
+ {
+  "input": "c-",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": "1_-c_BÉÉD-",
+  "constant": "1_C_BÉÉD",
+  "camel": "1CBééd"
+ },
+ {
+  "input": "BZZDÉxYDß",
+  "constant": "BZZD_ÉX_Y_DSS",
+  "camel": "bzzdÉxYDß"
+ },
+ {
+  "input": "aD.",
+  "constant": "A_D",
+  "camel": "aD"
+ },
+ {
+  "input": "ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "D1BD",
+  "constant": "D1_BD",
+  "camel": "d1Bd"
+ },
+ {
+  "input": "c1ßé.",
+  "constant": "C1SSÉ",
+  "camel": "c1ßé"
+ },
+ {
+  "input": "ZZßDé-B-1É",
+  "constant": "Z_ZSS_DÉ_B_1_É",
+  "camel": "zZßDéB_1É"
+ },
+ {
+  "input": "é",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "1-cDaD",
+  "constant": "1_C_DA_D",
+  "camel": "1CDaD"
+ },
+ {
+  "input": "a_cxYÉ",
+  "constant": "A_CX_YÉ",
+  "camel": "aCxYé"
+ },
+ {
+  "input": "éa-_xYa_ZZÉ",
+  "constant": "ÉA_X_YA_ZZÉ",
+  "camel": "éaXYaZzé"
+ },
+ {
+  "input": "ßé ÉcDcacZZ",
+  "constant": "SSÉ_ÉC_DCAC_ZZ",
+  "camel": "ßéÉcDcacZz"
+ },
+ {
+  "input": "ßxY1c a",
+  "constant": "SSX_Y1C_A",
+  "camel": "ßxY1cA"
+ },
+ {
+  "input": "_ZZ_",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "DZZ_D__ZZxY-",
+  "constant": "DZZ_D_Z_ZX_Y",
+  "camel": "dzzDZZxY"
+ },
+ {
+  "input": "é ÉaBZZÉ.",
+  "constant": "É_ÉA_BZZÉ",
+  "camel": "éÉaBzzé"
+ },
+ {
+  "input": "ÉÉ",
+  "constant": "ÉÉ",
+  "camel": "éé"
+ },
+ {
+  "input": "-é",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "-caZZ..xY",
+  "constant": "CA_ZZ_X_Y",
+  "camel": "caZzXY"
+ },
+ {
+  "input": "xY",
+  "constant": "X_Y",
+  "camel": "xY"
+ },
+ {
+  "input": "B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "É1_",
+  "constant": "É1",
+  "camel": "é1"
+ },
+ {
+  "input": "éxYxYZZc.xYÉ",
+  "constant": "ÉX_YX_YZ_ZC_X_YÉ",
+  "camel": "éxYxYzZcXYé"
+ },
+ {
+  "input": "caéBééa-",
+  "constant": "CAÉ_BÉÉA",
+  "camel": "caéBééa"
+ },
+ {
+  "input": "1.ZZBÉ axY",
+  "constant": "1_ZZBÉ_AX_Y",
+  "camel": "1ZzbéAxY"
+ },
+ {
+  "input": "D ßé",
+  "constant": "D_SSÉ",
+  "camel": "dSSé"
+ },
+ {
+  "input": "é-xYßD1éca-",
+  "constant": "É_X_YSS_D1ÉCA",
+  "camel": "éXYßD1éca"
+ },
+ {
+  "input": "BD1a c Dc",
+  "constant": "BD1A_C_DC",
+  "camel": "bd1aCDc"
+ },
+ {
+  "input": "_",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "ßcD aD ",
+  "constant": "SSC_D_A_D",
+  "camel": "ßcDAD"
+ },
+ {
+  "input": "__ ßZZ- .a.",
+  "constant": "SS_ZZ_A",
+  "camel": "ßZzA"
+ },
+ {
+  "input": "ZZ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "ß_c",
+  "constant": "SS_C",
+  "camel": "ßC"
+ },
+ {
+  "input": "É-cc",
+  "constant": "É_CC",
+  "camel": "éCc"
+ },
+ {
+  "input": "1-é",
+  "constant": "1_É",
+  "camel": "1É"
+ },
+ {
+  "input": "Dé",
+  "constant": "DÉ",
+  "camel": "dé"
+ },
+ {
+  "input": "cc_D-",
+  "constant": "CC_D",
+  "camel": "ccD"
+ },
+ {
+  "input": "aéB11DÉB1xY",
+  "constant": "AÉ_B11_DÉB1X_Y",
+  "camel": "aéB11Déb1xY"
+ },
+ {
+  "input": "ZZßcDD ",
+  "constant": "Z_ZSSC_DD",
+  "camel": "zZßcDd"
+ },
+ {
+  "input": "_ß1Bac _xY",
+  "constant": "SS1_BAC_X_Y",
+  "camel": "ß1BacXY"
+ },
+ {
+  "input": "_1",
+  "constant": "1",
+  "camel": "1"
+ },
+ {
+  "input": "aaxYéxYxY Bc",
+  "constant": "AAX_YÉX_YX_Y_BC",
+  "camel": "aaxYéxYxYBc"
+ },
+ {
+  "input": "-DÉBDÉZZÉ_xY",
+  "constant": "DÉBDÉZZÉ_X_Y",
+  "camel": "débdézzéXY"
+ },
+ {
+  "input": "_D aa_-B-1",
+  "constant": "D_AA_B_1",
+  "camel": "dAaB_1"
+ },
+ {
+  "input": "ZZécBé11é",
+  "constant": "Z_ZÉC_BÉ11É",
+  "camel": "zZécBé11é"
+ },
+ {
+  "input": "1ßxY",
+  "constant": "1SSX_Y",
+  "camel": "1ßxY"
+ },
+ {
+  "input": "Dß",
+  "constant": "DSS",
+  "camel": "dß"
+ },
+ {
+  "input": "_cc_xYD",
+  "constant": "CC_X_YD",
+  "camel": "ccXYd"
+ },
+ {
+  "input": "ÉéxY",
+  "constant": "ÉÉX_Y",
+  "camel": "ééxY"
+ },
+ {
+  "input": "_aaÉ_1D_",
+  "constant": "AA_É_1_D",
+  "camel": "aaÉ_1D"
+ },
+ {
+  "input": "Dé_",
+  "constant": "DÉ",
+  "camel": "dé"
+ },
+ {
+  "input": "B11_ÉD-_B-",
+  "constant": "B11_ÉD_B",
+  "camel": "b11ÉdB"
+ },
+ {
+  "input": "xY._é",
+  "constant": "X_Y_É",
+  "camel": "xYÉ"
+ },
+ {
+  "input": "Éß1xYÉßÉxYß",
+  "constant": "ÉSS1X_Y_ÉSS_ÉX_YSS",
+  "camel": "éß1xYÉßÉxYß"
+ },
+ {
+  "input": "a ÉZZ_ß",
+  "constant": "A_ÉZZ_SS",
+  "camel": "aÉzzSS"
+ },
+ {
+  "input": "xY",
+  "constant": "X_Y",
+  "camel": "xY"
+ },
+ {
+  "input": ".céxY-B  -1",
+  "constant": "CÉX_Y_B_1",
+  "camel": "céxYB_1"
+ },
+ {
+  "input": "xYBZZ.B",
+  "constant": "X_YBZZ_B",
+  "camel": "xYbzzB"
+ },
+ {
+  "input": "a.ÉB_ÉB",
+  "constant": "A_ÉB_ÉB",
+  "camel": "aÉbÉb"
+ },
+ {
+  "input": " c..DxYZZßß",
+  "constant": "C_DX_YZ_ZSSSS",
+  "camel": "cDxYzZßß"
+ },
+ {
+  "input": "_-_D__D",
+  "constant": "D_D",
+  "camel": "dD"
+ },
+ {
+  "input": "D1Éaé",
+  "constant": "D1_ÉAÉ",
+  "camel": "d1Éaé"
+ },
+ {
+  "input": "a-xYB ",
+  "constant": "A_X_YB",
+  "camel": "aXYb"
+ },
+ {
+  "input": "cé",
+  "constant": "CÉ",
+  "camel": "cé"
+ },
+ {
+  "input": "axY1",
+  "constant": "AX_Y1",
+  "camel": "axY1"
+ },
+ {
+  "input": "ZZ._",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "É",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "aß.a-",
+  "constant": "ASS_A",
+  "camel": "aßA"
+ },
+ {
+  "input": "ZZé-a-",
+  "constant": "Z_ZÉ_A",
+  "camel": "zZéA"
+ },
+ {
+  "input": "ßxYa  -",
+  "constant": "SSX_YA",
+  "camel": "ßxYa"
+ },
+ {
+  "input": "Dé1ZZxYD B",
+  "constant": "DÉ1_Z_ZX_YD_B",
+  "camel": "dé1ZZxYdB"
+ },
+ {
+  "input": " éZZéc",
+  "constant": "É_Z_ZÉC",
+  "camel": "éZZéc"
+ },
+ {
+  "input": "Bac xY1",
+  "constant": "BAC_X_Y1",
+  "camel": "bacXY1"
+ },
+ {
+  "input": "..a.",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "1BZZÉD",
+  "constant": "1_BZZÉD",
+  "camel": "1Bzzéd"
+ },
+ {
+  "input": "xY",
+  "constant": "X_Y",
+  "camel": "xY"
+ },
+ {
+  "input": "ß_- xYcZZ_Da",
+  "constant": "SS_X_YC_ZZ_DA",
+  "camel": "ßXYcZzDa"
+ },
+ {
+  "input": "-ß.ZZßD1ßDxY",
+  "constant": "SS_Z_ZSS_D1SS_DX_Y",
+  "camel": "ßZZßD1ßDxY"
+ },
+ {
+  "input": "xYÉZZD ",
+  "constant": "X_YÉZZD",
+  "camel": "xYézzd"
+ },
+ {
+  "input": "c",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": "Éß",
+  "constant": "ÉSS",
+  "camel": "éß"
+ },
+ {
+  "input": "xY1-.c",
+  "constant": "X_Y1_C",
+  "camel": "xY1C"
+ },
+ {
+  "input": "D_",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "D a",
+  "constant": "D_A",
+  "camel": "dA"
+ },
+ {
+  "input": "B..1-",
+  "constant": "B_1",
+  "camel": "b_1"
+ },
+ {
+  "input": "xYxY. Bc",
+  "constant": "X_YX_Y_BC",
+  "camel": "xYxYBc"
+ },
+ {
+  "input": "1  _1-",
+  "constant": "1_1",
+  "camel": "1_1"
+ },
+ {
+  "input": " c1D DZZ1",
+  "constant": "C1_D_DZZ1",
+  "camel": "c1DDzz1"
+ },
+ {
+  "input": "Da",
+  "constant": "DA",
+  "camel": "da"
+ },
+ {
+  "input": "aaB-._ ",
+  "constant": "AA_B",
+  "camel": "aaB"
+ },
+ {
+  "input": "ZZ__c",
+  "constant": "ZZ_C",
+  "camel": "zzC"
+ },
+ {
+  "input": "É._1ß Bß",
+  "constant": "É_1SS_BSS",
+  "camel": "é_1ßBß"
+ },
+ {
+  "input": "c.cÉ",
+  "constant": "C_C_É",
+  "camel": "cCÉ"
+ },
+ {
+  "input": "ßÉB",
+  "constant": "SS_ÉB",
+  "camel": "ßÉb"
+ },
+ {
+  "input": "B_-ÉccxY",
+  "constant": "B_ÉCCX_Y",
+  "camel": "bÉccxY"
+ },
+ {
+  "input": ".Écécc-c",
+  "constant": "ÉCÉCC_C",
+  "camel": "écéccC"
+ },
+ {
+  "input": "ZZcÉÉD",
+  "constant": "Z_ZC_ÉÉD",
+  "camel": "zZcÉéd"
+ },
+ {
+  "input": "1aBBa",
+  "constant": "1A_B_BA",
+  "camel": "1aBBa"
+ },
+ {
+  "input": "éZZxY",
+  "constant": "É_Z_ZX_Y",
+  "camel": "éZZxY"
+ },
+ {
+  "input": "É_é.éxY",
+  "constant": "É_É_ÉX_Y",
+  "camel": "éÉÉxY"
+ },
+ {
+  "input": "Da-aZZ ZZ",
+  "constant": "DA_A_ZZ_ZZ",
+  "camel": "daAZzZz"
+ },
+ {
+  "input": " céZZxY1",
+  "constant": "CÉ_Z_ZX_Y1",
+  "camel": "céZZxY1"
+ },
+ {
+  "input": "c-ß1c_",
+  "constant": "C_SS1C",
+  "camel": "cSS1c"
+ },
+ {
+  "input": "_ axYa_D",
+  "constant": "AX_YA_D",
+  "camel": "axYaD"
+ },
+ {
+  "input": "axYxYcßéÉ1",
+  "constant": "AX_YX_YCSSÉ_É1",
+  "camel": "axYxYcßéÉ1"
+ },
+ {
+  "input": "ZZÉ ßc- a_ß",
+  "constant": "ZZÉ_SSC_A_SS",
+  "camel": "zzéSScASS"
+ },
+ {
+  "input": "1D1ZZÉZZxY.D1",
+  "constant": "1_D1_ZZÉZ_ZX_Y_D1",
+  "camel": "1D1ZzézZxYD1"
+ },
+ {
+  "input": "éßBZZ--1_c",
+  "constant": "ÉSS_BZZ_1_C",
+  "camel": "éßBzz_1C"
+ },
+ {
+  "input": "cÉZZéDD",
+  "constant": "C_ÉZ_ZÉ_DD",
+  "camel": "cÉzZéDd"
+ },
+ {
+  "input": "xY.c",
+  "constant": "X_Y_C",
+  "camel": "xYC"
+ },
+ {
+  "input": "_xYc-1cZZZZc",
+  "constant": "X_YC_1C_ZZZ_ZC",
+  "camel": "xYc_1cZzzZc"
+ },
+ {
+  "input": "BéÉ-ßé1_.",
+  "constant": "BÉ_É_SSÉ1",
+  "camel": "béÉSSé1"
+ },
+ {
+  "input": "1xY_1",
+  "constant": "1X_Y_1",
+  "camel": "1xY_1"
+ },
+ {
+  "input": "ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "ÉéD-BÉ-",
+  "constant": "ÉÉ_D_BÉ",
+  "camel": "ééDBé"
+ },
+ {
+  "input": "-cßaßZZ-ßZZ",
+  "constant": "CSSASS_ZZ_SS_ZZ",
+  "camel": "cßaßZzSSZz"
+ },
+ {
+  "input": "aD-1ééß__",
+  "constant": "A_D_1ÉÉSS",
+  "camel": "aD_1ééß"
+ },
+ {
+  "input": "ca.é ß_xY_é",
+  "constant": "CA_É_SS_X_Y_É",
+  "camel": "caÉSSXYÉ"
+ },
+ {
+  "input": "BÉBZZ",
+  "constant": "BÉBZZ",
+  "camel": "bébzz"
+ },
+ {
+  "input": "B1  ",
+  "constant": "B1",
+  "camel": "b1"
+ },
+ {
+  "input": "ZZß-É-._",
+  "constant": "Z_ZSS_É",
+  "camel": "zZßÉ"
+ },
+ {
+  "input": "_aÉ_É-",
+  "constant": "A_É_É",
+  "camel": "aÉÉ"
+ },
+ {
+  "input": " cc-ßcDß",
+  "constant": "CC_SSC_DSS",
+  "camel": "ccSScDß"
+ },
+ {
+  "input": "-DxY-- 1",
+  "constant": "DX_Y_1",
+  "camel": "dxY_1"
+ },
+ {
+  "input": "_xYéxYaD",
+  "constant": "X_YÉX_YA_D",
+  "camel": "xYéxYaD"
+ },
+ {
+  "input": "éé ÉD.Éc",
+  "constant": "ÉÉ_ÉD_ÉC",
+  "camel": "ééÉdÉc"
+ },
+ {
+  "input": ".",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": " -Dé1_ -",
+  "constant": "DÉ1",
+  "camel": "dé1"
+ },
+ {
+  "input": " -ßxY.",
+  "constant": "SSX_Y",
+  "camel": "ßxY"
+ },
+ {
+  "input": ". _.Ééa. a",
+  "constant": "ÉÉA_A",
+  "camel": "ééaA"
+ },
+ {
+  "input": "ÉcßB",
+  "constant": "ÉCSS_B",
+  "camel": "écßB"
+ },
+ {
+  "input": "Éé1..é_-É",
+  "constant": "ÉÉ1_É_É",
+  "camel": "éé1ÉÉ"
+ },
+ {
+  "input": "xYÉxY . c1",
+  "constant": "X_Y_ÉX_Y_C1",
+  "camel": "xYÉxYC1"
+ },
+ {
+  "input": "é.cÉ-DBß",
+  "constant": "É_C_É_D_BSS",
+  "camel": "éCÉDBß"
+ },
+ {
+  "input": ". aZZ.xYß1a",
+  "constant": "A_ZZ_X_YSS1A",
+  "camel": "aZzXYß1a"
+ },
+ {
+  "input": "a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "cÉ-ß.D 1.",
+  "constant": "C_É_SS_D_1",
+  "camel": "cÉSSD_1"
+ },
+ {
+  "input": "ccéxY.",
+  "constant": "CCÉX_Y",
+  "camel": "ccéxY"
+ },
+ {
+  "input": "É1_ßÉé",
+  "constant": "É1_SS_ÉÉ",
+  "camel": "é1SSÉé"
+ },
+ {
+  "input": "-",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "c.DDÉB",
+  "constant": "C_DDÉB",
+  "camel": "cDdéb"
+ },
+ {
+  "input": "c ZZÉDBéé",
+  "constant": "C_ZZÉD_BÉÉ",
+  "camel": "cZzédBéé"
+ },
+ {
+  "input": "DDé",
+  "constant": "D_DÉ",
+  "camel": "dDé"
+ },
+ {
+  "input": "-",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "ßDßé11_xY-ß",
+  "constant": "SS_DSSÉ11_X_Y_SS",
+  "camel": "ßDßé11XYSS"
+ },
+ {
+  "input": " .axYß a",
+  "constant": "AX_YSS_A",
+  "camel": "axYßA"
+ },
+ {
+  "input": "aZZß1",
+  "constant": "A_Z_ZSS1",
+  "camel": "aZZß1"
+ },
+ {
+  "input": "ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": " xYxYé",
+  "constant": "X_YX_YÉ",
+  "camel": "xYxYé"
+ },
+ {
+  "input": "_aßBcé-ß",
+  "constant": "ASS_BCÉ_SS",
+  "camel": "aßBcéSS"
+ },
+ {
+  "input": "-c.xY.1",
+  "constant": "C_X_Y_1",
+  "camel": "cXY_1"
+ },
+ {
+  "input": "--céß_xY.D.",
+  "constant": "CÉSS_X_Y_D",
+  "camel": "céßXYD"
+ },
+ {
+  "input": " ß1-1DZZ ",
+  "constant": "SS1_1_DZZ",
+  "camel": "ß1_1Dzz"
+ },
+ {
+  "input": "ÉcßBxYxYD",
+  "constant": "ÉCSS_BX_YX_YD",
+  "camel": "écßBxYxYd"
+ },
+ {
+  "input": "1ßDxY1",
+  "constant": "1SS_DX_Y1",
+  "camel": "1ßDxY1"
+ },
+ {
+  "input": ".1ccZZxYxYDD",
+  "constant": "1CC_Z_ZX_YX_YDD",
+  "camel": "1ccZZxYxYdd"
+ },
+ {
+  "input": "_",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "aBÉ-.",
+  "constant": "A_BÉ",
+  "camel": "aBé"
+ },
+ {
+  "input": "D.a1é.-ZZ",
+  "constant": "D_A1É_ZZ",
+  "camel": "dA1éZz"
+ },
+ {
+  "input": "1",
+  "constant": "1",
+  "camel": "1"
+ },
+ {
+  "input": "xY1.ZZ.1 éxY",
+  "constant": "X_Y1_ZZ_1_ÉX_Y",
+  "camel": "xY1Zz_1ÉxY"
+ },
+ {
+  "input": "cDéZZZZ",
+  "constant": "C_DÉ_ZZZZ",
+  "camel": "cDéZzzz"
+ },
+ {
+  "input": "_Éa",
+  "constant": "ÉA",
+  "camel": "éa"
+ },
+ {
+  "input": "1ÉxYcxYcB",
+  "constant": "1_ÉX_YCX_YC_B",
+  "camel": "1ÉxYcxYcB"
+ },
+ {
+  "input": "1D11",
+  "constant": "1_D11",
+  "camel": "1D11"
+ },
+ {
+  "input": " ß.DxYÉÉa",
+  "constant": "SS_DX_YÉ_ÉA",
+  "camel": "ßDxYéÉa"
+ },
+ {
+  "input": "1-1ßcßé",
+  "constant": "1_1SSCSSÉ",
+  "camel": "1_1ßcßé"
+ },
+ {
+  "input": ".DaZZ.ÉxY-ß",
+  "constant": "DA_ZZ_ÉX_Y_SS",
+  "camel": "daZzÉxYSS"
+ },
+ {
+  "input": " ZZ ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "aZZxYÉ_1cxYxY.",
+  "constant": "A_Z_ZX_YÉ_1CX_YX_Y",
+  "camel": "aZZxYé_1cxYxY"
+ },
+ {
+  "input": ".ß_a",
+  "constant": "SS_A",
+  "camel": "ßA"
+ },
+ {
+  "input": "c _a",
+  "constant": "C_A",
+  "camel": "cA"
+ },
+ {
+  "input": "ZZéxYß-ZZZZ",
+  "constant": "Z_ZÉX_YSS_ZZZZ",
+  "camel": "zZéxYßZzzz"
+ },
+ {
+  "input": "ZZ1 ",
+  "constant": "ZZ1",
+  "camel": "zz1"
+ },
+ {
+  "input": "é1",
+  "constant": "É1",
+  "camel": "é1"
+ },
+ {
+  "input": "ßßécZZDD",
+  "constant": "SSSSÉC_ZZDD",
+  "camel": "ßßécZzdd"
+ },
+ {
+  "input": " ZZÉ",
+  "constant": "ZZÉ",
+  "camel": "zzé"
+ },
+ {
+  "input": "--cB",
+  "constant": "C_B",
+  "camel": "cB"
+ },
+ {
+  "input": "Ba.",
+  "constant": "BA",
+  "camel": "ba"
+ },
+ {
+  "input": "xY11éé_-_1",
+  "constant": "X_Y11ÉÉ_1",
+  "camel": "xY11éé_1"
+ },
+ {
+  "input": "a ZZc ",
+  "constant": "A_Z_ZC",
+  "camel": "aZZc"
+ },
+ {
+  "input": "é.ZZaDZZxYZZßa",
+  "constant": "É_Z_ZA_DZ_ZX_YZ_ZSSA",
+  "camel": "éZZaDzZxYzZßa"
+ },
+ {
+  "input": " DBa",
+  "constant": "D_BA",
+  "camel": "dBa"
+ },
+ {
+  "input": " a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "ßÉ-aéßBDÉc",
+  "constant": "SS_É_AÉSS_BD_ÉC",
+  "camel": "ßÉAéßBdÉc"
+ },
+ {
+  "input": "c .-_",
+  "constant": "C",
+  "camel": "c"
+ },
+ {
+  "input": "c1.É",
+  "constant": "C1_É",
+  "camel": "c1É"
+ },
+ {
+  "input": "a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "ßÉ__c-1Bßa",
+  "constant": "SS_É_C_1_BSSA",
+  "camel": "ßÉC_1Bßa"
+ },
+ {
+  "input": "_ccaßa",
+  "constant": "CCASSA",
+  "camel": "ccaßa"
+ },
+ {
+  "input": "ß -",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "ZZ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": ".DD_xYDaÉ",
+  "constant": "DD_X_Y_DA_É",
+  "camel": "ddXYDaÉ"
+ },
+ {
+  "input": "xYc",
+  "constant": "X_YC",
+  "camel": "xYc"
+ },
+ {
+  "input": "ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": " ZZ-ZZa_-ß",
+  "constant": "ZZ_Z_ZA_SS",
+  "camel": "zzZZaSS"
+ },
+ {
+  "input": "_",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "DcZZ.BDß  ",
+  "constant": "DC_ZZ_B_DSS",
+  "camel": "dcZzBDß"
+ },
+ {
+  "input": "-Éa",
+  "constant": "ÉA",
+  "camel": "éa"
+ },
+ {
+  "input": "_-ZZZZ.ZZ",
+  "constant": "ZZZZ_ZZ",
+  "camel": "zzzzZz"
+ },
+ {
+  "input": "ÉBBÉ c-ccB",
+  "constant": "ÉBBÉ_C_CC_B",
+  "camel": "ébbéCCcB"
+ },
+ {
+  "input": "aZZ.ÉBéa",
+  "constant": "A_ZZ_É_BÉA",
+  "camel": "aZzÉBéa"
+ },
+ {
+  "input": "Éa ßß",
+  "constant": "ÉA_SSSS",
+  "camel": "éaSSß"
+ },
+ {
+  "input": "É.ÉxYB ßxY",
+  "constant": "É_ÉX_YB_SSX_Y",
+  "camel": "éÉxYbSSxY"
+ },
+ {
+  "input": "ZZ_c-xY",
+  "constant": "ZZ_C_X_Y",
+  "camel": "zzCXY"
+ },
+ {
+  "input": "ZZa_ c",
+  "constant": "Z_ZA_C",
+  "camel": "zZaC"
+ },
+ {
+  "input": ".a",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "  ß1caa-1",
+  "constant": "SS1CAA_1",
+  "camel": "ß1caa_1"
+ },
+ {
+  "input": "cé-é_1cBD_",
+  "constant": "CÉ_É_1C_BD",
+  "camel": "céÉ_1cBd"
+ },
+ {
+  "input": "1_xYÉxYZZéa",
+  "constant": "1_X_Y_ÉX_YZ_ZÉA",
+  "camel": "1XYÉxYzZéa"
+ },
+ {
+  "input": "É-B1-éÉ.1",
+  "constant": "É_B1_É_É_1",
+  "camel": "éB1ÉÉ_1"
+ },
+ {
+  "input": "É-ßxYc.ß.c",
+  "constant": "É_SSX_YC_SS_C",
+  "camel": "éSSxYcSSC"
+ },
+ {
+  "input": " cZZé-Éé",
+  "constant": "C_Z_ZÉ_ÉÉ",
+  "camel": "cZZéÉé"
+ },
+ {
+  "input": "1BxY _",
+  "constant": "1_BX_Y",
+  "camel": "1BxY"
+ },
+ {
+  "input": "ZZDZZ-.ZZB",
+  "constant": "ZZDZZ_ZZB",
+  "camel": "zzdzzZzb"
+ },
+ {
+  "input": "axY11ß",
+  "constant": "AX_Y11SS",
+  "camel": "axY11ß"
+ },
+ {
+  "input": "B1-.c",
+  "constant": "B1_C",
+  "camel": "b1C"
+ },
+ {
+  "input": ". ÉÉ c",
+  "constant": "ÉÉ_C",
+  "camel": "ééC"
+ },
+ {
+  "input": ".ZZ_ ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": " ß .1",
+  "constant": "SS_1",
+  "camel": "ß_1"
+ },
+ {
+  "input": " _D1D.",
+  "constant": "D1_D",
+  "camel": "d1D"
+ },
+ {
+  "input": ".",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "ß-_",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "_ .éc",
+  "constant": "ÉC",
+  "camel": "éc"
+ },
+ {
+  "input": ".ZZxYD",
+  "constant": "Z_ZX_YD",
+  "camel": "zZxYd"
+ },
+ {
+  "input": "aß-a1ß 1",
+  "constant": "ASS_A1SS_1",
+  "camel": "aßA1ß_1"
+ },
+ {
+  "input": "-ZZDZZ-ß",
+  "constant": "ZZDZZ_SS",
+  "camel": "zzdzzSS"
+ },
+ {
+  "input": " Dß",
+  "constant": "DSS",
+  "camel": "dß"
+ },
+ {
+  "input": "B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "BécaZZZZ",
+  "constant": "BÉCA_ZZZZ",
+  "camel": "bécaZzzz"
+ },
+ {
+  "input": ".1ÉZZé1",
+  "constant": "1_ÉZ_ZÉ1",
+  "camel": "1ÉzZé1"
+ },
+ {
+  "input": "xY1_c.B",
+  "constant": "X_Y1_C_B",
+  "camel": "xY1CB"
+ },
+ {
+  "input": "ßBB",
+  "constant": "SS_BB",
+  "camel": "ßBb"
+ },
+ {
+  "input": "1-.D _1-",
+  "constant": "1_D_1",
+  "camel": "1D_1"
+ },
+ {
+  "input": "é",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "éc xYDéÉ ÉD",
+  "constant": "ÉC_X_Y_DÉ_É_ÉD",
+  "camel": "écXYDéÉÉd"
+ },
+ {
+  "input": " é_xYßBßßxY",
+  "constant": "É_X_YSS_BSSSSX_Y",
+  "camel": "éXYßBßßxY"
+ },
+ {
+  "input": "B-",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "__a_.",
+  "constant": "A",
+  "camel": "a"
+ },
+ {
+  "input": "éßcZZxY.",
+  "constant": "ÉSSC_Z_ZX_Y",
+  "camel": "éßcZZxY"
+ },
+ {
+  "input": "Ba_D-",
+  "constant": "BA_D",
+  "camel": "baD"
+ },
+ {
+  "input": " acÉZZéé1Éé",
+  "constant": "AC_ÉZ_ZÉÉ1_ÉÉ",
+  "camel": "acÉzZéé1Éé"
+ },
+ {
+  "input": "_é",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "caBZZßa-D",
+  "constant": "CA_BZ_ZSSA_D",
+  "camel": "caBzZßaD"
+ },
+ {
+  "input": "aßé_ß ÉD",
+  "constant": "ASSÉ_SS_ÉD",
+  "camel": "aßéSSÉd"
+ },
+ {
+  "input": "aaéxY.BaZZZZ1",
+  "constant": "AAÉX_Y_BA_ZZZZ1",
+  "camel": "aaéxYBaZzzz1"
+ },
+ {
+  "input": "xYxY B",
+  "constant": "X_YX_Y_B",
+  "camel": "xYxYB"
+ },
+ {
+  "input": "xYBxYD.xY",
+  "constant": "X_Y_BX_YD_X_Y",
+  "camel": "xYBxYdXY"
+ },
+ {
+  "input": "__cé.",
+  "constant": "CÉ",
+  "camel": "cé"
+ },
+ {
+  "input": "..ÉßDc--",
+  "constant": "ÉSS_DC",
+  "camel": "éßDc"
+ },
+ {
+  "input": "..é_É",
+  "constant": "É_É",
+  "camel": "éÉ"
+ },
+ {
+  "input": "B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "écß.",
+  "constant": "ÉCSS",
+  "camel": "écß"
+ },
+ {
+  "input": ".",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "-ÉZZDé ZZac-",
+  "constant": "ÉZZ_DÉ_Z_ZAC",
+  "camel": "ézzDéZZac"
+ },
+ {
+  "input": ".xY éa.DB",
+  "constant": "X_Y_ÉA_DB",
+  "camel": "xYÉaDb"
+ },
+ {
+  "input": "ÉaÉZZ_a",
+  "constant": "ÉA_ÉZZ_A",
+  "camel": "éaÉzzA"
+ },
+ {
+  "input": "aa",
+  "constant": "AA",
+  "camel": "aa"
+ },
+ {
+  "input": "ßDxY",
+  "constant": "SS_DX_Y",
+  "camel": "ßDxY"
+ },
+ {
+  "input": "B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": ".c1ßxYßa.",
+  "constant": "C1SSX_YSSA",
+  "camel": "c1ßxYßa"
+ },
+ {
+  "input": "1Dc",
+  "constant": "1_DC",
+  "camel": "1Dc"
+ },
+ {
+  "input": "cxY-1aéé1_",
+  "constant": "CX_Y_1AÉÉ1",
+  "camel": "cxY_1aéé1"
+ },
+ {
+  "input": " B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "BZZ",
+  "constant": "BZZ",
+  "camel": "bzz"
+ },
+ {
+  "input": "caxYB_-__",
+  "constant": "CAX_YB",
+  "camel": "caxYb"
+ },
+ {
+  "input": "__--",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "xY1xYZZ",
+  "constant": "X_Y1X_YZZ",
+  "camel": "xY1xYzz"
+ },
+ {
+  "input": "DaÉ.D",
+  "constant": "DA_É_D",
+  "camel": "daÉD"
+ },
+ {
+  "input": "ß_DaBZZZZ É_",
+  "constant": "SS_DA_BZZZZ_É",
+  "camel": "ßDaBzzzzÉ"
+ },
+ {
+  "input": "-1_é_ZZ",
+  "constant": "1_É_ZZ",
+  "camel": "1ÉZz"
+ },
+ {
+  "input": "É  É.xY.a-",
+  "constant": "É_É_X_Y_A",
+  "camel": "éÉXYA"
+ },
+ {
+  "input": "DD",
+  "constant": "DD",
+  "camel": "dd"
+ },
+ {
+  "input": "1BxY.é-DB",
+  "constant": "1_BX_Y_É_DB",
+  "camel": "1BxYÉDb"
+ },
+ {
+  "input": "aDZZ_Ba",
+  "constant": "A_DZZ_BA",
+  "camel": "aDzzBa"
+ },
+ {
+  "input": "D_DxY.1-écÉ",
+  "constant": "D_DX_Y_1_ÉC_É",
+  "camel": "dDxY_1ÉcÉ"
+ },
+ {
+  "input": " ",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "1",
+  "constant": "1",
+  "camel": "1"
+ },
+ {
+  "input": "xY .xY.-BaB",
+  "constant": "X_Y_X_Y_BA_B",
+  "camel": "xYXYBaB"
+ },
+ {
+  "input": "1_cBDc-",
+  "constant": "1_C_B_DC",
+  "camel": "1CBDc"
+ },
+ {
+  "input": ".-_",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "1. ÉÉca_aÉ",
+  "constant": "1_É_ÉCA_A_É",
+  "camel": "1ÉÉcaAÉ"
+ },
+ {
+  "input": ".",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "cßéxYß",
+  "constant": "CSSÉX_YSS",
+  "camel": "cßéxYß"
+ },
+ {
+  "input": "ZZa",
+  "constant": "Z_ZA",
+  "camel": "zZa"
+ },
+ {
+  "input": "aßcDcZZDcZZ",
+  "constant": "ASSC_DC_ZZ_DC_ZZ",
+  "camel": "aßcDcZzDcZz"
+ },
+ {
+  "input": "-aBD ßc1",
+  "constant": "A_BD_SSC1",
+  "camel": "aBdSSc1"
+ },
+ {
+  "input": "xYÉ1",
+  "constant": "X_YÉ1",
+  "camel": "xYé1"
+ },
+ {
+  "input": "xY_11ßéÉDxY",
+  "constant": "X_Y_11SSÉ_É_DX_Y",
+  "camel": "xY_11ßéÉDxY"
+ },
+ {
+  "input": "cc_aZZa",
+  "constant": "CC_A_Z_ZA",
+  "camel": "ccAZZa"
+ },
+ {
+  "input": "a-xYaxY-D-",
+  "constant": "A_X_YAX_Y_D",
+  "camel": "aXYaxYD"
+ },
+ {
+  "input": "ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": " aa_éBxYaÉ",
+  "constant": "AA_É_BX_YA_É",
+  "camel": "aaÉBxYaÉ"
+ },
+ {
+  "input": "c.ß_ß_ZZéxYc",
+  "constant": "C_SS_SS_Z_ZÉX_YC",
+  "camel": "cSSSSZZéxYc"
+ },
+ {
+  "input": "a1_DBÉ",
+  "constant": "A1_DBÉ",
+  "camel": "a1Dbé"
+ },
+ {
+  "input": "ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "éÉcé",
+  "constant": "É_ÉCÉ",
+  "camel": "éÉcé"
+ },
+ {
+  "input": "D-",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "aD_ca-",
+  "constant": "A_D_CA",
+  "camel": "aDCa"
+ },
+ {
+  "input": ".-_.éZZÉ",
+  "constant": "É_ZZÉ",
+  "camel": "éZzé"
+ },
+ {
+  "input": "_ZZZZBBZZ.",
+  "constant": "ZZZZBBZZ",
+  "camel": "zzzzbbzz"
+ },
+ {
+  "input": "1BcÉ",
+  "constant": "1_BC_É",
+  "camel": "1BcÉ"
+ },
+ {
+  "input": " 1.xY",
+  "constant": "1_X_Y",
+  "camel": "1XY"
+ },
+ {
+  "input": "1D-a1a.É",
+  "constant": "1_D_A1A_É",
+  "camel": "1DA1aÉ"
+ },
+ {
+  "input": "B",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "éZZ.1 É",
+  "constant": "É_ZZ_1_É",
+  "camel": "éZz_1É"
+ },
+ {
+  "input": "c1D_.É.xY",
+  "constant": "C1_D_É_X_Y",
+  "camel": "c1DÉXY"
+ },
+ {
+  "input": "Dé. ß1BBc ",
+  "constant": "DÉ_SS1_B_BC",
+  "camel": "déSS1BBc"
+ },
+ {
+  "input": "D1.cé_Dß",
+  "constant": "D1_CÉ_DSS",
+  "camel": "d1CéDß"
+ },
+ {
+  "input": "cZZB-ßZZxY_",
+  "constant": "C_ZZB_SS_Z_ZX_Y",
+  "camel": "cZzbSSZZxY"
+ },
+ {
+  "input": "B_",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": ".1é-B",
+  "constant": "1É_B",
+  "camel": "1éB"
+ },
+ {
+  "input": "c-c",
+  "constant": "C_C",
+  "camel": "cC"
+ },
+ {
+  "input": "ZZÉD1ZZ",
+  "constant": "ZZÉD1_ZZ",
+  "camel": "zzéd1Zz"
+ },
+ {
+  "input": "DÉß1ÉZZ",
+  "constant": "D_ÉSS1_ÉZZ",
+  "camel": "dÉß1Ézz"
+ },
+ {
+  "input": "ZZ.",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "-ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "ZZ c",
+  "constant": "ZZ_C",
+  "camel": "zzC"
+ },
+ {
+  "input": "éDéZZ",
+  "constant": "É_DÉ_ZZ",
+  "camel": "éDéZz"
+ },
+ {
+  "input": "éZZZZca ",
+  "constant": "É_ZZZ_ZCA",
+  "camel": "éZzzZca"
+ },
+ {
+  "input": "B11ßxYZZ1__",
+  "constant": "B11SSX_YZZ1",
+  "camel": "b11ßxYzz1"
+ },
+ {
+  "input": "-_",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "1-B_a",
+  "constant": "1_B_A",
+  "camel": "1BA"
+ },
+ {
+  "input": "c--.-c-",
+  "constant": "C_C",
+  "camel": "cC"
+ },
+ {
+  "input": "ß- -D",
+  "constant": "SS_D",
+  "camel": "ßD"
+ },
+ {
+  "input": "DÉß-BéZZ",
+  "constant": "D_ÉSS_BÉ_ZZ",
+  "camel": "dÉßBéZz"
+ },
+ {
+  "input": "-.DaZZa  xY",
+  "constant": "DA_Z_ZA_X_Y",
+  "camel": "daZZaXY"
+ },
+ {
+  "input": "_DZZÉxY_ßa",
+  "constant": "DZZ_ÉX_Y_SSA",
+  "camel": "dzzÉxYSSa"
+ },
+ {
+  "input": "Bc-xYaa",
+  "constant": "BC_X_YAA",
+  "camel": "bcXYaa"
+ },
+ {
+  "input": "ZZ-ß 1é",
+  "constant": "ZZ_SS_1É",
+  "camel": "zzSS_1é"
+ },
+ {
+  "input": "ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "É1..ZZa_c.D",
+  "constant": "É1_Z_ZA_C_D",
+  "camel": "é1ZZaCD"
+ },
+ {
+  "input": ".aDß.BZZD-",
+  "constant": "A_DSS_BZZD",
+  "camel": "aDßBzzd"
+ },
+ {
+  "input": "ßaécZZ",
+  "constant": "SSAÉC_ZZ",
+  "camel": "ßaécZz"
+ },
+ {
+  "input": "xYÉ",
+  "constant": "X_YÉ",
+  "camel": "xYé"
+ },
+ {
+  "input": "DBa. ",
+  "constant": "D_BA",
+  "camel": "dBa"
+ },
+ {
+  "input": " 1Dßß",
+  "constant": "1_DSSSS",
+  "camel": "1Dßß"
+ },
+ {
+  "input": "aÉDaßßBa",
+  "constant": "A_É_DASSSS_BA",
+  "camel": "aÉDaßßBa"
+ },
+ {
+  "input": "ß-é",
+  "constant": "SS_É",
+  "camel": "ßÉ"
+ },
+ {
+  "input": "-ZZZZcÉDD ZZ_",
+  "constant": "ZZZ_ZC_ÉDD_ZZ",
+  "camel": "zzzZcÉddZz"
+ },
+ {
+  "input": " .",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "BÉÉß",
+  "constant": "BÉ_ÉSS",
+  "camel": "béÉß"
+ },
+ {
+  "input": "-.D",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "ac 1.xY_ZZ1",
+  "constant": "AC_1_X_Y_ZZ1",
+  "camel": "ac_1XYZz1"
+ },
+ {
+  "input": "xYZZ.c",
+  "constant": "X_YZZ_C",
+  "camel": "xYzzC"
+ },
+ {
+  "input": "ZZccß",
+  "constant": "Z_ZCCSS",
+  "camel": "zZccß"
+ },
+ {
+  "input": "éa",
+  "constant": "ÉA",
+  "camel": "éa"
+ },
+ {
+  "input": ".c1B -_ca",
+  "constant": "C1_B_CA",
+  "camel": "c1BCa"
+ },
+ {
+  "input": "éßÉc",
+  "constant": "ÉSS_ÉC",
+  "camel": "éßÉc"
+ },
+ {
+  "input": "xYB",
+  "constant": "X_YB",
+  "camel": "xYb"
+ },
+ {
+  "input": "é__",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "1É",
+  "constant": "1_É",
+  "camel": "1É"
+ },
+ {
+  "input": "D..ß.ÉB",
+  "constant": "D_SS_ÉB",
+  "camel": "dSSÉb"
+ },
+ {
+  "input": " xYxYB",
+  "constant": "X_YX_YB",
+  "camel": "xYxYb"
+ },
+ {
+  "input": " .aDcÉÉZZ",
+  "constant": "A_DC_ÉÉZZ",
+  "camel": "aDcÉézz"
+ },
+ {
+  "input": "xY",
+  "constant": "X_Y",
+  "camel": "xY"
+ },
+ {
+  "input": "xY .1_ZZ1",
+  "constant": "X_Y_1_ZZ1",
+  "camel": "xY_1Zz1"
+ },
+ {
+  "input": "aéZZBZZé_c",
+  "constant": "AÉ_ZZBZ_ZÉ_C",
+  "camel": "aéZzbzZéC"
+ },
+ {
+  "input": "-1 ßxYÉ",
+  "constant": "1_SSX_YÉ",
+  "camel": "1SSxYé"
+ },
+ {
+  "input": "cß1é BxY.- ",
+  "constant": "CSS1É_BX_Y",
+  "camel": "cß1éBxY"
+ },
+ {
+  "input": "xYBßßéa-",
+  "constant": "X_Y_BSSSSÉA",
+  "camel": "xYBßßéa"
+ },
+ {
+  "input": "céxY axY",
+  "constant": "CÉX_Y_AX_Y",
+  "camel": "céxYAxY"
+ },
+ {
+  "input": "é",
+  "constant": "É",
+  "camel": "é"
+ },
+ {
+  "input": "aé_BéB_.a1",
+  "constant": "AÉ_BÉ_B_A1",
+  "camel": "aéBéBA1"
+ },
+ {
+  "input": "ÉxYZZ",
+  "constant": "ÉX_YZZ",
+  "camel": "éxYzz"
+ },
+ {
+  "input": "-xY .",
+  "constant": "X_Y",
+  "camel": "xY"
+ },
+ {
+  "input": "a1.ZZacxY",
+  "constant": "A1_Z_ZACX_Y",
+  "camel": "a1ZZacxY"
+ },
+ {
+  "input": "aZZÉD1xY",
+  "constant": "A_ZZÉD1X_Y",
+  "camel": "aZzéd1xY"
+ },
+ {
+  "input": "1_D",
+  "constant": "1_D",
+  "camel": "1D"
+ },
+ {
+  "input": " ",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "éÉxY1ÉcaZZÉé",
+  "constant": "É_ÉX_Y1_ÉCA_ZZ_ÉÉ",
+  "camel": "éÉxY1ÉcaZzÉé"
+ },
+ {
+  "input": "a_D-1",
+  "constant": "A_D_1",
+  "camel": "aD_1"
+ },
+ {
+  "input": "_",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "xYßÉ",
+  "constant": "X_YSS_É",
+  "camel": "xYßÉ"
+ },
+ {
+  "input": "É Bc",
+  "constant": "É_BC",
+  "camel": "éBc"
+ },
+ {
+  "input": "éZZéDc-1ÉZZ-",
+  "constant": "É_Z_ZÉ_DC_1_ÉZZ",
+  "camel": "éZZéDc_1Ézz"
+ },
+ {
+  "input": "ß ß ß _c-",
+  "constant": "SS_SS_SS_C",
+  "camel": "ßSSSSC"
+ },
+ {
+  "input": "éxY-ÉxYaß_BxY",
+  "constant": "ÉX_Y_ÉX_YASS_BX_Y",
+  "camel": "éxYÉxYaßBxY"
+ },
+ {
+  "input": "BÉÉ ZZ",
+  "constant": "BÉÉ_ZZ",
+  "camel": "bééZz"
+ },
+ {
+  "input": "D",
+  "constant": "D",
+  "camel": "d"
+ },
+ {
+  "input": "xYßa",
+  "constant": "X_YSSA",
+  "camel": "xYßa"
+ },
+ {
+  "input": "céÉ.c",
+  "constant": "CÉ_É_C",
+  "camel": "céÉC"
+ },
+ {
+  "input": "É-DZZxY ß_xYB",
+  "constant": "É_DZ_ZX_Y_SS_X_YB",
+  "camel": "éDzZxYSSXYb"
+ },
+ {
+  "input": "DÉZZ",
+  "constant": "DÉZZ",
+  "camel": "dézz"
+ },
+ {
+  "input": "cxYBBBZZacBc",
+  "constant": "CX_YBBBZ_ZAC_BC",
+  "camel": "cxYbbbzZacBc"
+ },
+ {
+  "input": "ZZa__1",
+  "constant": "Z_ZA_1",
+  "camel": "zZa_1"
+ },
+ {
+  "input": "xYß1é",
+  "constant": "X_YSS1É",
+  "camel": "xYß1é"
+ },
+ {
+  "input": "- ",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "caaßßxYxY",
+  "constant": "CAASSSSX_YX_Y",
+  "camel": "caaßßxYxY"
+ },
+ {
+  "input": "ß",
+  "constant": "SS",
+  "camel": "ß"
+ },
+ {
+  "input": "ßéZZ--1_D",
+  "constant": "SSÉ_ZZ_1_D",
+  "camel": "ßéZz_1D"
+ },
+ {
+  "input": "ÉZZBÉ",
+  "constant": "ÉZZBÉ",
+  "camel": "ézzbé"
+ },
+ {
+  "input": "aBéac-",
+  "constant": "A_BÉAC",
+  "camel": "aBéac"
+ },
+ {
+  "input": ".xYéBc.aßxY",
+  "constant": "X_YÉ_BC_ASSX_Y",
+  "camel": "xYéBcAßxY"
+ },
+ {
+  "input": "ZZaDc -.a",
+  "constant": "Z_ZA_DC_A",
+  "camel": "zZaDcA"
+ },
+ {
+  "input": "-acaéB1-",
+  "constant": "ACAÉ_B1",
+  "camel": "acaéB1"
+ },
+ {
+  "input": "Éa-ßcZZ-",
+  "constant": "ÉA_SSC_ZZ",
+  "camel": "éaSScZz"
+ },
+ {
+  "input": " ßéBaB",
+  "constant": "SSÉ_BA_B",
+  "camel": "ßéBaB"
+ },
+ {
+  "input": "-B-",
+  "constant": "B",
+  "camel": "b"
+ },
+ {
+  "input": "ZZ 1  __c",
+  "constant": "ZZ_1_C",
+  "camel": "zz_1C"
+ },
+ {
+  "input": "éBBcZZc1a D",
+  "constant": "É_B_BC_Z_ZC1A_D",
+  "camel": "éBBcZZc1aD"
+ },
+ {
+  "input": "B1a-.",
+  "constant": "B1A",
+  "camel": "b1a"
+ },
+ {
+  "input": " cxY.É_D .",
+  "constant": "CX_Y_É_D",
+  "camel": "cxYÉD"
+ },
+ {
+  "input": "ZZ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "-cZZxY.aDxYé ",
+  "constant": "C_Z_ZX_Y_A_DX_YÉ",
+  "camel": "cZZxYADxYé"
+ },
+ {
+  "input": "ZZ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "c.ßcxYß",
+  "constant": "C_SSCX_YSS",
+  "camel": "cSScxYß"
+ },
+ {
+  "input": "ZZDBÉ",
+  "constant": "ZZDBÉ",
+  "camel": "zzdbé"
+ },
+ {
+  "input": "ÉÉÉß -xYé",
+  "constant": "ÉÉ_ÉSS_X_YÉ",
+  "camel": "ééÉßXYé"
+ },
+ {
+  "input": "cD-ZZßÉ1",
+  "constant": "C_D_Z_ZSS_É1",
+  "camel": "cDZZßÉ1"
+ },
+ {
+  "input": "c1-xYxYé-",
+  "constant": "C1_X_YX_YÉ",
+  "camel": "c1XYxYé"
+ },
+ {
+  "input": "DZZZZé ",
+  "constant": "DZZZ_ZÉ",
+  "camel": "dzzzZé"
+ },
+ {
+  "input": ".",
+  "constant": "",
+  "camel": ""
+ },
+ {
+  "input": "1c ZZ",
+  "constant": "1C_ZZ",
+  "camel": "1cZz"
+ },
+ {
+  "input": "Éa ",
+  "constant": "ÉA",
+  "camel": "éa"
+ },
+ {
+  "input": "Éß1é",
+  "constant": "ÉSS1É",
+  "camel": "éß1é"
+ },
+ {
+  "input": "1__c",
+  "constant": "1_C",
+  "camel": "1C"
+ },
+ {
+  "input": ".BécÉ.",
+  "constant": "BÉC_É",
+  "camel": "bécÉ"
+ },
+ {
+  "input": "ZZÉ cxYÉB",
+  "constant": "ZZÉ_CX_YÉB",
+  "camel": "zzéCxYéb"
+ },
+ {
+  "input": "caZZB a",
+  "constant": "CA_ZZB_A",
+  "camel": "caZzbA"
+ },
+ {
+  "input": "ÉÉxYß1ÉxY_-ZZ",
+  "constant": "É_ÉX_YSS1_ÉX_Y_ZZ",
+  "camel": "éÉxYß1ÉxYZz"
+ },
+ {
+  "input": "ß.Éß-_B",
+  "constant": "SS_ÉSS_B",
+  "camel": "ßÉßB"
+ },
+ {
+  "input": "_ZZ_-ßD ßDc",
+  "constant": "ZZ_SS_D_SS_DC",
+  "camel": "zzSSDSSDc"
+ },
+ {
+  "input": "11 ",
+  "constant": "11",
+  "camel": "11"
+ },
+ {
+  "input": " É1",
+  "constant": "É1",
+  "camel": "é1"
+ },
+ {
+  "input": "xY",
+  "constant": "X_Y",
+  "camel": "xY"
+ },
+ {
+  "input": "xYBÉD1ZZ_",
+  "constant": "X_YBÉD1_ZZ",
+  "camel": "xYbéd1Zz"
+ },
+ {
+  "input": "ZZé ZZZZ-a_c",
+  "constant": "Z_ZÉ_ZZZZ_A_C",
+  "camel": "zZéZzzzAC"
+ },
+ {
+  "input": "ZZ",
+  "constant": "ZZ",
+  "camel": "zz"
+ },
+ {
+  "input": "a_. ",
+  "constant": "A",
+  "camel": "a"
+ }
+]

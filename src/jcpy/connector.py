@@ -9,6 +9,7 @@ from fastapi import APIRouter
 from starlette.requests import Request
 from starlette.responses import JSONResponse, PlainTextResponse, Response
 
+from jcpy.acl import AccessControl
 from jcpy.context import ActionContext, RequestContext
 from jcpy.errors import HttpError
 from jcpy.responses import error_response, internal_error_response
@@ -18,6 +19,7 @@ from jcpy.v1.ping.handler import PingResponse
 if TYPE_CHECKING:
     from collections.abc import Mapping
 
+    from jcpy.acl import AccessControlProtocol, RulesProvider
     from jcpy.config.models import AppConfig
     from jcpy.context import ActionHandler
     from jcpy.types import AuthCallback, OriginPredicate
@@ -41,6 +43,11 @@ class Connector:
             without it every request gets ``defaultRole``.
         allowed_origins: CORS origin predicate; replaces the
             ``allowedOrigins`` list of the configuration.
+        access_control: Callable loading the access rules on every
+            check; replaces the ``accessControl`` list of the
+            configuration.
+        access_control_instance: Custom access control implementation;
+            replaces both rule sources above.
         actions: Action handlers by name.
     """
 
@@ -50,13 +57,24 @@ class Connector:
         *,
         check_authentication: AuthCallback | None = None,
         allowed_origins: OriginPredicate | None = None,
+        access_control: RulesProvider | None = None,
+        access_control_instance: AccessControlProtocol | None = None,
         actions: Mapping[str, ActionHandler] = ACTIONS,
     ) -> None:
         self.config = config
         self.check_authentication = check_authentication
         self.allowed_origins = allowed_origins
         self.actions = actions
-        if check_authentication is None and not config.access_control:
+        self.access: AccessControlProtocol = (
+            access_control_instance
+            or AccessControl(access_control or config.access_control)
+        )
+        open_access = (
+            not config.access_control
+            and access_control is None
+            and access_control_instance is None
+        )
+        if check_authentication is None and open_access:
             logger.warning(
                 "No check_authentication callback and an empty "
                 "accessControl: every client gets role %r with full "
@@ -124,11 +142,12 @@ class Connector:
             role = await self._authenticate(request)
             params = await RequestContext.from_request(request)
             action = params.action
+            await self.access.check_permission(role, action, params.path)
             handler = self.actions.get(action)
             if handler is None:
                 raise HttpError.not_found(f'Action "{action}" not found')
             response = await handler(
-                ActionContext(request, self.config, role, params)
+                ActionContext(request, self.config, role, params, self.access)
             )
         except HttpError as error:
             self._log(error)

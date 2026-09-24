@@ -5,6 +5,7 @@ in the jodit-nodejs configuration.
 """
 
 import tempfile
+from collections.abc import Callable
 from pathlib import Path
 from typing import Annotated, Any, Self
 
@@ -22,7 +23,21 @@ from pydantic.alias_generators import to_camel
 
 from jcpy.config import defaults
 
-type Extensions = str | list[str]
+type ExtensionsResolver = Callable[
+    [str, AccessControlRule, str, str], list[str]
+]
+"""Compute the upper-cased extensions a rule applies to.
+
+Called with the CONSTANT_CASE action, the rule, the path and the file
+extension of the checked request.
+"""
+
+type ActionPredicate = Callable[[str, AccessControlRule, str, str], object]
+"""Decide an action for the request; a non-boolean result allows it.
+
+Called with the CONSTANT_CASE action, the rule, the path and the file
+extension of the checked request.
+"""
 
 
 def _check_url(value: str) -> str:
@@ -96,34 +111,34 @@ class AccessControlRule(BaseModel):
     """Access control rule.
 
     ``role``, ``path`` and ``extensions`` select the requests the rule
-    applies to; every other key is an action name in CONSTANT_CASE
-    (``FILE_UPLOAD``) mapped to whether it is allowed.
+    applies to (``None`` matches everything); every other key is an
+    action name in CONSTANT_CASE (``FILE_UPLOAD``) mapped to a flag or,
+    in rules built in code, to an ``ActionPredicate``.
     """
 
     model_config = ConfigDict(extra="allow", frozen=True)
 
     role: str | None = None
     path: str | None = None
-    extensions: Extensions | None = None
+    extensions: str | list[str] | ExtensionsResolver | None = None
 
     @model_validator(mode="after")
     def _actions_are_flags(self) -> Self:
         for key, value in (self.model_extra or {}).items():
-            if not isinstance(value, bool):
+            if not isinstance(value, bool) and not callable(value):
                 msg = f"action {key!r} must be true or false"
                 raise ValueError(msg)
         return self
 
     @property
-    def actions(self) -> dict[str, bool]:
+    def actions(self) -> dict[str, bool | ActionPredicate]:
         """Action permissions declared by the rule.
 
         Returns:
-            Mapping of CONSTANT_CASE action names to their flag.
+            Mapping of CONSTANT_CASE action names to a flag or a
+            predicate.
         """
-        return {
-            key: bool(value) for key, value in (self.model_extra or {}).items()
-        }
+        return dict(self.model_extra or {})
 
 
 class AppConfig(_Model):

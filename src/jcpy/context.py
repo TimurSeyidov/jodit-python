@@ -18,6 +18,7 @@ if TYPE_CHECKING:
     from starlette.requests import Request
     from starlette.responses import Response
 
+    from jcpy.acl import AccessControlProtocol
     from jcpy.config.models import AppConfig
     from jcpy.types import JsonObject, JsonValue
 
@@ -261,12 +262,14 @@ class ActionContext:
         role: Role of the user, resolved by the authentication callback
             or ``defaultRole``.
         params: Request parameters.
+        access: Access control of the connector instance.
     """
 
     request: Request
     config: AppConfig
     role: str
     params: RequestContext = field(repr=False)
+    access: AccessControlProtocol = field(repr=False)
 
 
 type ActionHandler = Callable[[ActionContext], Awaitable[Response]]
