@@ -1,0 +1,94 @@
+[project]
+name = "jodit-python"
+version = "0.1.0"
+description = "Jodit FileBrowser and Uploader connector for Python"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Timur Seiidov", email = "tim@jlabs.pro" }]
+requires-python = ">=3.14"
+keywords = ["jodit", "file-manager", "uploader", "fastapi"]
+dependencies = [
+    "fastapi>=0.115",
+    "pydantic>=2.11",
+    "uvicorn[standard]>=0.34",
+]
+
+[project.urls]
+Repository = "https://github.com/TimurSeyidov/jodit-python"
+
+[project.scripts]
+jcpy = "jcpy.run:main"
+
+[build-system]
+requires = ["uv_build>=0.10,<0.13"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "jcpy"
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28",
+    "mypy>=1.15",
+    "pytest>=8.3",
+    "pytest-asyncio>=0.25",
+    "pytest-cov>=6.0",
+    "ruff>=0.11",
+]
+
+[tool.ruff]
+line-length = 79
+target-version = "py314"
+src = ["src", "tests"]
+cache-dir = ".cache/ruff"
+
+[tool.ruff.lint]
+select = [
+    "E", "W", "F", "I", "N", "UP", "B", "A", "C4", "SIM", "RUF",
+    "ANN", "ASYNC", "S", "PT", "RET", "PTH", "TC",
+]
+ignore = [
+    "B008",  # FastAPI Depends() in defaults is the intended DI pattern
+]
+
+[tool.ruff.lint.flake8-type-checking]
+# Pydantic and FastAPI read annotations at runtime.
+runtime-evaluated-base-classes = ["pydantic.BaseModel"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["jcpy"]
+
+[tool.mypy]
+python_version = "3.14"
+files = ["src", "tests"]
+mypy_path = "src"
+explicit_package_bases = true
+strict = true
+warn_unreachable = true
+cache_dir = ".cache/mypy"
+
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+cache_dir = ".cache/pytest"
+
+[tool.coverage.run]
+source = ["jcpy"]
+branch = true
+data_file = ".cache/coverage/.coverage"
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+exclude_also = [
+    "if TYPE_CHECKING:",
+    "if __name__ == .__main__.:",
+]
+
+[tool.coverage.html]
+directory = ".cache/coverage/html"
