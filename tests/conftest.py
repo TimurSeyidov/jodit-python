@@ -58,7 +58,9 @@ async def echo_action(context: ActionContext) -> Response:
             "role": context.role,
             "action": context.params.action,
             "params": context.params.data,
-            "files": [file.filename or "" for file in context.params.files],
+            "files": [
+                upload.file.filename or "" for upload in context.params.files
+            ],
         }
     )
 

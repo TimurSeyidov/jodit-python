@@ -1,0 +1,258 @@
+{
+ "sanitize": [
+  {
+   "name": "file.txt",
+   "underscore": "file.txt",
+   "plain": "file.txt"
+  },
+  {
+   "name": "my photo.png",
+   "underscore": "my photo.png",
+   "plain": "my photo.png"
+  },
+  {
+   "name": "a/b\\c.txt",
+   "underscore": "a_b_c.txt",
+   "plain": "abc.txt"
+  },
+  {
+   "name": "what?.txt",
+   "underscore": "what_.txt",
+   "plain": "what.txt"
+  },
+  {
+   "name": "<tag>.html",
+   "underscore": "_tag_.html",
+   "plain": "tag.html"
+  },
+  {
+   "name": "x:y*z|w\"q.txt",
+   "underscore": "x_y_z_w_q.txt",
+   "plain": "xyzwq.txt"
+  },
+  {
+   "name": "ctrl\u0001\u001fchars",
+   "underscore": "ctrl____chars",
+   "plain": "ctrlchars"
+  },
+  {
+   "name": ".",
+   "underscore": "_",
+   "plain": ""
+  },
+  {
+   "name": "..",
+   "underscore": "_",
+   "plain": ""
+  },
+  {
+   "name": "...",
+   "underscore": "_",
+   "plain": ""
+  },
+  {
+   "name": "con",
+   "underscore": "_",
+   "plain": ""
+  },
+  {
+   "name": "CON.txt",
+   "underscore": "_",
+   "plain": ""
+  },
+  {
+   "name": "nul.tar.gz",
+   "underscore": "_",
+   "plain": ""
+  },
+  {
+   "name": "com1",
+   "underscore": "_",
+   "plain": ""
+  },
+  {
+   "name": "lpt9.x",
+   "underscore": "_",
+   "plain": ""
+  },
+  {
+   "name": "coma",
+   "underscore": "coma",
+   "plain": "coma"
+  },
+  {
+   "name": "trailing. ",
+   "underscore": "trailing_",
+   "plain": "trailing"
+  },
+  {
+   "name": "dots...",
+   "underscore": "dots_",
+   "plain": "dots"
+  },
+  {
+   "name": " leading",
+   "underscore": " leading",
+   "plain": " leading"
+  },
+  {
+   "name": "Привет мир.docx",
+   "underscore": "Привет мир.docx",
+   "plain": "Привет мир.docx"
+  },
+  {
+   "name": "日本語.pdf",
+   "underscore": "日本語.pdf",
+   "plain": "日本語.pdf"
+  },
+  {
+   "name": "😀emoji.png",
+   "underscore": "😀emoji.png",
+   "plain": "😀emoji.png"
+  },
+  {
+   "name": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+   "underscore": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+   "plain": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  },
+  {
+   "name": "яяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя",
+   "underscore": "яяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя",
+   "plain": "яяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяяя"
+  },
+  {
+   "name": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+   "underscore": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+   "plain": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀"
+  },
+  {
+   "name": "",
+   "underscore": "",
+   "plain": ""
+  },
+  {
+   "name": "../../etc/passwd",
+   "underscore": ".._.._etc_passwd",
+   "plain": "....etcpasswd"
+  },
+  {
+   "name": "a\u0000b",
+   "underscore": "a_b",
+   "plain": "ab"
+  },
+  {
+   "name": "ok_name-1.JPG",
+   "underscore": "ok_name-1.JPG",
+   "plain": "ok_name-1.JPG"
+  },
+  {
+   "name": ". .",
+   "underscore": "_",
+   "plain": ""
+  },
+  {
+   "name": "aux.",
+   "underscore": "_",
+   "plain": ""
+  },
+  {
+   "name": " nbsp",
+   "underscore": " nbsp",
+   "plain": " nbsp"
+  }
+ ],
+ "bytes": [
+  {
+   "value": "8mb",
+   "result": 8388608
+  },
+  {
+   "value": "8MB",
+   "result": 8388608
+  },
+  {
+   "value": "1.5kb",
+   "result": 1536
+  },
+  {
+   "value": "10 kb",
+   "result": 10240
+  },
+  {
+   "value": "+2gb",
+   "result": 2147483648
+  },
+  {
+   "value": "-1mb",
+   "result": -1048576
+  },
+  {
+   "value": "1tb",
+   "result": 1099511627776
+  },
+  {
+   "value": "1pb",
+   "result": 1125899906842624
+  },
+  {
+   "value": "500",
+   "result": 500
+  },
+  {
+   "value": "500b",
+   "result": 500
+  },
+  {
+   "value": "12abc",
+   "result": 12
+  },
+  {
+   "value": "abc",
+   "result": null
+  },
+  {
+   "value": "",
+   "result": null
+  },
+  {
+   "value": "0.1kb",
+   "result": 102
+  },
+  {
+   "value": "1.2.3mb",
+   "result": 1
+  },
+  {
+   "value": " 5kb",
+   "result": 5
+  },
+  {
+   "value": "5kb ",
+   "result": 5
+  },
+  {
+   "value": "3e2",
+   "result": 3
+  },
+  {
+   "value": "  42",
+   "result": 42
+  },
+  {
+   "value": "0x10",
+   "result": 0
+  },
+  {
+   "value": "1024",
+   "result": 1024
+  },
+  {
+   "value": "2.5",
+   "result": 2
+  },
+  {
+   "value": "7 MB",
+   "result": 7340032
+  }
+ ]
+}

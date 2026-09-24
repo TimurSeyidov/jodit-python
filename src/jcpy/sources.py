@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING
 from anyio import to_thread
 
 from jcpy.errors import HttpError
+from jcpy.helpers.js import node_extname
 from jcpy.helpers.svg_icon import SvgGenerator, generate_icon
 from jcpy.storage.file_storage import FileStorage
 from jcpy.storage.registry import (
@@ -39,8 +40,16 @@ def _resolve(path: str) -> str:
     return posixpath.normpath(_SLASHES.sub("/", path))
 
 
-def _join(root: str, relative: str) -> str:
-    """Mirror Node's ``path.join(root, relative)``."""
+def node_join(root: str, relative: str) -> str:
+    """Mirror Node's ``path.join(root, relative)``.
+
+    Args:
+        root: First segment.
+        relative: Second segment; a leading ``/`` does not reset.
+
+    Returns:
+        Joined, normalized path.
+    """
     joined = "/".join(part for part in (root, relative) if part)
     return posixpath.normpath(joined) if joined else "."
 
@@ -154,7 +163,9 @@ class Source:
                 the root.
         """
         root = self.get_root()
-        joined = _join(root, "./" if relative_path is None else relative_path)
+        joined = node_join(
+            root, "./" if relative_path is None else relative_path
+        )
         pathname = _resolve(_SLASHES.sub("/", joined.replace("\\", "/")))
         if not is_path_within_root(pathname, root):
             raise HttpError.not_found(PATH_NOT_FOUND)
@@ -192,7 +203,7 @@ class Source:
         Returns:
             Extension, ``""`` when there is none.
         """
-        return posixpath.splitext(path)[1][1:].lower()
+        return node_extname(path)[1:].lower()
 
     def is_excluded(self, path: str) -> bool:
         """Tell whether an entry is hidden from listings.
@@ -249,6 +260,20 @@ class Source:
         return extension not in self.config.image_extensions or self.is_image(
             path
         )
+
+    def storage_path(self, pathname: str) -> str:
+        """Strip the root from a path like the original ``replace`` does.
+
+        The first occurrence of the root is removed, then one leading
+        ``/``; paths outside the root pass through relative-looking.
+
+        Args:
+            pathname: Absolute path.
+
+        Returns:
+            Storage path.
+        """
+        return pathname.replace(self.get_root(), "", 1).removeprefix("/")
 
     def relative(self, pathname: str) -> str:
         """Path of an absolute location relative to the root.

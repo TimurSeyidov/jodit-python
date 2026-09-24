@@ -175,3 +175,18 @@ def require_valid(issues: Sequence[Issue]) -> None:
         raise HttpError.bad_request(
             "Validation failed", [issue.describe() for issue in issues]
         )
+
+
+def require_valid_plain(issues: Sequence[Issue]) -> None:
+    """Fail with ``400 Validation failed`` listing bare messages.
+
+    Args:
+        issues: Collected issues.
+
+    Raises:
+        HttpError: At least one issue was collected.
+    """
+    if issues:
+        raise HttpError.bad_request(
+            "Validation failed", [issue.message for issue in issues]
+        )

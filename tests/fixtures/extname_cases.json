@@ -1,0 +1,140 @@
+[
+ {
+  "path": "file.txt",
+  "ext": ".txt",
+  "stem": "file",
+  "base": "file.txt"
+ },
+ {
+  "path": "file",
+  "ext": "",
+  "stem": "file",
+  "base": "file"
+ },
+ {
+  "path": ".bashrc",
+  "ext": "",
+  "stem": ".bashrc",
+  "base": ".bashrc"
+ },
+ {
+  "path": "..x",
+  "ext": ".x",
+  "stem": ".",
+  "base": "..x"
+ },
+ {
+  "path": "...",
+  "ext": ".",
+  "stem": "..",
+  "base": "..."
+ },
+ {
+  "path": "..",
+  "ext": "",
+  "stem": "..",
+  "base": ".."
+ },
+ {
+  "path": ".",
+  "ext": "",
+  "stem": ".",
+  "base": "."
+ },
+ {
+  "path": "a.",
+  "ext": ".",
+  "stem": "a",
+  "base": "a."
+ },
+ {
+  "path": "a..",
+  "ext": ".",
+  "stem": "a.",
+  "base": "a.."
+ },
+ {
+  "path": "a.b.c",
+  "ext": ".c",
+  "stem": "a.b",
+  "base": "a.b.c"
+ },
+ {
+  "path": "/dir/file.txt",
+  "ext": ".txt",
+  "stem": "file",
+  "base": "file.txt"
+ },
+ {
+  "path": "/dir.x/file",
+  "ext": "",
+  "stem": "file",
+  "base": "file"
+ },
+ {
+  "path": "dir/.hidden",
+  "ext": "",
+  "stem": ".hidden",
+  "base": ".hidden"
+ },
+ {
+  "path": "x.tar.gz",
+  "ext": ".gz",
+  "stem": "x.tar",
+  "base": "x.tar.gz"
+ },
+ {
+  "path": "/a/b.",
+  "ext": ".",
+  "stem": "b",
+  "base": "b."
+ },
+ {
+  "path": ".a.b",
+  "ext": ".b",
+  "stem": ".a",
+  "base": ".a.b"
+ },
+ {
+  "path": "..a..b",
+  "ext": ".b",
+  "stem": "..a.",
+  "base": "..a..b"
+ },
+ {
+  "path": "a/",
+  "ext": "",
+  "stem": "a",
+  "base": "a"
+ },
+ {
+  "path": "a.b/",
+  "ext": ".b",
+  "stem": "a",
+  "base": "a.b"
+ },
+ {
+  "path": "/",
+  "ext": "",
+  "stem": "",
+  "base": ""
+ },
+ {
+  "path": "",
+  "ext": "",
+  "stem": "",
+  "base": ""
+ },
+ {
+  "path": "Photo.JPG",
+  "ext": ".JPG",
+  "stem": "Photo",
+  "base": "Photo.JPG"
+ },
+ {
+  "path": "a. b",
+  "ext": ". b",
+  "stem": "a",
+  "base": "a. b"
+ }
+]

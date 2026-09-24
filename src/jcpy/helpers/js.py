@@ -280,3 +280,144 @@ def slugify(text: str) -> str:
             replacement = " "
         parts.append(_SLUG_REMOVE.sub("", replacement))
     return _SLUG_SPACES.sub("-", "".join(parts).strip(_JS_SPACE_CHARS))
+
+
+_ILLEGAL_FILENAME = re.compile(r'[/?<>\\:*|"]')
+_CONTROL_CHARS = re.compile(r"[\x00-\x1f\x80-\x9f]")
+_RESERVED_NAME = re.compile(r"^\.+$")
+_WINDOWS_RESERVED = re.compile(
+    r"^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$", re.IGNORECASE
+)
+_WINDOWS_TRAILING = re.compile(r"[. ]+$")
+_MAX_FILENAME_BYTES = 255
+
+
+def _truncate_utf8(text: str, limit: int) -> str:
+    size = 0
+    for index, char in enumerate(text):
+        size += len(char.encode("utf-8", errors="surrogatepass"))
+        if size > limit:
+            return text[:index]
+    return text
+
+
+def _sanitize(text: str, replacement: str) -> str:
+    text = _ILLEGAL_FILENAME.sub(replacement, text)
+    text = _CONTROL_CHARS.sub(replacement, text)
+    text = _RESERVED_NAME.sub(replacement, text)
+    text = _WINDOWS_RESERVED.sub(replacement, text)
+    text = _WINDOWS_TRAILING.sub(replacement, text)
+    return _truncate_utf8(text, _MAX_FILENAME_BYTES)
+
+
+def sanitize_filename(name: str, replacement: str = "") -> str:
+    """Make a safe file name like the ``sanitize-filename`` package.
+
+    Path separators, reserved characters, control characters, ``.``
+    and ``..``, Windows device names and trailing dots/spaces are
+    replaced; the result is cut to 255 UTF-8 bytes.
+
+    Args:
+        name: Requested name.
+        replacement: Substitute for removed parts.
+
+    Returns:
+        Safe name, possibly empty.
+    """
+    output = _sanitize(name, replacement)
+    return output if not replacement else _sanitize(output, "")
+
+
+_BYTES_PATTERN = re.compile(
+    r"^((-|\+)?(\d+(?:\.\d+)?)) *(kb|mb|gb|tb|pb)$", re.IGNORECASE
+)
+_BYTES_MULTIPLIERS = {
+    "b": 1,
+    "kb": 1024,
+    "mb": 1024**2,
+    "gb": 1024**3,
+    "tb": 1024**4,
+    "pb": 1024**5,
+}
+_JS_PARSE_INT = re.compile(r"[+-]?\d+")
+
+
+def parse_bytes(value: str) -> int | None:
+    """Parse a size such as ``8mb`` like ``bytes.parse``.
+
+    Args:
+        value: Size with an optional ``kb``..``pb`` unit.
+
+    Returns:
+        Size in bytes (rounded down), ``None`` when nothing parses.
+    """
+    match = _BYTES_PATTERN.match(value)
+    if match is not None:
+        number = float(match.group(1))
+        unit = match.group(4).lower()
+    else:
+        prefix = _JS_PARSE_INT.match(value.lstrip(_JS_SPACE_CHARS))
+        if prefix is None:
+            return None
+        number, unit = float(prefix.group(0)), "b"
+    return math.floor(_BYTES_MULTIPLIERS[unit] * number)
+
+
+def node_extname(path: str) -> str:
+    """Mirror Node's ``path.posix.extname``.
+
+    Args:
+        path: File path.
+
+    Returns:
+        Extension with its dot (``.gz`` for ``x.tar.gz``, ``.x`` for
+        ``..x``), ``""`` for names like ``.bashrc``.
+    """
+    start_dot, start_part, end = -1, 0, -1
+    matched_slash = True
+    pre_dot_state = 0
+    for index in range(len(path) - 1, -1, -1):
+        char = path[index]
+        if char == "/":
+            if not matched_slash:
+                start_part = index + 1
+                break
+            continue
+        if end == -1:
+            matched_slash = False
+            end = index + 1
+        if char == ".":
+            if start_dot == -1:
+                start_dot = index
+            elif pre_dot_state != 1:
+                pre_dot_state = 1
+        elif start_dot != -1:
+            pre_dot_state = -1
+    if (
+        start_dot == -1
+        or end == -1
+        or pre_dot_state == 0
+        or (
+            pre_dot_state == 1
+            and start_dot == end - 1
+            and start_dot == start_part + 1
+        )
+    ):
+        return ""
+    return path[start_dot:end]
+
+
+def node_basename(path: str, suffix: str = "") -> str:
+    """Mirror Node's ``path.posix.basename`` for the common cases.
+
+    Args:
+        path: File path.
+        suffix: Suffix to strip unless it is the whole name.
+
+    Returns:
+        Last path segment.
+    """
+    base = path.rstrip("/").rpartition("/")[2] if path.strip("/") else ""
+    if suffix and base.endswith(suffix) and base != suffix:
+        return base[: -len(suffix)]
+    return base

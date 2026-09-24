@@ -1,8 +1,9 @@
 """SVG thumbnail icons for folders and non-image files."""
 
-import posixpath
 from collections.abc import Callable
 from typing import TYPE_CHECKING
+
+from jcpy.helpers.js import node_extname
 
 if TYPE_CHECKING:
     from jcpy.storage.base import StatEntry
@@ -67,7 +68,7 @@ def generate_icon(
     if entry.is_directory:
         word = "folder"
     else:
-        word = posixpath.splitext(entry.path)[1][1:].lower()
+        word = node_extname(entry.path)[1:].lower()
     color = _COLORS[ord(word[0]) % len(_COLORS)]
     main = _hex(color)
     dark = _hex(_luminate(color, 30))

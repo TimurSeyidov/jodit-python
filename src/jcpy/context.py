@@ -72,7 +72,7 @@ class RequestContext:
     """
 
     def __init__(
-        self, data: JsonObject, files: list[UploadFile] | None = None
+        self, data: JsonObject, files: list[UploadedFile] | None = None
     ) -> None:
         self.data = data
         self.files = files if files is not None else []
@@ -175,9 +175,22 @@ async def _read_limited(request: Request) -> bytes:
     return body
 
 
+@dataclass(frozen=True, slots=True)
+class UploadedFile:
+    """File sent in a multipart request.
+
+    Attributes:
+        field: Form field name, e.g. ``files[0]``.
+        file: Uploaded file.
+    """
+
+    field: str
+    file: UploadFile
+
+
 async def _read_body(
     request: Request,
-) -> tuple[JsonObject, list[UploadFile]]:
+) -> tuple[JsonObject, list[UploadedFile]]:
     media_type = _media_type(request).lower()
 
     if media_type == _JSON_TYPE:
@@ -216,10 +229,10 @@ async def _read_body(
     if media_type == _MULTIPART_TYPE and request.method == "POST":
         form = await request.form()
         fields: list[tuple[str, str]] = []
-        files: list[UploadFile] = []
+        files: list[UploadedFile] = []
         for key, value in form.multi_items():
             if isinstance(value, UploadFile):
-                files.append(value)
+                files.append(UploadedFile(key, value))
             else:
                 fields.append((key, value))
         return append_field.build(fields), files
