@@ -62,7 +62,8 @@ runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 exempt-modules = ["typing", "fastapi", "starlette.requests"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101"]
+# Test setup may touch the filesystem synchronously.
+"tests/**" = ["S101", "ASYNC240"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["jcpy"]

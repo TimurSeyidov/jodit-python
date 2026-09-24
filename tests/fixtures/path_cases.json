@@ -1,0 +1,646 @@
+{
+ "getPath": [
+  {
+   "root": "/srv/files/test",
+   "rel": "",
+   "result": "/srv/files/test"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "./",
+   "result": "/srv/files/test"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "/",
+   "result": "/srv/files/test"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": ".",
+   "result": "/srv/files/test"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "..",
+   "result": "/srv/files"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "../",
+   "result": "/srv/files"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "/..",
+   "result": "/srv/files"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "a",
+   "result": "/srv/files/test/a"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "/a",
+   "result": "/srv/files/test/a"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "a/",
+   "result": "/srv/files/test/a"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "a/b",
+   "result": "/srv/files/test/a/b"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "a/../b",
+   "result": "/srv/files/test/b"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "a/../../b",
+   "result": "/srv/files/b"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "../test2",
+   "result": "/srv/files/test2"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "../test-evil",
+   "result": "/srv/files/test-evil"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "..\\x",
+   "result": "/srv/files/x"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "a\\..\\..\\x",
+   "result": "/srv/files/x"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "x/..\\..",
+   "result": "/srv/files"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "//a//b",
+   "result": "/srv/files/test/a/b"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "a/./b/.",
+   "result": "/srv/files/test/a/b"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "\\\\a",
+   "result": "/srv/files/test/a"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "...",
+   "result": "/srv/files/test/..."
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "a..b",
+   "result": "/srv/files/test/a..b"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "../../../etc",
+   "result": "/etc"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "/private",
+   "result": "/srv/files/test/private"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "sub/../sub2/./f.txt",
+   "result": "/srv/files/test/sub2/f.txt"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "a/b/../../..",
+   "result": "/srv/files"
+  },
+  {
+   "root": "/srv/files/test",
+   "rel": "%2e%2e/x",
+   "result": "/srv/files/test/%2e%2e/x"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "",
+   "result": "/srv/files/test"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "./",
+   "result": "/srv/files/test"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "/",
+   "result": "/srv/files/test"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": ".",
+   "result": "/srv/files/test"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "..",
+   "result": "/srv/files"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "../",
+   "result": "/srv/files"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "/..",
+   "result": "/srv/files"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "a",
+   "result": "/srv/files/test/a"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "/a",
+   "result": "/srv/files/test/a"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "a/",
+   "result": "/srv/files/test/a"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "a/b",
+   "result": "/srv/files/test/a/b"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "a/../b",
+   "result": "/srv/files/test/b"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "a/../../b",
+   "result": "/srv/files/b"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "../test2",
+   "result": "/srv/files/test2"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "../test-evil",
+   "result": "/srv/files/test-evil"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "..\\x",
+   "result": "/srv/files/x"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "a\\..\\..\\x",
+   "result": "/srv/files/x"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "x/..\\..",
+   "result": "/srv/files"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "//a//b",
+   "result": "/srv/files/test/a/b"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "a/./b/.",
+   "result": "/srv/files/test/a/b"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "\\\\a",
+   "result": "/srv/files/test/a"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "...",
+   "result": "/srv/files/test/..."
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "a..b",
+   "result": "/srv/files/test/a..b"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "../../../etc",
+   "result": "/etc"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "/private",
+   "result": "/srv/files/test/private"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "sub/../sub2/./f.txt",
+   "result": "/srv/files/test/sub2/f.txt"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "a/b/../../..",
+   "result": "/srv/files"
+  },
+  {
+   "root": "/srv/files/test/",
+   "rel": "%2e%2e/x",
+   "result": "/srv/files/test/%2e%2e/x"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "",
+   "result": "/srv/files"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "./",
+   "result": "/srv/files"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "/",
+   "result": "/srv/files"
+  },
+  {
+   "root": "//srv//files",
+   "rel": ".",
+   "result": "/srv/files"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "..",
+   "result": "/srv"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "../",
+   "result": "/srv"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "/..",
+   "result": "/srv"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "a",
+   "result": "/srv/files/a"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "/a",
+   "result": "/srv/files/a"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "a/",
+   "result": "/srv/files/a"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "a/b",
+   "result": "/srv/files/a/b"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "a/../b",
+   "result": "/srv/files/b"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "a/../../b",
+   "result": "/srv/b"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "../test2",
+   "result": "/srv/test2"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "../test-evil",
+   "result": "/srv/test-evil"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "..\\x",
+   "result": "/srv/x"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "a\\..\\..\\x",
+   "result": "/srv/x"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "x/..\\..",
+   "result": "/srv"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "//a//b",
+   "result": "/srv/files/a/b"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "a/./b/.",
+   "result": "/srv/files/a/b"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "\\\\a",
+   "result": "/srv/files/a"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "...",
+   "result": "/srv/files/..."
+  },
+  {
+   "root": "//srv//files",
+   "rel": "a..b",
+   "result": "/srv/files/a..b"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "../../../etc",
+   "result": "/etc"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "/private",
+   "result": "/srv/files/private"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "sub/../sub2/./f.txt",
+   "result": "/srv/files/sub2/f.txt"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "a/b/../../..",
+   "result": "/srv"
+  },
+  {
+   "root": "//srv//files",
+   "rel": "%2e%2e/x",
+   "result": "/srv/files/%2e%2e/x"
+  },
+  {
+   "root": "/",
+   "rel": "",
+   "result": "/"
+  },
+  {
+   "root": "/",
+   "rel": "./",
+   "result": "/"
+  },
+  {
+   "root": "/",
+   "rel": "/",
+   "result": "/"
+  },
+  {
+   "root": "/",
+   "rel": ".",
+   "result": "/"
+  },
+  {
+   "root": "/",
+   "rel": "..",
+   "result": "/"
+  },
+  {
+   "root": "/",
+   "rel": "../",
+   "result": "/"
+  },
+  {
+   "root": "/",
+   "rel": "/..",
+   "result": "/"
+  },
+  {
+   "root": "/",
+   "rel": "a",
+   "result": "/a"
+  },
+  {
+   "root": "/",
+   "rel": "/a",
+   "result": "/a"
+  },
+  {
+   "root": "/",
+   "rel": "a/",
+   "result": "/a"
+  },
+  {
+   "root": "/",
+   "rel": "a/b",
+   "result": "/a/b"
+  },
+  {
+   "root": "/",
+   "rel": "a/../b",
+   "result": "/b"
+  },
+  {
+   "root": "/",
+   "rel": "a/../../b",
+   "result": "/b"
+  },
+  {
+   "root": "/",
+   "rel": "../test2",
+   "result": "/test2"
+  },
+  {
+   "root": "/",
+   "rel": "../test-evil",
+   "result": "/test-evil"
+  },
+  {
+   "root": "/",
+   "rel": "..\\x",
+   "result": "/x"
+  },
+  {
+   "root": "/",
+   "rel": "a\\..\\..\\x",
+   "result": "/x"
+  },
+  {
+   "root": "/",
+   "rel": "x/..\\..",
+   "result": "/"
+  },
+  {
+   "root": "/",
+   "rel": "//a//b",
+   "result": "/a/b"
+  },
+  {
+   "root": "/",
+   "rel": "a/./b/.",
+   "result": "/a/b"
+  },
+  {
+   "root": "/",
+   "rel": "\\\\a",
+   "result": "/a"
+  },
+  {
+   "root": "/",
+   "rel": "...",
+   "result": "/..."
+  },
+  {
+   "root": "/",
+   "rel": "a..b",
+   "result": "/a..b"
+  },
+  {
+   "root": "/",
+   "rel": "../../../etc",
+   "result": "/etc"
+  },
+  {
+   "root": "/",
+   "rel": "/private",
+   "result": "/private"
+  },
+  {
+   "root": "/",
+   "rel": "sub/../sub2/./f.txt",
+   "result": "/sub2/f.txt"
+  },
+  {
+   "root": "/",
+   "rel": "a/b/../../..",
+   "result": "/"
+  },
+  {
+   "root": "/",
+   "rel": "%2e%2e/x",
+   "result": "/%2e%2e/x"
+  }
+ ],
+ "storage": [
+  {
+   "path": "",
+   "result": ""
+  },
+  {
+   "path": "/",
+   "result": ""
+  },
+  {
+   "path": ".",
+   "result": ""
+  },
+  {
+   "path": "..",
+   "error": "PathTraversalError"
+  },
+  {
+   "path": "../a",
+   "error": "PathTraversalError"
+  },
+  {
+   "path": "a/..",
+   "result": ""
+  },
+  {
+   "path": "a/../..",
+   "error": "PathTraversalError"
+  },
+  {
+   "path": "a//b",
+   "result": "a/b"
+  },
+  {
+   "path": "/a/b/",
+   "result": "a/b"
+  },
+  {
+   "path": "./a",
+   "result": "a"
+  },
+  {
+   "path": "a/./b",
+   "result": "a/b"
+  },
+  {
+   "path": "a\u0000b",
+   "error": "CorruptedPathError"
+  },
+  {
+   "path": "a\tb",
+   "error": "CorruptedPathError"
+  },
+  {
+   "path": "a​b",
+   "error": "CorruptedPathError"
+  },
+  {
+   "path": "a b",
+   "result": "a b"
+  },
+  {
+   "path": "ok/../fine",
+   "result": "fine"
+  },
+  {
+   "path": "...",
+   "result": "..."
+  },
+  {
+   "path": "a/b/../../c",
+   "result": "c"
+  },
+  {
+   "path": "x/../../y",
+   "error": "PathTraversalError"
+  },
+  {
+   "path": "a/..b",
+   "result": "a/..b"
+  }
+ ]
+}

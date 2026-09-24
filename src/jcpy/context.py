@@ -20,6 +20,7 @@ if TYPE_CHECKING:
 
     from jcpy.acl import AccessControlProtocol
     from jcpy.config.models import AppConfig
+    from jcpy.sources import Source, SourcePool
     from jcpy.types import JsonObject, JsonValue
 
 BODY_LIMIT = 100 * 1024
@@ -263,6 +264,7 @@ class ActionContext:
             or ``defaultRole``.
         params: Request parameters.
         access: Access control of the connector instance.
+        sources: Sources of the connector instance.
     """
 
     request: Request
@@ -270,6 +272,21 @@ class ActionContext:
     role: str
     params: RequestContext = field(repr=False)
     access: AccessControlProtocol = field(repr=False)
+    sources: SourcePool = field(repr=False)
+
+    async def get_sources(self) -> list[Source]:
+        """Select the sources named by the ``source`` parameter.
+
+        Returns:
+            All sources when the parameter is empty, otherwise the one
+            with that name.
+
+        Raises:
+            HttpError: ``404 Source not found`` for an unknown name.
+        """
+        return await self.sources.get_sources(
+            self.params.source, self.role, self.params.action, self.access
+        )
 
 
 type ActionHandler = Callable[[ActionContext], Awaitable[Response]]

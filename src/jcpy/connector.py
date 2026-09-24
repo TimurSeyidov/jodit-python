@@ -13,6 +13,7 @@ from jcpy.acl import AccessControl
 from jcpy.context import ActionContext, RequestContext
 from jcpy.errors import HttpError
 from jcpy.responses import error_response, internal_error_response
+from jcpy.sources import SourcePool
 from jcpy.v1 import ACTIONS
 from jcpy.v1.ping.handler import PingResponse
 
@@ -65,6 +66,7 @@ class Connector:
         self.check_authentication = check_authentication
         self.allowed_origins = allowed_origins
         self.actions = actions
+        self.sources = SourcePool(config)
         self.access: AccessControlProtocol = (
             access_control_instance
             or AccessControl(access_control or config.access_control)
@@ -147,7 +149,14 @@ class Connector:
             if handler is None:
                 raise HttpError.not_found(f'Action "{action}" not found')
             response = await handler(
-                ActionContext(request, self.config, role, params, self.access)
+                ActionContext(
+                    request,
+                    self.config,
+                    role,
+                    params,
+                    self.access,
+                    self.sources,
+                )
             )
         except HttpError as error:
             self._log(error)

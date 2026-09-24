@@ -13,6 +13,7 @@ from jcpy.config.loader import build_config
 from jcpy.connector import Connector
 from jcpy.errors import HttpError
 from jcpy.responses import success_response
+from jcpy.v1 import ACTIONS
 
 if TYPE_CHECKING:
     from starlette.responses import Response
@@ -75,6 +76,7 @@ async def failing_action(context: ActionContext) -> Response:
 
 
 TEST_ACTIONS: Mapping[str, ActionHandler] = {
+    **ACTIONS,
     "echo": echo_action,
     "fail": failing_action,
 }

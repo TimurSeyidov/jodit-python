@@ -243,9 +243,25 @@ class AppConfig(_Model):
             KeyError: There is no such source.
             pydantic.ValidationError: An override has an invalid value.
         """
-        overrides = self.sources[name].overrides()
+        return self.with_overrides(self.sources[name])
+
+    def with_overrides(self, source: SourceConfig) -> AppConfig:
+        """Build the configuration seen by a source, configured or not.
+
+        Args:
+            source: Source settings.
+
+        Returns:
+            Global settings with the source overrides applied and no
+            ``sources``.
+
+        Raises:
+            pydantic.ValidationError: An override has an invalid value.
+        """
         data = self.model_dump(exclude={"sources"})
-        return AppConfig.model_validate({**data, **overrides, "sources": {}})
+        return AppConfig.model_validate(
+            {**data, **source.overrides(), "sources": {}}
+        )
 
 
 class SourceConfig(BaseModel):
