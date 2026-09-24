@@ -107,7 +107,8 @@ class Source:
         settings: Source settings.
         config: Effective configuration of the source (global settings
             with the source overrides applied).
-        storage: Storage holding the files.
+        storage: Storage holding the files; built from ``settings`` on
+            first use when omitted.
         svg_generator: Renders icons of folders and non-image files.
     """
 
@@ -116,14 +117,28 @@ class Source:
         name: str,
         settings: SourceConfig,
         config: AppConfig,
-        storage: FileStorage,
+        storage: FileStorage | None = None,
         svg_generator: SvgGenerator = generate_icon,
     ) -> None:
         self.name = name
         self.settings = settings
         self.config = config
-        self.storage = storage
+        self._storage = storage
         self.svg_generator = svg_generator
+
+    @property
+    def storage(self) -> FileStorage:
+        """Storage holding the files, created on first use.
+
+        A source whose adapter cannot be built (an unknown name, a
+        missing extra) then fails only the requests that use it.
+
+        Raises:
+            HttpError: The storage adapter cannot be created.
+        """
+        if self._storage is None:
+            self._storage = FileStorage(create_storage_adapter(self.settings))
+        return self._storage
 
     @property
     def is_virtual_root(self) -> bool:
@@ -317,8 +332,7 @@ class SourcePool:
                     name,
                     settings,
                     self.config.with_overrides(settings),
-                    FileStorage(create_storage_adapter(settings)),
-                    self.svg_generator,
+                    svg_generator=self.svg_generator,
                 )
             self._built = built
         return self._built
@@ -344,7 +358,8 @@ class SourcePool:
 
         Raises:
             HttpError: ``404 Source not found`` for an unknown name,
-                ``400`` for an unknown storage adapter.
+                ``400`` for an unknown storage adapter, ``501`` for an
+                adapter whose extra is not installed.
         """
         sources = list(self._build().values())
         if source:
@@ -352,6 +367,9 @@ class SourcePool:
             if not sources:
                 raise HttpError.not_found(SOURCE_NOT_FOUND)
         for item in sources:
+            # Fail here, as before, when a selected source has no usable
+            # storage; sources the request does not select stay unbuilt.
+            _ = item.storage
             path = await item.get_path()
             if not await access.is_allow(role, action, path):
                 logger.warning(

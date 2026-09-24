@@ -6,7 +6,9 @@ description: Storing files in AWS S3, MinIO, Cloudflare R2 and other S3-compatib
 # AWS S3 and S3-compatible storage
 
 The built-in `s3` adapter keeps a source in a bucket (optionally under
-a key prefix) through boto3.
+a key prefix) through boto3. It needs the `s3` extra:
+`pip install "jodit-python[s3]"` (or `[all]`); without it requests to
+S3 sources answer `501`, while other sources keep working.
 
 ## Quick start
 

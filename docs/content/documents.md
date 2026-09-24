@@ -8,6 +8,10 @@ description: How generatePdf and generateDocx render HTML, what they load and th
 Jodit's "Export" buttons send the editor's HTML to `generatePdf` and
 `generateDocx`; the connector answers with the file as an attachment.
 
+Both are optional extras: `jodit-python[pdf]` (plus the Pango system
+library) and `jodit-python[docx]`, or `[all]`. Without them the actions
+answer `501` naming what to install.
+
 ## PDF
 
 `generatePdf` renders with [WeasyPrint](https://weasyprint.org/):

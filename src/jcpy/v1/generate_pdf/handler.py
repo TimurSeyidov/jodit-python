@@ -5,9 +5,9 @@ from typing import TYPE_CHECKING, cast
 
 from starlette.responses import Response
 
-from jcpy.documents.pdf import html_to_pdf
 from jcpy.documents.resources import ResourcePolicy
 from jcpy.errors import HttpError
+from jcpy.optional import optional_feature
 from jcpy.v1.documents_common import html_issues, require_html
 from jcpy.validation import (
     Issue,
@@ -64,7 +64,8 @@ async def generate_pdf_handler(context: ActionContext) -> Response:
 
     Raises:
         HttpError: ``400`` for invalid parameters or blank HTML,
-            ``500 Failed to generate PDF`` when rendering fails.
+            ``501`` without the ``pdf`` extra (or Pango), ``500 Failed
+            to generate PDF`` when rendering fails.
     """
     data = context.params.data
     require_valid(validate(data))
@@ -75,6 +76,9 @@ async def generate_pdf_handler(context: ActionContext) -> Response:
         paper = str(options.get("format", paper))
         if options.get("page_orientation") == "landscape":
             orientation = "landscape"
+    with optional_feature("pdf", "generatePdf", "install Pango"):
+        from jcpy.documents.pdf import html_to_pdf
+
     try:
         pdf = await html_to_pdf(
             html,

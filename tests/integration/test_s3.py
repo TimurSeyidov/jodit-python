@@ -4,6 +4,7 @@ Ported from jodit-nodejs s3-storage-adapter.test.ts; skipped when no
 Docker daemon is reachable.
 """
 
+import os
 import shutil
 import subprocess
 import time
@@ -33,7 +34,9 @@ BUCKET = "jodit"
 PREFIX = "media"
 USER = "minioadmin"
 PASSWORD = "minioadmin"  # noqa: S105 - MinIO test default
-IMAGE = "quay.io/minio/minio:latest"
+# MinIO no longer publishes free images on quay.io or Docker Hub;
+# Chainguard builds the same server. MINIO_IMAGE overrides it.
+IMAGE = os.environ.get("MINIO_IMAGE", "cgr.dev/chainguard/minio:latest")
 
 
 def docker_available() -> bool:

@@ -65,7 +65,8 @@ test-v: ## Run tests verbosely
 	uv run pytest -v
 
 coverage: ## Run tests with coverage (fails under 90%)
-	uv run pytest --cov --cov-report=term-missing --cov-report=html
+	uv run pytest --cov --cov-report=term-missing --cov-report=html \
+		--cov-report=xml:.cache/coverage/coverage.xml
 
 check: lint format-check typecheck openapi-check docs-build coverage ## Run everything (as in CI)
 

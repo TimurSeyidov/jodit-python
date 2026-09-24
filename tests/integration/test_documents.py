@@ -7,8 +7,9 @@ import pytest
 from docx import Document
 from pypdf import PdfReader
 
+from jcpy.documents import docx as docx_module
+from jcpy.documents import pdf as pdf_module
 from jcpy.v1.generate_docx import handler as docx_handler
-from jcpy.v1.generate_pdf import handler as pdf_handler
 
 if TYPE_CHECKING:
     from tests.conftest import ClientFactory
@@ -94,9 +95,9 @@ async def test_pdf_options_validation(connector_client: ClientFactory) -> None:
 @pytest.mark.parametrize(
     ("module", "function", "action", "message"),
     [
-        (pdf_handler, "html_to_pdf", "generatePdf", "Failed to generate PDF"),
+        (pdf_module, "html_to_pdf", "generatePdf", "Failed to generate PDF"),
         (
-            docx_handler,
+            docx_module,
             "html_to_docx",
             "generateDocx",
             "Failed to generate DOCX",

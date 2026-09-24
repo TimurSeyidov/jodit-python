@@ -4,8 +4,8 @@ from collections.abc import Callable
 from typing import TYPE_CHECKING
 
 from jcpy.errors import HttpError
+from jcpy.optional import optional_feature
 from jcpy.storage.local import LocalStorageAdapter
-from jcpy.storage.s3 import S3StorageAdapter
 
 if TYPE_CHECKING:
     from jcpy.config.models import SourceConfig
@@ -94,6 +94,8 @@ def _s3_factory(source: SourceConfig) -> StorageAdapter:
             '"s3" options block'
         )
         raise HttpError.bad_request(msg)
+    with optional_feature("s3", "The s3 storage adapter"):
+        from jcpy.storage.s3 import S3StorageAdapter
     return S3StorageAdapter(source.s3)
 
 

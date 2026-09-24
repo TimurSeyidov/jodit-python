@@ -9,18 +9,22 @@ authors = [{ name = "Timur Seiidov", email = "tim@jlabs.pro" }]
 requires-python = ">=3.14"
 keywords = ["jodit", "file-manager", "uploader", "fastapi"]
 dependencies = [
-    "beautifulsoup4>=4.12",
-    "boto3>=1.35",
     "fastapi>=0.115",
-    "html-for-docx>=1.2",
     "httpx>=0.28",
     "pillow>=11.0",
     "pydantic>=2.11",
-    "python-docx>=1.1",
     "python-multipart>=0.0.20",
     "uvicorn[standard]>=0.34",
-    "weasyprint>=66",
 ]
+
+[project.optional-dependencies]
+# generatePdf; WeasyPrint also needs the Pango system library.
+pdf = ["weasyprint>=66"]
+# generateDocx
+docx = ["beautifulsoup4>=4.12", "html-for-docx>=1.2", "python-docx>=1.1"]
+# The s3 storage adapter
+s3 = ["boto3>=1.35"]
+all = ["jodit-python[pdf,docx,s3]"]
 
 [project.urls]
 Repository = "https://github.com/TimurSeyidov/jodit-python"
@@ -40,6 +44,7 @@ module-name = "jcpy"
 
 [dependency-groups]
 dev = [
+    "jodit-python[all]",
     "boto3-stubs[s3]>=1.35",
     "httpx>=0.28",
     "itsdangerous>=2.2",

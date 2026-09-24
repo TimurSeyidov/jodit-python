@@ -127,7 +127,35 @@ snippets, and runs in CI.
 
 ## Continuous integration
 
-`.github/workflows/ci.yml` runs on pushes to `main` and on pull
-requests: lint, format check, mypy, the OpenAPI check, the documentation
-build and the tests with coverage, then builds the production image and
-checks that it answers `/ping`.
+| Workflow | Runs on | Does |
+|---|---|---|
+| `ci.yml` | pushes to `main`, pull requests | lint, format check, mypy, OpenAPI check, documentation build, tests with coverage (uploaded to Codecov), production image build and `/ping` smoke test |
+| `ci.yml` (`core` job) | pushes to `main`, pull requests | installs the package without extras and checks that it imports, serves files and answers `501` for PDF, DOCX and S3 (`scripts/check_core_install.py`) |
+| `docs.yml` | pushes to `main` | builds this site and publishes it to GitHub Pages |
+| `release.yml` | tags `v*` | checks the tag against the version, builds the package, publishes it to PyPI and the image to Docker Hub (`linux/amd64`, `linux/arm64`), creates the GitHub release |
+
+## Releasing
+
+One-time setup:
+
+1. **PyPI** → Account settings → Publishing → *Add a pending publisher*:
+   project `jodit-python`, owner `TimurSeyidov`, repository
+   `jodit-python`, workflow `release.yml`, environment `pypi`.
+2. **GitHub** → Settings → Environments → create `pypi`.
+3. **Docker Hub** → Account settings → Personal access tokens: a token
+   with read and write access. **GitHub** → Settings → Secrets and
+   variables → Actions: secrets `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`
+   and the variable `DOCKERHUB_IMAGE` (e.g. `user/jodit-python`).
+4. **GitHub** → Settings → Pages → Source: *GitHub Actions*.
+5. **Codecov**: sign in with GitHub and enable the repository (uploads
+   use OIDC, no token needed).
+
+Each release:
+
+```bash
+uv version 0.2.0          # or: uv version --bump minor
+make check
+git commit -am "Release 0.2.0"
+git tag -a v0.2.0 -m "jodit-python 0.2.0"
+git push origin main v0.2.0
+```

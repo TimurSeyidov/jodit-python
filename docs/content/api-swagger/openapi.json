@@ -2175,6 +2175,16 @@
                 }
               }
             }
+          },
+          "501": {
+            "description": "Optional extra (or its system library) not installed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         },
         "parameters": [
@@ -2278,6 +2288,16 @@
           },
           "500": {
             "description": "Internal error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Optional extra (or its system library) not installed",
             "content": {
               "application/json": {
                 "schema": {

@@ -1,6 +1,9 @@
 # jodit-python
 
+[![Version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FTimurSeyidov%2Fjodit-python%2Fmain%2Fpyproject.toml&query=%24.project.version&label=version)](pyproject.toml)
 [![CI](https://github.com/TimurSeyidov/jodit-python/actions/workflows/ci.yml/badge.svg)](https://github.com/TimurSeyidov/jodit-python/actions/workflows/ci.yml)
+[![Docs](https://github.com/TimurSeyidov/jodit-python/actions/workflows/docs.yml/badge.svg)](https://timurseyidov.github.io/jodit-python/)
+[![Coverage](https://codecov.io/gh/TimurSeyidov/jodit-python/graph/badge.svg)](https://codecov.io/gh/TimurSeyidov/jodit-python)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.14+](https://img.shields.io/badge/python-3.14%2B-blue.svg)](https://www.python.org/)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
@@ -10,15 +13,21 @@ Python/FastAPI implementation of the
 [Jodit](https://xdsoft.net/jodit/) File Browser and Uploader connector,
 API-compatible with [jodit-nodejs](https://github.com/jodit/jodit-nodejs).
 
-> Work in progress.
+## Installation
 
-## Requirements
+```bash
+pip install "jodit-python[all]"
+```
 
-- Python 3.14+
-- [uv](https://docs.astral.sh/uv/)
-- Pango for PDF export (WeasyPrint): `brew install pango` on macOS,
-  `libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0` on Debian/Ubuntu
-  (already in the Docker images)
+Python 3.14+. Optional features are extras: `[pdf]` (`generatePdf`,
+needs the Pango system library: `brew install pango` on macOS,
+`libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0` on
+Debian/Ubuntu), `[docx]` (`generateDocx`), `[s3]` (S3 storage);
+`[all]` installs them all. Without an extra the connector still works
+and the action that needs it answers `501` naming what to install.
+
+For development: [uv](https://docs.astral.sh/uv/) (`make sync`
+installs everything).
 
 ## Quick start
 

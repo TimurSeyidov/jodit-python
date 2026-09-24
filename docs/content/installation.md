@@ -8,17 +8,27 @@ description: Installation, environment variables and configuration sources of jo
 ## Installation
 
 ```bash
-uv add jodit-python        # or: pip install jodit-python
+uv add "jodit-python[all]"        # or: pip install "jodit-python[all]"
 ```
 
-Requirements:
+Python 3.14+ is required. Heavy or system-dependent features are
+optional extras:
 
-- Python 3.14+
-- Pango for PDF export (WeasyPrint): `brew install pango` on macOS,
-  `libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0` on
-  Debian/Ubuntu (already in the Docker image). WeasyPrint is loaded
-  when the package is imported, so Pango is required even if PDF export
-  is not used.
+| Install | Adds |
+|---|---|
+| `jodit-python` | The connector: files, folders, uploads, images, thumbnails, local storage |
+| `jodit-python[pdf]` | `generatePdf` (WeasyPrint; needs the Pango system library) |
+| `jodit-python[docx]` | `generateDocx` (html-for-docx) |
+| `jodit-python[s3]` | The `s3` storage adapter (boto3) |
+| `jodit-python[all]` | Everything above, as in the Docker image |
+
+Without an extra the package still imports and every other action
+works; the action that needs it answers `501` naming what to install,
+e.g. `generatePdf requires the pdf extra: pip install 'jodit-python[pdf]'`.
+
+Pango for `[pdf]`: `brew install pango` on macOS,
+`apt install libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0` on
+Debian/Ubuntu (already in the Docker image).
 
 ## Configuration sources
 

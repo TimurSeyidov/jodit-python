@@ -770,17 +770,32 @@ name = "jodit-python"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "beautifulsoup4" },
-    { name = "boto3" },
     { name = "fastapi" },
-    { name = "html-for-docx" },
     { name = "httpx" },
     { name = "pillow" },
     { name = "pydantic" },
-    { name = "python-docx" },
     { name = "python-multipart" },
     { name = "uvicorn", extra = ["standard"] },
+]
+
+[package.optional-dependencies]
+all = [
+    { name = "beautifulsoup4" },
+    { name = "boto3" },
+    { name = "html-for-docx" },
+    { name = "python-docx" },
     { name = "weasyprint" },
+]
+docx = [
+    { name = "beautifulsoup4" },
+    { name = "html-for-docx" },
+    { name = "python-docx" },
+]
+pdf = [
+    { name = "weasyprint" },
+]
+s3 = [
+    { name = "boto3" },
 ]
 
 [package.dev-dependencies]
@@ -788,6 +803,7 @@ dev = [
     { name = "boto3-stubs", extra = ["s3"] },
     { name = "httpx" },
     { name = "itsdangerous" },
+    { name = "jodit-python", extra = ["all"] },
     { name = "mypy" },
     { name = "openapi-spec-validator" },
     { name = "pyjwt" },
@@ -809,24 +825,27 @@ docs = [
 
 [package.metadata]
 requires-dist = [
-    { name = "beautifulsoup4", specifier = ">=4.12" },
-    { name = "boto3", specifier = ">=1.35" },
+    { name = "beautifulsoup4", marker = "extra == 'docx'", specifier = ">=4.12" },
+    { name = "boto3", marker = "extra == 's3'", specifier = ">=1.35" },
     { name = "fastapi", specifier = ">=0.115" },
-    { name = "html-for-docx", specifier = ">=1.2" },
+    { name = "html-for-docx", marker = "extra == 'docx'", specifier = ">=1.2" },
     { name = "httpx", specifier = ">=0.28" },
+    { name = "jodit-python", extras = ["pdf", "docx", "s3"], marker = "extra == 'all'" },
     { name = "pillow", specifier = ">=11.0" },
     { name = "pydantic", specifier = ">=2.11" },
-    { name = "python-docx", specifier = ">=1.1" },
+    { name = "python-docx", marker = "extra == 'docx'", specifier = ">=1.1" },
     { name = "python-multipart", specifier = ">=0.0.20" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.34" },
-    { name = "weasyprint", specifier = ">=66" },
+    { name = "weasyprint", marker = "extra == 'pdf'", specifier = ">=66" },
 ]
+provides-extras = ["pdf", "docx", "s3", "all"]
 
 [package.metadata.requires-dev]
 dev = [
     { name = "boto3-stubs", extras = ["s3"], specifier = ">=1.35" },
     { name = "httpx", specifier = ">=0.28" },
     { name = "itsdangerous", specifier = ">=2.2" },
+    { name = "jodit-python", extras = ["all"] },
     { name = "mypy", specifier = ">=1.15" },
     { name = "openapi-spec-validator", specifier = ">=0.7" },
     { name = "pyjwt", specifier = ">=2.9" },

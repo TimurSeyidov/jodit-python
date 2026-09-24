@@ -53,6 +53,7 @@ Errors carry the HTTP status in the status line and in `data.code`:
 | `413` | JSON or urlencoded body over 100 KB (as in Express; multipart uploads are limited by `maxUploadFileSize` instead) |
 | `422` | Non-numeric `mods[offset]` / `mods[limit]` |
 | `500` | Storage or processing failure |
+| `501` | The action needs an optional extra that is not installed (`[pdf]`, `[docx]`, `[s3]`) |
 
 ## System
 

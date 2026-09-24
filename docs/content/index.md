@@ -32,7 +32,7 @@ without any change on the client side.
 ## Installation
 
 ```bash
-uv add jodit-python        # or: pip install jodit-python
+uv add "jodit-python[all]"        # or: pip install "jodit-python[all]"
 ```
 
 !!! note "Release status"
@@ -41,10 +41,10 @@ uv add jodit-python        # or: pip install jodit-python
     `uv add git+https://github.com/TimurSeyidov/jodit-python` and build
     the image locally (see [Docker](docker.md)).
 
-Python 3.14+ is required. PDF export uses WeasyPrint, which needs Pango:
-`brew install pango` on macOS,
-`apt install libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0` on
-Debian/Ubuntu (already included in the Docker image).
+Python 3.14+ is required. `[all]` adds PDF export (WeasyPrint, which
+needs the Pango system library), DOCX export and S3 storage; each can
+also be installed alone (`[pdf]`, `[docx]`, `[s3]`), see
+[Installation](installation.md#installation).
 
 ## Quick Start
 

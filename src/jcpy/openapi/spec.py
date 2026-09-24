@@ -23,6 +23,7 @@ ERROR_DESCRIPTIONS = {
     413: "Request body too large",
     422: "Non-numeric paging parameters",
     500: "Internal error",
+    501: "Optional extra (or its system library) not installed",
 }
 
 
@@ -234,7 +235,7 @@ ACTIONS: tuple[ActionDoc, ...] = (
         "Documents",
         query=m.GeneratePdfQuery,
         binary="application/pdf",
-        errors=(400, 403, 500),
+        errors=(400, 403, 500, 501),
     ),
     ActionDoc(
         "generateDocx",
@@ -243,7 +244,7 @@ ACTIONS: tuple[ActionDoc, ...] = (
         "Documents",
         query=m.GenerateDocxQuery,
         binary=DOCX_TYPE,
-        errors=(400, 403, 500),
+        errors=(400, 403, 500, 501),
     ),
     ActionDoc(
         "permissions",

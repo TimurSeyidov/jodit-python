@@ -92,7 +92,7 @@ Priority of the configuration: the argument of `create_app()`, then
 | Port | `8081` (`PORT`, `HOST` change it) |
 | Files | `/app/files` (default source root) |
 | Health check | `GET /ping` every 30 s |
-| Extras | Pango for PDF export, DejaVu and Liberation fonts |
+| Extras | All Python extras (`[all]`: PDF, DOCX, S3), Pango, DejaVu and Liberation fonts |
 | Size | about 330 MB |
 
 Mounted directories must be writable by the `app` user (uid of the

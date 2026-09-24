@@ -12,7 +12,7 @@ A source keeps its files in a **storage adapter**. Two are built in:
 | Name | Storage | Settings |
 |---|---|---|
 | `local` (default) | Directory on the server | `root` |
-| `s3` | AWS S3 or an S3-compatible service | `s3` block ([AWS S3](aws-s3.md)) |
+| `s3` | AWS S3 or an S3-compatible service | `s3` block ([AWS S3](aws-s3.md)); needs the `s3` extra |
 
 Anything else (a database, another object store, a remote API) plugs
 in as a custom adapter registered under a name.
