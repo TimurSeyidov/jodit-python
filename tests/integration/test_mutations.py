@@ -1,16 +1,14 @@
 """Changing actions, ported from the jodit-nodejs v1 tests."""
 
-from types import SimpleNamespace
 from typing import TYPE_CHECKING
 
 import pytest
 
-from jcpy.acl import AccessControl
 from jcpy.config.loader import build_config
 from jcpy.errors import HttpError
 from jcpy.services.operations import make_folder
 from jcpy.sources import SourcePool
-from tests.conftest import BASEURL, source_config, write_file
+from tests.conftest import BASEURL, service_context, source_config, write_file
 
 if TYPE_CHECKING:
     from pathlib import Path
@@ -410,7 +408,7 @@ class TestFolderCreate:
         source = SourcePool(build_config(config(root)))._build()["test"]
 
         with pytest.raises(HttpError, match="Folder name is required"):
-            await make_folder(None, source, "", "/")  # type: ignore[arg-type]
+            await make_folder(service_context(), source, "", "/")
 
     async def test_parent_outside_root(
         self, connector_client: ClientFactory, root: Path
@@ -1002,8 +1000,8 @@ class TestEdgeCases:
 
         monkeypatch.setattr(source.storage, "directory_exists", broken)
         monkeypatch.setattr(source.storage, "create_directory", record)
-        context = SimpleNamespace(role="guest", access=AccessControl([]))
+        context = service_context()
 
-        await make_folder(context, source, "new", "/")  # type: ignore[arg-type]
+        await make_folder(context, source, "new", "/")
 
         assert created == ["new"]

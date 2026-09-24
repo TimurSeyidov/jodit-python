@@ -2,13 +2,15 @@
 
 from collections.abc import AsyncIterator, Callable, Mapping
 from contextlib import AbstractAsyncContextManager, asynccontextmanager
-from typing import TYPE_CHECKING
+from types import SimpleNamespace
+from typing import TYPE_CHECKING, cast
 
 import pytest
 from fastapi import FastAPI
 from httpx import ASGITransport, AsyncClient
 
 from jcpy import create_app
+from jcpy.acl import AccessControl
 from jcpy.config.loader import build_config
 from jcpy.connector import Connector
 from jcpy.errors import HttpError
@@ -225,3 +227,18 @@ def write_file(root: Path, relative: str, contents: bytes | str = b"") -> Path:
     data = contents.encode() if isinstance(contents, str) else contents
     path.write_bytes(data)
     return path
+
+
+def service_context(role: str = "guest") -> ActionContext:
+    """Minimal context for calling services directly.
+
+    Args:
+        role: User role.
+
+    Returns:
+        Object with ``role`` and an allow-all ``access``; other
+        attributes are absent.
+    """
+    return cast(
+        "ActionContext", SimpleNamespace(role=role, access=AccessControl([]))
+    )

@@ -356,10 +356,9 @@ def parse_bytes(value: str) -> int | None:
         number = float(match.group(1))
         unit = match.group(4).lower()
     else:
-        prefix = _JS_PARSE_INT.match(value.lstrip(_JS_SPACE_CHARS))
-        if prefix is None:
+        number, unit = js_parse_int(value), "b"
+        if math.isnan(number):
             return None
-        number, unit = float(prefix.group(0)), "b"
     return math.floor(_BYTES_MULTIPLIERS[unit] * number)
 
 
@@ -421,3 +420,16 @@ def node_basename(path: str, suffix: str = "") -> str:
     if suffix and base.endswith(suffix) and base != suffix:
         return base[: -len(suffix)]
     return base
+
+
+def js_parse_int(text: str) -> float:
+    """Mirror ``parseInt(text, 10)``.
+
+    Args:
+        text: String to parse.
+
+    Returns:
+        Parsed integer (as ``int``), ``nan`` when no digits lead.
+    """
+    prefix = _JS_PARSE_INT.match(text.lstrip(_JS_SPACE_CHARS))
+    return math.nan if prefix is None else int(prefix.group(0))

@@ -19,6 +19,10 @@ from jcpy.v1.folders.handler import folders_handler
 from jcpy.v1.get_local_file_by_url.handler import (
     get_local_file_by_url_handler,
 )
+from jcpy.v1.image_crop.handler import image_crop_handler
+from jcpy.v1.image_load.handler import image_load_handler
+from jcpy.v1.image_resize.handler import image_resize_handler
+from jcpy.v1.image_save.handler import image_save_handler
 from jcpy.v1.permissions.handler import permissions_handler
 
 if TYPE_CHECKING:
@@ -43,6 +47,10 @@ ACTIONS: Mapping[str, ActionHandler] = MappingProxyType(
         "getLocalFileByUrl": get_local_file_by_url_handler,
         "folders": folders_handler,
         "permissions": permissions_handler,
+        "imageResize": image_resize_handler,
+        "imageCrop": image_crop_handler,
+        "imageSave": image_save_handler,
+        "imageLoad": image_load_handler,
     }
 )
 """Built-in action handlers keyed by action name."""
