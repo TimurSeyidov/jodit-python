@@ -1,0 +1,38 @@
+{
+  "name": "jodit-python",
+  "dockerComposeFile": [
+    "../docker-compose.dev.yml",
+    "docker-compose.devcontainer.yml"
+  ],
+  "service": "jcpy",
+  "workspaceFolder": "/app",
+  "remoteUser": "dev",
+  "shutdownAction": "stopCompose",
+  "forwardPorts": [8081],
+  "postCreateCommand": "uv sync --frozen --all-groups",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/app/.venv/bin/python",
+        "editor.rulers": [79],
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          }
+        },
+        "mypy-type-checker.importStrategy": "fromEnvironment",
+        "ruff.importStrategy": "fromEnvironment",
+        "python.testing.pytestEnabled": true
+      },
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "ms-python.mypy-type-checker",
+        "tamasfe.even-better-toml",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  }
+}

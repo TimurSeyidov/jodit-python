@@ -1,7 +1,12 @@
 .DEFAULT_GOAL := help
 
+# Keep bytecode out of the source tree.
+export PYTHONPYCACHEPREFIX := $(CURDIR)/.cache/pycache
+
 .PHONY: help menu sync run dev lint lint-fix format format-check \
-	typecheck test test-v coverage check clean
+	typecheck test test-v coverage check clean \
+	dev-up dev-down dev-logs dev-shell prod-build prod-up prod-down \
+	prod-logs
 
 # --- meta --------------------------------------------------------------
 
@@ -25,7 +30,7 @@ run: ## Run the connector (PORT, default 8081)
 
 dev: ## Run with auto-reload
 	uv run uvicorn jcpy.app:create_app --factory --reload \
-		--port $${PORT:-8081}
+		--host $${HOST:-127.0.0.1} --port $${PORT:-8081}
 
 # --- quality -----------------------------------------------------------
 
@@ -54,6 +59,38 @@ coverage: ## Run tests with coverage (fails under 90%)
 	uv run pytest --cov --cov-report=term-missing --cov-report=html
 
 check: lint format-check typecheck coverage ## Run everything (as in CI)
+
+# --- docker: dev ------------------------------------------------------
+
+DEV_COMPOSE := docker compose -f docker-compose.dev.yml
+
+dev-up: ## Start dev container (hot reload)
+	$(DEV_COMPOSE) up -d --build
+
+dev-down: ## Stop dev container
+	$(DEV_COMPOSE) down
+
+dev-logs: ## Follow dev container logs
+	$(DEV_COMPOSE) logs -f
+
+dev-shell: ## Open a shell in the dev container
+	$(DEV_COMPOSE) exec jcpy bash
+
+# --- docker: prod -----------------------------------------------------
+
+prod-build: ## Build prod image
+	docker compose build
+
+prod-up: ## Start prod container
+	docker compose up -d --build
+
+prod-down: ## Stop prod container
+	docker compose down
+
+prod-logs: ## Follow prod container logs
+	docker compose logs -f
+
+# --- misc -------------------------------------------------------------
 
 clean: ## Remove caches and build artifacts
 	rm -rf .cache dist build

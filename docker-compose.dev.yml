@@ -1,0 +1,17 @@
+services:
+  jcpy:
+    build:
+      context: .
+      target: dev
+      args:
+        USER_UID: ${USER_UID:-1000}
+        USER_GID: ${USER_GID:-1000}
+    image: jodit-python:dev
+    ports:
+      - "${PORT:-8081}:8081"
+    volumes:
+      - .:/app
+      - venv:/app/.venv
+
+volumes:
+  venv:

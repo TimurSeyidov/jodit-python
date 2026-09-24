@@ -23,6 +23,9 @@ jcpy = "jcpy.run:main"
 requires = ["uv_build>=0.10,<0.13"]
 build-backend = "uv_build"
 
+[tool.uv]
+cache-dir = ".cache/uv"
+
 [tool.uv.build-backend]
 module-name = "jcpy"
 

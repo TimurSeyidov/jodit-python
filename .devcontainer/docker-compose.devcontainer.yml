@@ -1,0 +1,5 @@
+# Keeps the container idle so the IDE attaches to it; the server is
+# started from the terminal with `make dev`.
+services:
+  jcpy:
+    command: ["sleep", "infinity"]

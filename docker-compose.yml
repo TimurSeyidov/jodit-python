@@ -1,0 +1,13 @@
+services:
+  jcpy:
+    build:
+      context: .
+      target: prod
+    image: jodit-python:latest
+    restart: unless-stopped
+    ports:
+      - "${PORT:-8081}:8081"
+    environment:
+      PORT: "8081"
+    volumes:
+      - ./files:/app/files
