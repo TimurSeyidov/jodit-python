@@ -175,7 +175,22 @@ class DownloadTooLargeError(HttpError):
         super().__init__(403, "File size exceeds the allowable")
 
 
-async def download(
+@dataclass(frozen=True, slots=True)
+class Fetched:
+    """Downloaded resource.
+
+    Attributes:
+        url: Final URL after redirects.
+        body: Response body.
+        content_type: ``Content-Type`` header, when sent.
+    """
+
+    url: str
+    body: bytes
+    content_type: str | None
+
+
+async def fetch(
     url: str,
     *,
     guard: bool,
@@ -183,7 +198,7 @@ async def download(
     network_timeout: float,
     resolver: Resolver = resolve_host,
     transport: httpx.AsyncBaseTransport | None = None,
-) -> bytes:
+) -> Fetched:
     """Download a URL, re-checking every redirect hop.
 
     Args:
@@ -195,7 +210,7 @@ async def download(
         transport: HTTP transport (for tests).
 
     Returns:
-        Response body.
+        Final URL, body and content type.
 
     Raises:
         HttpError: SSRF refusals (see ``check_url``), ``400 Too many
@@ -244,7 +259,48 @@ async def download(
                         body += chunk
                         if limit is not None and len(body) > limit:
                             raise DownloadTooLargeError
-                    return bytes(body)
+                    return Fetched(
+                        current,
+                        bytes(body),
+                        response.headers.get("content-type"),
+                    )
             except httpx.HTTPError as error:
                 msg = f"File was not loaded: {error}"
                 raise HttpError.bad_request(msg) from None
+
+
+async def download(
+    url: str,
+    *,
+    guard: bool,
+    limit: int | None,
+    network_timeout: float,
+    resolver: Resolver = resolve_host,
+    transport: httpx.AsyncBaseTransport | None = None,
+) -> bytes:
+    """Download a URL body; see ``fetch`` for the checks and errors.
+
+    Args:
+        url: URL to download.
+        guard: Apply the SSRF checks (off only for trusted networks).
+        limit: Abort once the body exceeds this many bytes.
+        network_timeout: Network timeout in seconds.
+        resolver: Host name resolver for the checks.
+        transport: HTTP transport (for tests).
+
+    Returns:
+        Response body.
+
+    Raises:
+        HttpError: See ``fetch``.
+        DownloadTooLargeError: The body exceeds ``limit``.
+    """
+    fetched = await fetch(
+        url,
+        guard=guard,
+        limit=limit,
+        network_timeout=network_timeout,
+        resolver=resolver,
+        transport=transport,
+    )
+    return fetched.body

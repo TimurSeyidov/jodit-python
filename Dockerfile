@@ -43,6 +43,8 @@ ARG USER_GID=1000
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         curl git make \
+        libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 \
+        fonts-dejavu-core fonts-liberation \
     && rm -rf /var/lib/apt/lists/*
 
 RUN groupadd --gid "${USER_GID}" "${USERNAME}" \
@@ -67,7 +69,10 @@ CMD ["sh", "-c", "uv sync --frozen --all-groups && make dev"]
 FROM python:${PYTHON_VERSION}-slim AS prod
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends tini \
+    && apt-get install -y --no-install-recommends \
+        tini \
+        libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 \
+        fonts-dejavu-core fonts-liberation \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system app \
     && useradd --system --gid app --home-dir /app app \

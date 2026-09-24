@@ -1,0 +1,317 @@
+[
+ {
+  "schema": "generatePdf",
+  "input": {},
+  "issues": [
+   {
+    "path": "html",
+    "message": "Invalid input: expected string, received undefined"
+   }
+  ]
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": ""
+  },
+  "issues": [
+   {
+    "path": "html",
+    "message": "Too small: expected string to have >=1 characters"
+   }
+  ]
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": 5
+  },
+  "issues": [
+   {
+    "path": "html",
+    "message": "Invalid input: expected string, received number"
+   }
+  ]
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": "<p>x</p>"
+  },
+  "issues": []
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": " "
+  },
+  "issues": []
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": "x",
+   "options": "str"
+  },
+  "issues": []
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": "x",
+   "options": {
+    "format": "A5"
+   }
+  },
+  "issues": [
+   {
+    "path": "options",
+    "message": "Invalid input"
+   }
+  ]
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": "x",
+   "options": {
+    "page_orientation": "up",
+    "defaultFont": "arial"
+   }
+  },
+  "issues": [
+   {
+    "path": "options",
+    "message": "Invalid input"
+   }
+  ]
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": "x",
+   "options": {
+    "format": "Letter",
+    "page_orientation": "landscape"
+   }
+  },
+  "issues": []
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": "x",
+   "options": {
+    "defaultFont": "times"
+   }
+  },
+  "issues": []
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": "x",
+   "options": 5
+  },
+  "issues": [
+   {
+    "path": "options",
+    "message": "Invalid input"
+   }
+  ]
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": "x",
+   "options": []
+  },
+  "issues": [
+   {
+    "path": "options",
+    "message": "Invalid input"
+   }
+  ]
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": "x",
+   "options": null
+  },
+  "issues": [
+   {
+    "path": "options",
+    "message": "Invalid input"
+   }
+  ]
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "source": 1,
+   "html": "x"
+  },
+  "issues": []
+ },
+ {
+  "schema": "generatePdf",
+  "input": {
+   "html": null,
+   "options": 1
+  },
+  "issues": [
+   {
+    "path": "html",
+    "message": "Invalid input: expected string, received null"
+   },
+   {
+    "path": "options",
+    "message": "Invalid input"
+   }
+  ]
+ },
+ {
+  "schema": "generateDocx",
+  "input": {},
+  "issues": [
+   {
+    "path": "html",
+    "message": "Invalid input: expected string, received undefined"
+   }
+  ]
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": ""
+  },
+  "issues": [
+   {
+    "path": "html",
+    "message": "Too small: expected string to have >=1 characters"
+   }
+  ]
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": 5
+  },
+  "issues": [
+   {
+    "path": "html",
+    "message": "Invalid input: expected string, received number"
+   }
+  ]
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": "<p>x</p>"
+  },
+  "issues": []
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": " "
+  },
+  "issues": []
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": "x",
+   "options": "str"
+  },
+  "issues": []
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": "x",
+   "options": {
+    "format": "A5"
+   }
+  },
+  "issues": []
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": "x",
+   "options": {
+    "page_orientation": "up",
+    "defaultFont": "arial"
+   }
+  },
+  "issues": []
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": "x",
+   "options": {
+    "format": "Letter",
+    "page_orientation": "landscape"
+   }
+  },
+  "issues": []
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": "x",
+   "options": {
+    "defaultFont": "times"
+   }
+  },
+  "issues": []
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": "x",
+   "options": 5
+  },
+  "issues": []
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": "x",
+   "options": []
+  },
+  "issues": []
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": "x",
+   "options": null
+  },
+  "issues": []
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "source": 1,
+   "html": "x"
+  },
+  "issues": []
+ },
+ {
+  "schema": "generateDocx",
+  "input": {
+   "html": null,
+   "options": 1
+  },
+  "issues": [
+   {
+    "path": "html",
+    "message": "Invalid input: expected string, received null"
+   }
+  ]
+ }
+]

@@ -10,6 +10,9 @@ API-compatible with [jodit-nodejs](https://github.com/jodit/jodit-nodejs).
 
 - Python 3.14+
 - [uv](https://docs.astral.sh/uv/)
+- Pango for PDF export (WeasyPrint): `brew install pango` on macOS,
+  `libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0` on Debian/Ubuntu
+  (already in the Docker images)
 
 ## Quick start
 

@@ -17,6 +17,8 @@ from jcpy.v1.folder_move.handler import folder_move_handler
 from jcpy.v1.folder_remove.handler import folder_remove_handler
 from jcpy.v1.folder_rename.handler import folder_rename_handler
 from jcpy.v1.folders.handler import folders_handler
+from jcpy.v1.generate_docx.handler import generate_docx_handler
+from jcpy.v1.generate_pdf.handler import generate_pdf_handler
 from jcpy.v1.get_local_file_by_url.handler import (
     get_local_file_by_url_handler,
 )
@@ -53,6 +55,8 @@ ACTIONS: Mapping[str, ActionHandler] = MappingProxyType(
         "imageCrop": image_crop_handler,
         "imageSave": image_save_handler,
         "imageLoad": image_load_handler,
+        "generatePdf": generate_pdf_handler,
+        "generateDocx": generate_docx_handler,
     }
 )
 """Built-in action handlers keyed by action name."""

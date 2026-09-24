@@ -3,6 +3,11 @@
 # Keep bytecode out of the source tree.
 export PYTHONPYCACHEPREFIX := $(CURDIR)/.cache/pycache
 
+# macOS: WeasyPrint loads Pango/GObject installed by Homebrew.
+ifeq ($(shell uname -s),Darwin)
+export DYLD_FALLBACK_LIBRARY_PATH := /opt/homebrew/lib:/usr/local/lib
+endif
+
 .PHONY: help menu sync run dev lint lint-fix format format-check \
 	typecheck test test-v coverage check clean \
 	dev-up dev-down dev-logs dev-shell prod-build prod-up prod-down \

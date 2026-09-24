@@ -30,6 +30,12 @@ jobs:
       - name: Set up Python
         run: uv python install
 
+      - name: Install system libraries for WeasyPrint
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0
+
       - name: Install dependencies
         run: uv sync --frozen --all-groups
 
