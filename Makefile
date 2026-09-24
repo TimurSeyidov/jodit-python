@@ -10,7 +10,7 @@ endif
 
 .PHONY: help menu sync run dev lint lint-fix format format-check \
 	typecheck test test-v coverage check clean openapi openapi-check \
-	docs docs-build \
+	docs docs-build parity parity-compare parity-demo \
 	dev-up dev-down dev-logs dev-shell prod-build prod-up prod-down \
 	prod-logs
 
@@ -79,6 +79,15 @@ docs: ## Serve the documentation with live reload (DOCS_PORT, default 8000)
 
 docs-build: ## Build the documentation into site/ (fails on warnings)
 	uv run mkdocs build -f docs/mkdocs.yml --strict
+
+parity: ## Run jodit-nodejs tests against this port (NODEJS=../jodit-nodejs)
+	bash scripts/parity/run.sh $${NODEJS:-../jodit-nodejs} $(ARGS)
+
+parity-compare: ## Compare edge-case answers of both connectors (after parity)
+	uv run python scripts/parity/compare.py
+
+parity-demo: ## Drive the jodit-nodejs demo in Chrome on both (after parity)
+	bash scripts/parity/run-demo.sh
 
 # --- docker: dev ------------------------------------------------------
 

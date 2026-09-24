@@ -1,5 +1,6 @@
 """Changing actions, ported from the jodit-nodejs v1 tests."""
 
+import os
 from typing import TYPE_CHECKING
 
 import pytest
@@ -1005,3 +1006,21 @@ class TestEdgeCases:
         await make_folder(context, source, "new", "/")
 
         assert created == ["new"]
+
+
+async def test_storage_errors_do_not_reveal_the_root(
+    connector_client: ClientFactory, tmp_path: Path
+) -> None:
+    (tmp_path / "a" / "b").mkdir(parents=True)
+
+    async with connector_client(source_config(tmp_path)) as http:
+        response = await http.get(
+            "/folderMove", params={"from": "a", "path": "a/b"}
+        )
+
+    assert response.status_code == 400
+    (message,) = response.json()["data"]["messages"]
+    assert message.startswith("Unable to move: Unable to move file.")
+    assert "'a' -> 'a/b/a'" in message
+    assert str(tmp_path) not in message
+    assert os.path.realpath(tmp_path) not in message

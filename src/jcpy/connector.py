@@ -7,13 +7,17 @@ from typing import TYPE_CHECKING
 
 from fastapi import APIRouter
 from starlette.requests import Request
-from starlette.responses import JSONResponse, PlainTextResponse, Response
+from starlette.responses import PlainTextResponse, Response
 
 from jcpy.acl import AccessControl, request_path
 from jcpy.context import ActionContext, RequestContext
 from jcpy.errors import HttpError
 from jcpy.helpers.svg_icon import generate_icon
-from jcpy.responses import error_response, internal_error_response
+from jcpy.responses import (
+    JsonResponse,
+    error_response,
+    internal_error_response,
+)
 from jcpy.sources import SourcePool
 from jcpy.tenants import TenantCache
 from jcpy.v1 import ACTIONS
@@ -132,7 +136,7 @@ class Connector:
             return error_response(
                 HTTPStatus.METHOD_NOT_ALLOWED, [ONLY_POST_MESSAGE]
             )
-        return JSONResponse(PingResponse().model_dump())
+        return JsonResponse(PingResponse().model_dump())
 
     async def dispatch(self, request: Request) -> Response:
         """Serve a connector action.

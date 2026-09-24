@@ -2,9 +2,7 @@
 
 from typing import TYPE_CHECKING
 
-from starlette.responses import JSONResponse
-
-from jcpy.responses import SUCCESS_CODE
+from jcpy.responses import SUCCESS_CODE, JsonResponse
 from jcpy.services.listing import list_folders
 from jcpy.validation import (
     Issue,
@@ -62,6 +60,6 @@ async def folders_handler(context: ActionContext) -> Response:
         await list_folders(source, params.path, dots=dots)
         for source in await context.get_sources()
     ]
-    return JSONResponse(
+    return JsonResponse(
         {"success": True, "data": {"sources": sources, "code": SUCCESS_CODE}}
     )

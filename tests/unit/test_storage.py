@@ -309,3 +309,50 @@ class TestRegistry:
         assert not is_local_storage_source(settings)
         assert create_storage_adapter(settings) is adapter
         assert "memory-test" in get_registered_storage_adapters()
+
+
+class _FailingAdapter(MemoryStorageAdapter):
+    """Adapter whose reads fail with a message naming absolute paths."""
+
+    def __init__(self, root: Path, message: str) -> None:
+        super().__init__()
+        self.root = root
+        self.message = message
+
+    async def read(self, path: str) -> bytes:
+        raise OSError(self.message)
+
+
+@pytest.mark.parametrize(
+    ("template", "expected"),
+    [
+        ("denied: '{root}/a/b.txt'", "denied: 'a/b.txt'"),
+        ("denied: '{real}/a/b.txt'", "denied: 'a/b.txt'"),
+        ("cannot open '{root}'", "cannot open '.'"),
+        ("no paths here", "no paths here"),
+    ],
+)
+async def test_errors_hide_the_storage_root(
+    tmp_path: Path, template: str, expected: str
+) -> None:
+    root = tmp_path / "files"
+    root.mkdir()
+    message = template.format(root=root, real=os.path.realpath(root))
+    storage = FileStorage(_FailingAdapter(root, message))
+
+    with pytest.raises(StorageError) as caught:
+        await storage.read("a/b.txt")
+
+    assert str(caught.value) == (
+        f"Unable to read the file. Reason: {expected}"
+    )
+
+
+async def test_errors_of_adapters_without_root_are_kept() -> None:
+    class Failing(MemoryStorageAdapter):
+        async def read(self, path: str) -> bytes:
+            msg = "/somewhere/else"
+            raise OSError(msg)
+
+    with pytest.raises(StorageError, match=r"Reason: /somewhere/else$"):
+        await FileStorage(Failing()).read("x")

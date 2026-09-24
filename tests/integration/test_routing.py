@@ -344,3 +344,18 @@ async def test_malformed_multipart(connector_client: ClientFactory) -> None:
 
     assert response.status_code == 400
     assert response.json()["success"] is False
+
+
+async def test_json_content_type_matches_express(
+    connector_client: ClientFactory,
+) -> None:
+    async with connector_client() as http:
+        answers = [
+            await http.get("/ping"),
+            await http.get("/echo"),
+            await http.get("/nothing"),
+        ]
+
+    assert {response.headers["content-type"] for response in answers} == {
+        "application/json; charset=utf-8"
+    }
