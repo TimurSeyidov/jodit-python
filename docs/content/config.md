@@ -132,6 +132,19 @@ avi flv 3gp mov mkv mp4 wmv webp`
 
 </details>
 
+!!! warning "Pages and scripts"
+    The default list (kept from jodit-nodejs and the PHP connector)
+    contains `html`, `htm` and `js`. If `baseurl` is served from your
+    site's domain, uploaded pages and scripts run there (stored XSS).
+    List only the types you need, e.g. images and documents:
+
+    ```json
+    {"extensions": ["jpg", "jpeg", "png", "gif", "webp", "pdf", "docx", "xlsx"]}
+    ```
+
+    The same list governs names saved by `imageSave`. Make sure the file
+    host never executes uploaded files (no PHP or CGI under `baseurl`).
+
 ### `maxUploadFileSize` {#maxUploadFileSize}
 `string` · default `"8mb"`
 
@@ -302,7 +315,7 @@ Configure Jodit to use POST then:
 
 ```javascript
 Jodit.make('#editor', {
-  uploader: { url: '/connector/' },
+  uploader: { url: '/connector/?action=fileUpload' },
   filebrowser: { ajax: { url: '/connector/', method: 'POST' } }
 });
 ```

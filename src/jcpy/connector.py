@@ -129,6 +129,9 @@ class Connector:
         Args:
             request: Incoming request.
 
+        The probe needs no origin, token or tenant; CORS headers are
+        added for allowed origins so that pages (Swagger UI) can call it.
+
         Returns:
             ``{"success": true}``, or ``405`` when only POST is allowed.
         """
@@ -136,7 +139,8 @@ class Connector:
             return error_response(
                 HTTPStatus.METHOD_NOT_ALLOWED, [ONLY_POST_MESSAGE]
             )
-        return JsonResponse(PingResponse().model_dump())
+        cors_headers, _ = await self._cors(request)
+        return JsonResponse(PingResponse().model_dump(), headers=cors_headers)
 
     async def dispatch(self, request: Request) -> Response:
         """Serve a connector action.
@@ -204,8 +208,17 @@ class Connector:
         return self.tenants.get(resolved)
 
     def _log(self, error: Exception) -> None:
-        if self.config.debug:
-            logger.error("Request failed", exc_info=error)
+        if not self.config.debug:
+            return
+        if isinstance(error, HttpError) and error.status_code < 500:
+            # An answer to a bad request, not a failure: no traceback.
+            logger.warning(
+                "Request failed: %s %s",
+                error.status_code,
+                "; ".join(error.messages),
+            )
+            return
+        logger.error("Request failed", exc_info=error)
 
     async def _authenticate(self, request: Request) -> str:
         if self.check_authentication is None:

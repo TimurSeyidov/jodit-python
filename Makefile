@@ -8,7 +8,7 @@ ifeq ($(shell uname -s),Darwin)
 export DYLD_FALLBACK_LIBRARY_PATH := /opt/homebrew/lib:/usr/local/lib
 endif
 
-.PHONY: help menu sync run dev lint lint-fix format format-check \
+.PHONY: help menu sync run dev demo lint lint-fix format format-check \
 	typecheck test test-v coverage check clean openapi openapi-check \
 	docs docs-build parity parity-compare parity-demo \
 	dev-up dev-down dev-logs dev-shell prod-build prod-up prod-down \
@@ -33,6 +33,9 @@ sync: ## Install/update dependencies
 
 run: ## Run the connector (PORT, default 8081)
 	uv run jcpy
+
+demo: ## Real Jodit editor on http://localhost:8080/demo/ with this connector
+	bash scripts/demo.sh
 
 dev: ## Run with auto-reload
 	uv run uvicorn jcpy.app:create_app --factory --reload \
@@ -75,10 +78,10 @@ openapi-check: ## Fail when the OpenAPI document is out of date
 	uv run python scripts/generate_openapi.py --check
 
 docs: ## Serve the documentation with live reload (DOCS_PORT, default 8000)
-	uv run mkdocs serve -f docs/mkdocs.yml -a 127.0.0.1:$${DOCS_PORT:-8000}
+	NO_MKDOCS_2_WARNING=1 uv run mkdocs serve -f docs/mkdocs.yml -a 127.0.0.1:$${DOCS_PORT:-8000}
 
 docs-build: ## Build the documentation into site/ (fails on warnings)
-	uv run mkdocs build -f docs/mkdocs.yml --strict
+	NO_MKDOCS_2_WARNING=1 uv run mkdocs build -f docs/mkdocs.yml --strict
 
 parity: ## Run jodit-nodejs tests against this port (NODEJS=../jodit-nodejs)
 	bash scripts/parity/run.sh $${NODEJS:-../jodit-nodejs} $(ARGS)

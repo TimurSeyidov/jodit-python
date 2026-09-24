@@ -15,7 +15,8 @@ paths:
     get:
       operationId: ping
       summary: Health check
-      description: Answers before CORS and authentication.
+      description: Answers before authentication and tenant resolution; adds CORS
+        headers for allowed origins.
       tags:
       - System
       responses:
@@ -80,7 +81,7 @@ paths:
         schema:
           type: string
           description: Source name; the first (or every) source when omitted
-          examples: &id010
+          examples: &id016
           - default
           title: Source
         description: Source name; the first (or every) source when omitted
@@ -90,17 +91,77 @@ paths:
         schema:
           type: string
           description: Directory inside the source
-          examples: &id011
+          examples: &id017
           - /
           title: Path
         description: Directory inside the source
-      - name: mods
+      - name: mods[withFolders]
         in: query
         required: false
         schema:
-          $ref: '#/components/schemas/FilesMods'
-        style: deepObject
-        explode: true
+          type: boolean
+          description: Include folders
+          title: Withfolders
+        description: Include folders
+      - name: mods[onlyImages]
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: Only image files
+          title: Onlyimages
+        description: Only image files
+      - name: mods[offset]
+        in: query
+        required: false
+        schema:
+          type: integer
+          description: First item
+          title: Offset
+        description: First item
+      - name: mods[limit]
+        in: query
+        required: false
+        schema:
+          type: integer
+          description: Number of items
+          title: Limit
+        description: Number of items
+      - name: mods[sortBy]
+        in: query
+        required: false
+        schema:
+          enum: &id014
+          - name-asc
+          - name-desc
+          - changed-asc
+          - changed-desc
+          - size-asc
+          - size-desc
+          type: string
+          description: Sort order
+          title: Sortby
+        description: Sort order
+      - name: mods[foldersPosition]
+        in: query
+        required: false
+        schema:
+          enum: &id015
+          - default
+          - top
+          - bottom
+          type: string
+          description: Where folders go
+          title: Foldersposition
+        description: Where folders go
+      - name: mods[filterWord]
+        in: query
+        required: false
+        schema:
+          type: string
+          description: Case-insensitive part of the names to keep
+          title: Filterword
+        description: Case-insensitive part of the names to keep
   /fileUpload:
     post:
       operationId: fileUpload
@@ -198,7 +259,7 @@ paths:
         schema:
           type: string
           description: Source name; the first (or every) source when omitted
-          examples: &id027
+          examples: &id034
           - default
           title: Source
         description: Source name; the first (or every) source when omitted
@@ -208,14 +269,14 @@ paths:
         schema:
           type: string
           description: Directory inside the source
-          examples: &id028
+          examples: &id035
           - /
           title: Path
         description: Directory inside the source
       - name: url
         in: query
         required: true
-        schema: &id029
+        schema: &id036
           description: File to download
           examples:
           - https://example.com/a.png
@@ -617,7 +678,7 @@ paths:
       - name: url
         in: query
         required: true
-        schema: &id032
+        schema: &id041
           description: Public URL of a file
           examples:
           - http://localhost:8081/files/photo.jpg
@@ -673,7 +734,7 @@ paths:
         schema:
           type: string
           description: Source name; the first (or every) source when omitted
-          examples: &id015
+          examples: &id021
           - default
           title: Source
         description: Source name; the first (or every) source when omitted
@@ -683,7 +744,7 @@ paths:
         schema:
           type: string
           description: Directory inside the source
-          examples: &id016
+          examples: &id022
           - /
           title: Path
         description: Directory inside the source
@@ -743,7 +804,7 @@ paths:
         schema:
           type: string
           description: Source name; the first (or every) source when omitted
-          examples: &id012
+          examples: &id018
           - default
           title: Source
         description: Source name; the first (or every) source when omitted
@@ -753,14 +814,14 @@ paths:
         schema:
           type: string
           description: Directory inside the source
-          examples: &id013
+          examples: &id019
           - /
           title: Path
         description: Directory inside the source
       - name: name
         in: query
         required: true
-        schema: &id014
+        schema: &id020
           description: New folder name
           examples:
           - photos
@@ -1079,7 +1140,7 @@ paths:
         schema:
           type: string
           description: Source name; the first (or every) source when omitted
-          examples: &id023
+          examples: &id028
           - default
           title: Source
         description: Source name; the first (or every) source when omitted
@@ -1089,14 +1150,14 @@ paths:
         schema:
           type: string
           description: Directory inside the source
-          examples: &id024
+          examples: &id029
           - /
           title: Path
         description: Directory inside the source
       - name: name
         in: query
         required: true
-        schema: &id025
+        schema: &id030
           description: Entry name
           examples:
           - photo.jpg
@@ -1111,13 +1172,24 @@ paths:
           description: Save as (overwrite `name` when omitted)
           title: Newname
         description: Save as (overwrite `name` when omitted)
-      - name: box
+      - name: box[w]
         in: query
         required: true
-        schema: &id026
-          $ref: '#/components/schemas/ResizeBox'
-        style: deepObject
-        explode: true
+        schema: &id037
+          description: Width in pixels
+          exclusiveMinimum: 0
+          title: W
+          type: integer
+        description: Width in pixels
+      - name: box[h]
+        in: query
+        required: true
+        schema: &id038
+          description: Height in pixels
+          exclusiveMinimum: 0
+          title: H
+          type: integer
+        description: Height in pixels
   /imageCrop:
     get:
       operationId: imageCrop
@@ -1166,7 +1238,7 @@ paths:
         schema:
           type: string
           description: Source name; the first (or every) source when omitted
-          examples: &id019
+          examples: &id025
           - default
           title: Source
         description: Source name; the first (or every) source when omitted
@@ -1176,14 +1248,14 @@ paths:
         schema:
           type: string
           description: Directory inside the source
-          examples: &id020
+          examples: &id026
           - /
           title: Path
         description: Directory inside the source
       - name: name
         in: query
         required: true
-        schema: &id021
+        schema: &id027
           description: Entry name
           examples:
           - photo.jpg
@@ -1198,13 +1270,42 @@ paths:
           description: Save as (overwrite `name` when omitted)
           title: Newname
         description: Save as (overwrite `name` when omitted)
-      - name: box
+      - name: box[w]
         in: query
         required: true
-        schema: &id022
-          $ref: '#/components/schemas/CropBox'
-        style: deepObject
-        explode: true
+        schema: &id010
+          description: Width in pixels
+          exclusiveMinimum: 0
+          title: W
+          type: integer
+        description: Width in pixels
+      - name: box[h]
+        in: query
+        required: true
+        schema: &id011
+          description: Height in pixels
+          exclusiveMinimum: 0
+          title: H
+          type: integer
+        description: Height in pixels
+      - name: box[x]
+        in: query
+        required: true
+        schema: &id012
+          description: Left offset in pixels
+          minimum: 0
+          title: X
+          type: integer
+        description: Left offset in pixels
+      - name: box[y]
+        in: query
+        required: true
+        schema: &id013
+          description: Top offset in pixels
+          minimum: 0
+          title: Y
+          type: integer
+        description: Top offset in pixels
   /imageSave:
     post:
       operationId: imageSave
@@ -1354,19 +1455,43 @@ paths:
       - name: html
         in: query
         required: true
-        schema: &id018
+        schema: &id024
           description: Document markup
           minLength: 1
           title: Html
           type: string
         description: Document markup
-      - name: options
+      - name: options[format]
         in: query
         required: false
         schema:
-          $ref: '#/components/schemas/PdfOptions'
-        style: deepObject
-        explode: true
+          enum: &id031
+          - A4
+          - A3
+          - Letter
+          - Legal
+          - Tabloid
+          type: string
+          title: Format
+      - name: options[page_orientation]
+        in: query
+        required: false
+        schema:
+          enum: &id032
+          - portrait
+          - landscape
+          type: string
+          title: Page Orientation
+      - name: options[defaultFont]
+        in: query
+        required: false
+        schema:
+          enum: &id033
+          - courier
+          - helvetica
+          - times
+          type: string
+          title: Defaultfont
   /generateDocx:
     get:
       operationId: generateDocx
@@ -1407,7 +1532,7 @@ paths:
       - name: html
         in: query
         required: true
-        schema: &id017
+        schema: &id023
           description: Document markup
           minLength: 1
           title: Html
@@ -1461,7 +1586,7 @@ paths:
         schema:
           type: string
           description: Source name; the first (or every) source when omitted
-          examples: &id030
+          examples: &id039
           - default
           title: Source
         description: Source name; the first (or every) source when omitted
@@ -1471,7 +1596,7 @@ paths:
         schema:
           type: string
           description: Directory inside the source
-          examples: &id031
+          examples: &id040
           - /
           title: Path
         description: Directory inside the source
@@ -1480,26 +1605,10 @@ components:
     CropBox:
       description: Region to keep, sent as ``box[x]``, ``box[y]``, ``box[w]``...
       properties:
-        w:
-          description: Width in pixels
-          exclusiveMinimum: 0
-          title: W
-          type: integer
-        h:
-          description: Height in pixels
-          exclusiveMinimum: 0
-          title: H
-          type: integer
-        x:
-          description: Left offset in pixels
-          minimum: 0
-          title: X
-          type: integer
-        y:
-          description: Top offset in pixels
-          minimum: 0
-          title: Y
-          type: integer
+        w: *id010
+        h: *id011
+        x: *id012
+        y: *id013
       required:
       - w
       - h
@@ -1672,13 +1781,7 @@ components:
           title: Limit
         sortBy:
           anyOf:
-          - enum:
-            - name-asc
-            - name-desc
-            - changed-asc
-            - changed-desc
-            - size-asc
-            - size-desc
+          - enum: *id014
             type: string
           - type: 'null'
           default: null
@@ -1686,10 +1789,7 @@ components:
           title: Sortby
         foldersPosition:
           anyOf:
-          - enum:
-            - default
-            - top
-            - bottom
+          - enum: *id015
             type: string
           - type: 'null'
           default: null
@@ -1713,7 +1813,7 @@ components:
           - type: 'null'
           default: null
           description: Source name; the first (or every) source when omitted
-          examples: *id010
+          examples: *id016
           title: Source
         path:
           anyOf:
@@ -1721,7 +1821,7 @@ components:
           - type: 'null'
           default: null
           description: Directory inside the source
-          examples: *id011
+          examples: *id017
           title: Path
         mods:
           anyOf:
@@ -1753,7 +1853,7 @@ components:
           - type: 'null'
           default: null
           description: Source name; the first (or every) source when omitted
-          examples: *id012
+          examples: *id018
           title: Source
         path:
           anyOf:
@@ -1761,9 +1861,9 @@ components:
           - type: 'null'
           default: null
           description: Directory inside the source
-          examples: *id013
+          examples: *id019
           title: Path
-        name: *id014
+        name: *id020
       required:
       - name
       title: FolderCreateQuery
@@ -1794,7 +1894,7 @@ components:
           - type: 'null'
           default: null
           description: Source name; the first (or every) source when omitted
-          examples: *id015
+          examples: *id021
           title: Source
         path:
           anyOf:
@@ -1802,7 +1902,7 @@ components:
           - type: 'null'
           default: null
           description: Directory inside the source
-          examples: *id016
+          examples: *id022
           title: Path
         dots:
           anyOf:
@@ -1830,7 +1930,7 @@ components:
     GenerateDocxQuery:
       description: Parameters of ``generateDocx``.
       properties:
-        html: *id017
+        html: *id023
       required:
       - html
       title: GenerateDocxQuery
@@ -1838,7 +1938,7 @@ components:
     GeneratePdfQuery:
       description: Parameters of ``generatePdf``.
       properties:
-        html: *id018
+        html: *id024
         options:
           anyOf:
           - $ref: '#/components/schemas/PdfOptions'
@@ -1857,7 +1957,7 @@ components:
           - type: 'null'
           default: null
           description: Source name; the first (or every) source when omitted
-          examples: *id019
+          examples: *id025
           title: Source
         path:
           anyOf:
@@ -1865,9 +1965,9 @@ components:
           - type: 'null'
           default: null
           description: Directory inside the source
-          examples: *id020
+          examples: *id026
           title: Path
-        name: *id021
+        name: *id027
         newname:
           anyOf:
           - type: string
@@ -1875,7 +1975,8 @@ components:
           default: null
           description: Save as (overwrite `name` when omitted)
           title: Newname
-        box: *id022
+        box:
+          $ref: '#/components/schemas/CropBox'
       required:
       - name
       - box
@@ -1973,7 +2074,7 @@ components:
           - type: 'null'
           default: null
           description: Source name; the first (or every) source when omitted
-          examples: *id023
+          examples: *id028
           title: Source
         path:
           anyOf:
@@ -1981,9 +2082,9 @@ components:
           - type: 'null'
           default: null
           description: Directory inside the source
-          examples: *id024
+          examples: *id029
           title: Path
-        name: *id025
+        name: *id030
         newname:
           anyOf:
           - type: string
@@ -1991,7 +2092,8 @@ components:
           default: null
           description: Save as (overwrite `name` when omitted)
           title: Newname
-        box: *id026
+        box:
+          $ref: '#/components/schemas/ResizeBox'
       required:
       - name
       - box
@@ -2218,31 +2320,21 @@ components:
       properties:
         format:
           anyOf:
-          - enum:
-            - A4
-            - A3
-            - Letter
-            - Legal
-            - Tabloid
+          - enum: *id031
             type: string
           - type: 'null'
           default: null
           title: Format
         page_orientation:
           anyOf:
-          - enum:
-            - portrait
-            - landscape
+          - enum: *id032
             type: string
           - type: 'null'
           default: null
           title: Page Orientation
         defaultFont:
           anyOf:
-          - enum:
-            - courier
-            - helvetica
-            - times
+          - enum: *id033
             type: string
           - type: 'null'
           default: null
@@ -2328,7 +2420,7 @@ components:
           - type: 'null'
           default: null
           description: Source name; the first (or every) source when omitted
-          examples: *id027
+          examples: *id034
           title: Source
         path:
           anyOf:
@@ -2336,9 +2428,9 @@ components:
           - type: 'null'
           default: null
           description: Directory inside the source
-          examples: *id028
+          examples: *id035
           title: Path
-        url: *id029
+        url: *id036
       required:
       - url
       title: RemoteUploadQuery
@@ -2386,16 +2478,8 @@ components:
     ResizeBox:
       description: Target size, sent as ``box[w]`` and ``box[h]``.
       properties:
-        w:
-          description: Width in pixels
-          exclusiveMinimum: 0
-          title: W
-          type: integer
-        h:
-          description: Height in pixels
-          exclusiveMinimum: 0
-          title: H
-          type: integer
+        w: *id037
+        h: *id038
       required:
       - w
       - h
@@ -2469,7 +2553,7 @@ components:
           - type: 'null'
           default: null
           description: Source name; the first (or every) source when omitted
-          examples: *id030
+          examples: *id039
           title: Source
         path:
           anyOf:
@@ -2477,7 +2561,7 @@ components:
           - type: 'null'
           default: null
           description: Directory inside the source
-          examples: *id031
+          examples: *id040
           title: Path
       title: SourceQuery
       type: object
@@ -2568,7 +2652,7 @@ components:
     UrlQuery:
       description: Parameters of ``getLocalFileByUrl``.
       properties:
-        url: *id032
+        url: *id041
       required:
       - url
       title: UrlQuery

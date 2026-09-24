@@ -58,8 +58,9 @@ Errors carry the HTTP status in the status line and in `data.code`:
 
 ### `GET /ping`
 
-Health check. Answers before CORS and authentication (but after
-`onlyPOST`).
+Health check. Needs no token or tenant (it answers before
+authentication and `resolve_sources`, after `onlyPOST`); CORS headers are
+added for allowed origins.
 
 ```json
 {"success": true}

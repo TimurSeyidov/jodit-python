@@ -333,7 +333,8 @@ async def save_image(
         Storage path of the saved image.
 
     Raises:
-        HttpError: ``403`` without ``IMAGE_SAVE``, ``400`` for data that
+        HttpError: ``403`` without ``IMAGE_SAVE`` or for a name whose
+            extension is not allowed, ``400`` for data that
             is not an image, a missing name or a failed write, ``404``
             for a name leaving the directory.
     """
@@ -352,6 +353,10 @@ async def save_image(
     safe_name = sanitize_filename(target, "_")
     if not node_extname(safe_name):
         safe_name += node_extname(name) or f".{image_format}"
+    # Image data under any name (shell.php, page.html) must not slip past
+    # the "extensions" list that uploads obey.
+    if not source.is_safe_file(safe_name):
+        raise HttpError.forbidden("File type is not in white list")
 
     # A sanitized name is a single path segment, so it stays inside.
     destination = await source.validate_path(

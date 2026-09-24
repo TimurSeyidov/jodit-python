@@ -359,3 +359,18 @@ async def test_json_content_type_matches_express(
     assert {response.headers["content-type"] for response in answers} == {
         "application/json; charset=utf-8"
     }
+
+
+async def test_client_errors_are_logged_without_traceback(
+    connector_client: ClientFactory, caplog: pytest.LogCaptureFixture
+) -> None:
+    caplog.set_level(logging.WARNING, logger="jcpy")
+    async with connector_client() as http:
+        await http.get("/fail", params={"kind": "http"})
+
+    (record,) = [
+        r for r in caplog.records if r.getMessage().startswith("Request")
+    ]
+    assert record.levelno == logging.WARNING
+    assert record.getMessage() == "Request failed: 403 Access denied"
+    assert record.exc_info is None

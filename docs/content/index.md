@@ -125,7 +125,7 @@ location /jodit/connector/ {
 ```javascript
 Jodit.make('#editor', {
   uploader: {
-    url: '/jodit/connector/'
+    url: '/jodit/connector/?action=fileUpload'
   },
   filebrowser: {
     ajax: {
@@ -134,6 +134,23 @@ Jodit.make('#editor', {
   }
 });
 ```
+
+### Try it in the browser
+
+From a checkout of the repository:
+
+```bash
+make demo
+```
+
+Open `http://localhost:8080/demo/`: the free Jodit editor (from a CDN)
+with its file browser and uploader connected to jodit-python on port
+8081. The page and the files (`./files`) are served on port 8080; the
+connector uses `demo/config.json`. Another connector can be tried with
+`http://localhost:8080/demo/?connector=https://example.com/connector/`.
+
+Jodit's uploader does not name the action, so its URL carries it:
+`uploader: { url: 'https://example.com/connector/?action=fileUpload' }`.
 
 ## Next Steps
 

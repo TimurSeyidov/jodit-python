@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from jcpy.acl import DEFAULT_RULES
+from jcpy.config.loader import load_config
 from jcpy.config.models import AppConfig, PdfConfig, S3Options, SourceConfig
 from jcpy.helpers.case import constant_case
 from jcpy.v1 import ACTIONS
@@ -69,3 +70,12 @@ def test_every_page_is_in_the_navigation() -> None:
     }
 
     assert {name for name in pages if f": {name}" not in nav} == set()
+
+
+def test_demo_configuration_loads() -> None:
+    config = load_config(ROOT / "demo" / "config.json")
+
+    assert config.allow_cross_origin
+    assert "action=fileUpload" in (ROOT / "demo" / "index.html").read_text(
+        "utf-8"
+    )

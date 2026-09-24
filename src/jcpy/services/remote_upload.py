@@ -127,19 +127,17 @@ async def upload_from_url(
 
     target = await _target_path(source, directory, safe_name)
     storage_path = source.storage_path(target)
+    # Check before writing: a rejected download must never overwrite
+    # (and then remove) an existing file of the same name.
+    if not source.is_safe_file(storage_path):
+        raise HttpError.forbidden(NOT_WHITELISTED)
+    await context.access.check_permission(
+        context.role,
+        "FILE_UPLOAD",
+        source.get_root(),
+        source.get_extension(target),
+    )
     await source.storage.write(storage_path, contents)
-    try:
-        if not source.is_safe_file(storage_path):
-            raise HttpError.forbidden(NOT_WHITELISTED)
-        await context.access.check_permission(
-            context.role,
-            "FILE_UPLOAD",
-            source.get_root(),
-            source.get_extension(target),
-        )
-    except Exception:
-        await source.storage.delete_file(storage_path)
-        raise
     return RemoteFile(
         posixpath.basename(target), source.is_image(storage_path)
     )

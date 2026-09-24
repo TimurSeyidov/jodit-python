@@ -54,26 +54,12 @@ async def _free_name(source: Source, directory: str, file_name: str) -> str:
             return target
 
 
-async def _check_stored(
-    context: ActionContext, source: Source, storage_path: str
-) -> StoredFile:
-    stat = await source.storage.stat(storage_path)
+def _check_upload(source: Source, storage_path: str, size: int) -> None:
     if not source.is_safe_file(storage_path):
         raise HttpError.forbidden("File type is not in white list")
     limit = source.config.max_upload_file_size
-    if limit and (stat.size or 0) > (parse_bytes(limit) or 0):
+    if limit and size > (parse_bytes(limit) or 0):
         raise HttpError.forbidden("File size exceeds the allowable")
-    await context.access.check_permission(
-        context.role,
-        "FILE_UPLOAD",
-        source.get_root(),
-        source.get_extension(storage_path),
-    )
-    return StoredFile(
-        stat.path,
-        posixpath.basename(storage_path),
-        source.is_image(storage_path),
-    )
 
 
 async def upload_files(
@@ -88,7 +74,8 @@ async def upload_files(
     follows ``saveSameFileNameStrategy``: ``addNumber`` (``a-1.txt``),
     ``replace`` or ``error``. Each stored file must have an allowed
     extension, fit ``maxUploadFileSize`` and pass ``FILE_UPLOAD`` for
-    its extension. On any failure every file of the request is removed.
+    its extension. Every file is checked before any is written, so a
+    rejected request changes nothing.
 
     Args:
         context: Action context (role and access control).
@@ -105,22 +92,32 @@ async def upload_files(
             permission.
     """
     directory = await source.get_path(relative_path)
+    # Check every file before writing any: a rejected upload must never
+    # overwrite (and then remove) an existing file of the same name.
+    pending: list[tuple[str, bytes]] = []
+    for upload in files:
+        file_name = sanitize_filename(upload.filename or "", "_")
+        target = await _free_name(source, directory, file_name)
+        storage_path = source.storage_path(target)
+        contents = await upload.read()
+        _check_upload(source, storage_path, len(contents))
+        await context.access.check_permission(
+            context.role,
+            "FILE_UPLOAD",
+            source.get_root(),
+            source.get_extension(storage_path),
+        )
+        pending.append((storage_path, contents))
+
     stored: list[StoredFile] = []
-    try:
-        for upload in files:
-            file_name = sanitize_filename(upload.filename or "", "_")
-            target = await _free_name(source, directory, file_name)
-            storage_path = source.storage_path(target)
-            await source.storage.write(storage_path, await upload.read())
-            try:
-                stored.append(
-                    await _check_stored(context, source, storage_path)
-                )
-            except Exception:
-                await source.storage.delete_file(storage_path)
-                raise
-    except Exception:
-        for item in stored:
-            await source.storage.delete_file(item.path)
-        raise
+    for storage_path, contents in pending:
+        await source.storage.write(storage_path, contents)
+        stat = await source.storage.stat(storage_path)
+        stored.append(
+            StoredFile(
+                stat.path,
+                posixpath.basename(storage_path),
+                source.is_image(storage_path),
+            )
+        )
     return stored

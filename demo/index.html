@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jodit + jodit-python</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jodit@4.15.13/es2021/jodit.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/jodit@4.15.13/es2021/jodit.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 960px; margin: 2rem auto; padding: 0 1rem; }
+    code { background: #f3f3f3; padding: 0 .25em; }
+  </style>
+</head>
+<body>
+  <h1>Jodit + jodit-python</h1>
+  <p>
+    Connector: <code id="connector"></code>.
+    Insert an image or a file with the toolbar buttons, drag files into the
+    editor to upload them, or <button id="browse" type="button">open the file browser</button>.
+  </p>
+  <textarea id="editor"></textarea>
+  <script>
+    const connector = new URLSearchParams(location.search).get('connector')
+      || 'http://localhost:8081/';
+    document.getElementById('connector').textContent = connector;
+
+    const editor = Jodit.make('#editor', {
+      height: 500,
+      // Jodit's uploader does not name the action: put it in the URL.
+      uploader: { url: new URL('?action=fileUpload', connector).href },
+      filebrowser: { ajax: { url: connector } }
+    });
+
+    document.getElementById('browse').addEventListener('click', () => {
+      editor.filebrowser.open((data) => {
+        data.files.forEach((file) => {
+          editor.s.insertImage(data.baseurl + file);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

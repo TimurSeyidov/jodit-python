@@ -42,13 +42,22 @@ def test_post_only_actions_document_post(spec: dict[str, Any]) -> None:
     }
 
 
-def test_nested_parameters_use_deep_object(spec: dict[str, Any]) -> None:
+def test_nested_parameters_use_bracket_names(spec: dict[str, Any]) -> None:
     parameters = spec["paths"]["/imageCrop"]["get"]["parameters"]
-    box = next(p for p in parameters if p["name"] == "box")
+    box = {p["name"]: p for p in parameters if p["name"].startswith("box[")}
 
-    assert box["style"] == "deepObject"
-    assert box["required"] is True
-    assert box["schema"] == {"$ref": "#/components/schemas/CropBox"}
+    assert sorted(box) == ["box[h]", "box[w]", "box[x]", "box[y]"]
+    assert all(p["required"] for p in box.values())
+    assert box["box[w]"]["schema"]["type"] == "integer"
+    assert "style" not in box["box[w]"]
+
+
+def test_optional_object_fields_are_optional(spec: dict[str, Any]) -> None:
+    parameters = spec["paths"]["/files"]["get"]["parameters"]
+    mods = [p for p in parameters if p["name"].startswith("mods[")]
+
+    assert "mods[sortBy]" in [p["name"] for p in mods]
+    assert not any(p["required"] for p in mods)
 
 
 def test_optional_parameters_are_not_nullable(spec: dict[str, Any]) -> None:

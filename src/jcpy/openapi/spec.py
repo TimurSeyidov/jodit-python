@@ -289,26 +289,50 @@ def _not_null(prop: dict[str, Any]) -> dict[str, Any]:
     return {**kept[0], **extra}
 
 
+def _parameter(
+    name: str, full: dict[str, Any], *, required: bool
+) -> dict[str, Any]:
+    prop = _not_null(full)
+    parameter: dict[str, Any] = {
+        "name": name,
+        "in": "query",
+        "required": required,
+        "schema": prop,
+    }
+    if "description" in prop:
+        parameter["description"] = prop["description"]
+    return parameter
+
+
 def _parameters(
     model: type[BaseModel], definitions: dict[str, Any]
 ) -> list[dict[str, Any]]:
+    """Describe the query parameters of a model.
+
+    Nested objects become one parameter per field in bracket notation
+    (``box[w]``), as clients send them; unlike ``deepObject`` this lets
+    Swagger UI leave out fields the user did not fill in.
+    """
     schema = definitions[model.__name__]
     required = set(schema.get("required", []))
     parameters: list[dict[str, Any]] = []
     for name, full in schema["properties"].items():
         prop = _not_null(full)
-        parameter: dict[str, Any] = {
-            "name": name,
-            "in": "query",
-            "required": name in required,
-            "schema": prop,
-        }
-        if "description" in prop:
-            parameter["description"] = prop["description"]
-        if "$ref" in prop:
-            parameter["style"] = "deepObject"
-            parameter["explode"] = True
-        parameters.append(parameter)
+        if "$ref" not in prop:
+            parameters.append(
+                _parameter(name, full, required=name in required)
+            )
+            continue
+        nested = definitions[prop["$ref"].rsplit("/", 1)[-1]]
+        nested_required = set(nested.get("required", []))
+        parameters.extend(
+            _parameter(
+                f"{name}[{field}]",
+                field_schema,
+                required=name in required and field in nested_required,
+            )
+            for field, field_schema in nested["properties"].items()
+        )
     return parameters
 
 
@@ -381,7 +405,10 @@ def build_openapi(
             "get": {
                 "operationId": "ping",
                 "summary": "Health check",
-                "description": "Answers before CORS and authentication.",
+                "description": (
+                    "Answers before authentication and tenant "
+                    "resolution; adds CORS headers for allowed origins."
+                ),
                 "tags": ["System"],
                 "responses": {
                     "200": {

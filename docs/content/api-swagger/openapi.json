@@ -20,7 +20,7 @@
       "get": {
         "operationId": "ping",
         "summary": "Health check",
-        "description": "Answers before CORS and authentication.",
+        "description": "Answers before authentication and tenant resolution; adds CORS headers for allowed origins.",
         "tags": [
           "System"
         ],
@@ -138,14 +138,94 @@
             "description": "Directory inside the source"
           },
           {
-            "name": "mods",
+            "name": "mods[withFolders]",
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/FilesMods"
+              "type": "boolean",
+              "description": "Include folders",
+              "title": "Withfolders"
             },
-            "style": "deepObject",
-            "explode": true
+            "description": "Include folders"
+          },
+          {
+            "name": "mods[onlyImages]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Only image files",
+              "title": "Onlyimages"
+            },
+            "description": "Only image files"
+          },
+          {
+            "name": "mods[offset]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "First item",
+              "title": "Offset"
+            },
+            "description": "First item"
+          },
+          {
+            "name": "mods[limit]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "description": "Number of items",
+              "title": "Limit"
+            },
+            "description": "Number of items"
+          },
+          {
+            "name": "mods[sortBy]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "name-asc",
+                "name-desc",
+                "changed-asc",
+                "changed-desc",
+                "size-asc",
+                "size-desc"
+              ],
+              "type": "string",
+              "description": "Sort order",
+              "title": "Sortby"
+            },
+            "description": "Sort order"
+          },
+          {
+            "name": "mods[foldersPosition]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "default",
+                "top",
+                "bottom"
+              ],
+              "type": "string",
+              "description": "Where folders go",
+              "title": "Foldersposition"
+            },
+            "description": "Where folders go"
+          },
+          {
+            "name": "mods[filterWord]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Case-insensitive part of the names to keep",
+              "title": "Filterword"
+            },
+            "description": "Case-insensitive part of the names to keep"
           }
         ]
       }
@@ -1691,14 +1771,28 @@
             "description": "Save as (overwrite `name` when omitted)"
           },
           {
-            "name": "box",
+            "name": "box[w]",
             "in": "query",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/ResizeBox"
+              "description": "Width in pixels",
+              "exclusiveMinimum": 0,
+              "title": "W",
+              "type": "integer"
             },
-            "style": "deepObject",
-            "explode": true
+            "description": "Width in pixels"
+          },
+          {
+            "name": "box[h]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "description": "Height in pixels",
+              "exclusiveMinimum": 0,
+              "title": "H",
+              "type": "integer"
+            },
+            "description": "Height in pixels"
           }
         ]
       }
@@ -1818,14 +1912,52 @@
             "description": "Save as (overwrite `name` when omitted)"
           },
           {
-            "name": "box",
+            "name": "box[w]",
             "in": "query",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/CropBox"
+              "description": "Width in pixels",
+              "exclusiveMinimum": 0,
+              "title": "W",
+              "type": "integer"
             },
-            "style": "deepObject",
-            "explode": true
+            "description": "Width in pixels"
+          },
+          {
+            "name": "box[h]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "description": "Height in pixels",
+              "exclusiveMinimum": 0,
+              "title": "H",
+              "type": "integer"
+            },
+            "description": "Height in pixels"
+          },
+          {
+            "name": "box[x]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "description": "Left offset in pixels",
+              "minimum": 0,
+              "title": "X",
+              "type": "integer"
+            },
+            "description": "Left offset in pixels"
+          },
+          {
+            "name": "box[y]",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "description": "Top offset in pixels",
+              "minimum": 0,
+              "title": "Y",
+              "type": "integer"
+            },
+            "description": "Top offset in pixels"
           }
         ]
       }
@@ -2059,14 +2191,47 @@
             "description": "Document markup"
           },
           {
-            "name": "options",
+            "name": "options[format]",
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/PdfOptions"
-            },
-            "style": "deepObject",
-            "explode": true
+              "enum": [
+                "A4",
+                "A3",
+                "Letter",
+                "Legal",
+                "Tabloid"
+              ],
+              "type": "string",
+              "title": "Format"
+            }
+          },
+          {
+            "name": "options[page_orientation]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "portrait",
+                "landscape"
+              ],
+              "type": "string",
+              "title": "Page Orientation"
+            }
+          },
+          {
+            "name": "options[defaultFont]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "courier",
+                "helvetica",
+                "times"
+              ],
+              "type": "string",
+              "title": "Defaultfont"
+            }
           }
         ]
       }

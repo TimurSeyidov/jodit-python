@@ -22,6 +22,16 @@ make run    # http://localhost:8081/ping
 make menu   # interactive list of commands
 ```
 
+## Try it with Jodit
+
+```bash
+make demo   # then open http://localhost:8080/demo/
+```
+
+`demo/index.html` loads the free Jodit editor from a CDN and talks to the
+connector configured by `demo/config.json` (CORS on, files in
+`./files`, served by the same static server as the page).
+
 ## Usage
 
 ```python
