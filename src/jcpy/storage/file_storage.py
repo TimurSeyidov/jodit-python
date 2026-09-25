@@ -6,10 +6,13 @@ import unicodedata
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from jcpy.storage.base import StorageError
+from anyio import to_thread
+
+from jcpy.storage.base import CHUNK_SIZE, StorageError
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
+    from typing import BinaryIO
 
     from jcpy.storage.base import StatEntry, StorageAdapter
 
@@ -123,6 +126,60 @@ class FileStorage:
         """
         try:
             return await self.adapter.read(normalize_storage_path(path))
+        except Exception as error:
+            msg = f"Unable to read the file. Reason: {self._reason(error)}"
+            raise StorageError(msg, "storage.unable_to_read_file") from error
+
+    async def write_file(self, path: str, file: BinaryIO) -> None:
+        """Create or replace a file from a readable binary file.
+
+        Streams through the adapter's ``write_file`` when it has one;
+        otherwise reads the file and uses ``write``.
+
+        Args:
+            path: File path.
+            file: Source positioned at the start of the contents.
+
+        Raises:
+            StorageError: The file cannot be written.
+        """
+        normalized = normalize_storage_path(path)
+        try:
+            write_file = getattr(self.adapter, "write_file", None)
+            if write_file is not None:
+                await write_file(normalized, file)
+            else:
+                contents = await to_thread.run_sync(file.read)
+                await self.adapter.write(normalized, contents)
+        except Exception as error:
+            msg = f"Unable to write the file. Reason: {self._reason(error)}"
+            raise StorageError(msg, "storage.unable_to_write_file") from error
+
+    async def iter_file(self, path: str) -> AsyncIterator[bytes]:
+        """Read a file in chunks.
+
+        Streams through the adapter's ``iter_file`` when it has one;
+        otherwise reads the whole file and splits it.
+
+        Args:
+            path: File path.
+
+        Yields:
+            Chunks of the contents, in order.
+
+        Raises:
+            StorageError: The file cannot be read.
+        """
+        normalized = normalize_storage_path(path)
+        try:
+            iter_file = getattr(self.adapter, "iter_file", None)
+            if iter_file is not None:
+                async for chunk in iter_file(normalized):
+                    yield chunk
+                return
+            contents = await self.adapter.read(normalized)
+            for start in range(0, len(contents), CHUNK_SIZE):
+                yield contents[start : start + CHUNK_SIZE]
         except Exception as error:
             msg = f"Unable to read the file. Reason: {self._reason(error)}"
             raise StorageError(msg, "storage.unable_to_read_file") from error

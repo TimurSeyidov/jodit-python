@@ -1,12 +1,13 @@
 """Rejected uploads leave existing files alone; saved names obey rules."""
 
 from io import BytesIO
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, BinaryIO
 
 import pytest
 from PIL import Image
 
 from jcpy.helpers import ssrf
+from jcpy.storage.local import LocalStorageAdapter
 from tests.conftest import source_config, write_file
 
 if TYPE_CHECKING:
@@ -91,10 +92,10 @@ async def test_denied_remote_upload_keeps_the_existing_file(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    async def download(*_: object, **__: object) -> bytes:
-        return b"forged"
+    async def download_to(_url: str, file: BinaryIO, **__: object) -> int:
+        return file.write(b"forged")
 
-    monkeypatch.setattr(ssrf, "download", download)
+    monkeypatch.setattr(ssrf, "download_to", download_to)
     write_file(tmp_path, "contract.pdf", "signed")
     config = replace_config(
         tmp_path,
@@ -143,3 +144,23 @@ async def test_image_save_with_allowed_extension_still_works(
 
     assert response.status_code == 200
     assert response.json()["data"]["name"] == "edited.gif"
+
+
+async def test_uploads_are_streamed(
+    connector_client: ClientFactory,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def no_buffered_write(*_: object) -> None:
+        msg = "uploads must be streamed"
+        raise AssertionError(msg)
+
+    monkeypatch.setattr(LocalStorageAdapter, "write", no_buffered_write)
+    body = b"x" * 300_000
+    async with connector_client(source_config(tmp_path)) as http:
+        response = await http.post(
+            "/fileUpload", files={"files[0]": ("big.txt", body)}
+        )
+
+    assert response.status_code == 200, response.text
+    assert (tmp_path / "big.txt").read_bytes() == body

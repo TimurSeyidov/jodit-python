@@ -11,11 +11,13 @@ from typing import TYPE_CHECKING
 
 from anyio import to_thread
 
-from jcpy.storage.base import FileWasNotFoundError, StatEntry
+from jcpy.storage.base import CHUNK_SIZE, FileWasNotFoundError, StatEntry
+from jcpy.storage.threads import TransferThreads
 
 if TYPE_CHECKING:
     import builtins
     from collections.abc import AsyncIterator, Callable
+    from typing import BinaryIO
 
 logger = logging.getLogger("jcpy")
 
@@ -41,6 +43,11 @@ def _write_new(path: Path, contents: bytes) -> None:
         file.write(contents)
 
 
+def _copy_new(path: Path, source: BinaryIO) -> None:
+    with path.open("xb") as file:
+        shutil.copyfileobj(source, file, CHUNK_SIZE)
+
+
 class UnsupportedEntryError(OSError):
     """Entry is neither a regular file nor a directory (e.g. a symlink)."""
 
@@ -62,6 +69,7 @@ class LocalStorageAdapter:
     def __init__(self, root_dir: str | Path) -> None:
         self.root = Path(root_dir)
         self._root_created = False
+        self._transfers = TransferThreads()
 
     def _full(self, path: str) -> Path:
         return self.root / path if path else self.root
@@ -85,11 +93,50 @@ class LocalStorageAdapter:
             contents: File contents.
         """
         await self._ensure_parents(path)
-        await to_thread.run_sync(
+        await self._transfers.run(
             _replace_atomically,
             self._full(path),
             lambda temporary: _write_new(temporary, contents),
         )
+
+    async def write_file(self, path: str, file: BinaryIO) -> None:
+        """Create or replace a file from a readable binary file.
+
+        The contents are copied in chunks into a temporary file that
+        then replaces the target atomically.
+
+        Args:
+            path: File path.
+            file: Source positioned at the start of the contents.
+        """
+        await self._ensure_parents(path)
+        await self._transfers.run(
+            _replace_atomically,
+            self._full(path),
+            lambda temporary: _copy_new(temporary, file),
+        )
+
+    async def iter_file(self, path: str) -> AsyncIterator[bytes]:
+        """Read a file in chunks.
+
+        Args:
+            path: File path.
+
+        Yields:
+            Chunks of at most ``CHUNK_SIZE`` bytes.
+
+        Raises:
+            FileWasNotFoundError: The file does not exist.
+        """
+        try:
+            handle = await to_thread.run_sync(self._full(path).open, "rb")
+        except FileNotFoundError:
+            raise FileWasNotFoundError(path) from None
+        try:
+            while chunk := await self._transfers.run(handle.read, CHUNK_SIZE):
+                yield chunk
+        finally:
+            await to_thread.run_sync(handle.close)
 
     async def read(self, path: str) -> bytes:
         """Read a whole file.
@@ -104,7 +151,7 @@ class LocalStorageAdapter:
             FileWasNotFoundError: The file does not exist.
         """
         try:
-            return await to_thread.run_sync(self._full(path).read_bytes)
+            return await self._transfers.run(self._full(path).read_bytes)
         except FileNotFoundError:
             raise FileWasNotFoundError(path) from None
 
@@ -264,7 +311,7 @@ class LocalStorageAdapter:
         """
         await self._ensure_parents(destination)
         origin = self._full(source)
-        await to_thread.run_sync(
+        await self._transfers.run(
             _replace_atomically,
             self._full(destination),
             lambda temporary: shutil.copyfile(origin, temporary),

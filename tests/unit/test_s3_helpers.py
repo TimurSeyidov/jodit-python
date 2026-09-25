@@ -2,7 +2,8 @@
 
 import pytest
 from botocore.exceptions import ClientError
-from botocore.stub import Stubber
+from botocore.stub import ANY, Stubber
+from pydantic import ValidationError
 
 from jcpy.config.models import S3Options, SourceConfig
 from jcpy.errors import HttpError
@@ -12,6 +13,7 @@ from jcpy.storage.s3 import (
     build_object_key,
     default_public_base_url,
     normalize_s3_path,
+    object_arguments,
     strip_object_prefix,
 )
 
@@ -290,6 +292,17 @@ async def test_delete_error_without_details() -> None:
         await adapter.delete_directory("d")
 
 
+async def test_streaming_does_not_hide_access_errors() -> None:
+    adapter, stubber = stubbed()
+    stubber.add_client_error(
+        "get_object", service_error_code="AccessDenied", http_status_code=403
+    )
+
+    with pytest.raises(ClientError, match="AccessDenied"):
+        async for _ in adapter.iter_file("secret.bin"):
+            pass  # pragma: no cover - fails before the first chunk
+
+
 def test_s3_source_needs_options() -> None:
     settings = SourceConfig.model_construct(
         name="s", title="S", baseurl="http://s/", storage_adapter="s3"
@@ -297,3 +310,99 @@ def test_s3_source_needs_options() -> None:
 
     with pytest.raises(HttpError, match='needs an "s3" options block'):
         create_storage_adapter(settings)
+
+
+OBJECT_OPTIONS = {
+    "serverSideEncryption": "aws:kms",
+    "sseKmsKeyId": "alias/uploads",
+    "storageClass": "STANDARD_IA",
+    "cacheControl": "max-age=3600",
+}
+ENCRYPTION = {
+    "ServerSideEncryption": "aws:kms",
+    "SSEKMSKeyId": "alias/uploads",
+}
+
+
+def test_object_arguments() -> None:
+    assert object_arguments(options()) == {}
+    assert object_arguments(options(**OBJECT_OPTIONS)) == {
+        **ENCRYPTION,
+        "StorageClass": "STANDARD_IA",
+        "CacheControl": "max-age=3600",
+    }
+
+
+@pytest.mark.parametrize(
+    "values",
+    [
+        {"sseKmsKeyId": "alias/uploads"},
+        {"serverSideEncryption": "AES256", "sseKmsKeyId": "alias/uploads"},
+        {"serverSideEncryption": "aws:des"},
+        {"storageClass": ""},
+    ],
+)
+def test_invalid_object_options(values: dict[str, str]) -> None:
+    with pytest.raises(ValidationError):
+        options(**values)
+
+
+async def test_uploads_get_the_object_options() -> None:
+    adapter, stubber = stubbed(**OBJECT_OPTIONS)
+    stubber.add_response(
+        "put_object",
+        {},
+        {
+            "Bucket": "my-bucket",
+            "Key": "media/a.txt",
+            "Body": ANY,
+            "ContentType": "text/plain",
+            "ChecksumAlgorithm": ANY,
+            **ENCRYPTION,
+            "StorageClass": "STANDARD_IA",
+            "CacheControl": "max-age=3600",
+        },
+    )
+
+    await adapter.write("a.txt", b"text")
+
+    stubber.assert_no_pending_responses()
+
+
+async def test_folder_markers_are_encrypted() -> None:
+    adapter, stubber = stubbed(**OBJECT_OPTIONS)
+    stubber.add_response(
+        "put_object",
+        {},
+        {
+            "Bucket": "my-bucket",
+            "Key": "media/dir/",
+            "Body": b"",
+            **ENCRYPTION,
+        },
+    )
+
+    await adapter.create_directory("dir")
+
+    stubber.assert_no_pending_responses()
+
+
+async def test_copies_keep_encryption_and_storage_class() -> None:
+    adapter, stubber = stubbed(**OBJECT_OPTIONS)
+    source = {"Bucket": "my-bucket", "Key": "media/a.txt"}
+    stubber.add_response("head_object", {"ContentLength": 4}, source)
+    stubber.add_response(
+        "copy_object",
+        {},
+        {
+            "Bucket": "my-bucket",
+            "Key": "media/b.txt",
+            "CopySource": source,
+            **ENCRYPTION,
+            "StorageClass": "STANDARD_IA",
+        },
+    )
+
+    await adapter.copy_file("a.txt", "b.txt")
+
+    stubber.assert_no_pending_responses()

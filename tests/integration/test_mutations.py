@@ -8,7 +8,9 @@ import pytest
 from jcpy.config.loader import build_config
 from jcpy.errors import HttpError
 from jcpy.services.operations import make_folder
+from jcpy.services.thumbs import ThumbCounter, make_thumb
 from jcpy.sources import SourcePool
+from jcpy.storage import StatEntry
 from jcpy.storage.local import LocalStorageAdapter
 from tests.conftest import BASEURL, service_context, source_config, write_file
 
@@ -999,8 +1001,11 @@ class TestEdgeCases:
     ) -> None:
         source = SourcePool(build_config(config(root)))._build()["test"]
         created: list[str] = []
+        exists = source.storage.directory_exists
 
         async def broken(path: str) -> bool:
+            if path != "new":
+                return await exists(path)
             msg = "storage offline"
             raise OSError(msg)
 
@@ -1014,6 +1019,38 @@ class TestEdgeCases:
         await make_folder(context, source, "new", "/")
 
         assert created == ["new"]
+
+    async def test_failing_parent_check_counts_as_missing(
+        self, root: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        source = SourcePool(build_config(config(root)))._build()["test"]
+
+        async def broken(path: str) -> bool:
+            msg = "storage offline"
+            raise OSError(msg)
+
+        monkeypatch.setattr(source.storage, "directory_exists", broken)
+
+        with pytest.raises(HttpError, match="Directory not found"):
+            await make_folder(service_context(), source, "new", "/")
+
+    async def test_failing_thumb_folder_check_creates_it(
+        self, root: Path, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        source = SourcePool(build_config(config(root)))._build()["test"]
+
+        async def broken(path: str) -> bool:
+            msg = "storage offline"
+            raise OSError(msg)
+
+        monkeypatch.setattr(source.storage, "directory_exists", broken)
+
+        thumb = await make_thumb(
+            source, StatEntry("file.txt", is_file=True), ThumbCounter()
+        )
+
+        assert thumb.endswith("_thumbs/file.txt.svg")
+        assert (root / "_thumbs").is_dir()
 
 
 async def test_storage_errors_do_not_reveal_the_root(

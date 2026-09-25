@@ -27,7 +27,7 @@ async def _exists(source: Source, storage_path: str) -> bool:
 
 async def _is_directory(source: Source, storage_path: str) -> bool:
     try:
-        return (await source.storage.stat(storage_path)).is_directory
+        return await source.storage.directory_exists(storage_path)
     except Exception:
         return False
 

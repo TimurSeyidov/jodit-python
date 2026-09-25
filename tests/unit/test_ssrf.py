@@ -1,5 +1,6 @@
 """SSRF guard for remote downloads."""
 
+from io import BytesIO
 from typing import TYPE_CHECKING
 
 import httpx
@@ -11,6 +12,7 @@ from jcpy.helpers.ssrf import (
     DownloadTooLargeError,
     check_url,
     download,
+    download_to,
     is_private_address,
     resolve_host,
 )
@@ -316,3 +318,40 @@ def test_parse_url_parts() -> None:
         8443,
         "/b",
     )
+
+
+async def test_download_to_writes_the_body_into_a_file() -> None:
+    server = Server()
+    server.routes["cdn.example/big"] = httpx.Response(
+        200, content=b"x" * 70_000
+    )
+    target = BytesIO()
+
+    written = await download_to(
+        "http://cdn.example/big",
+        target,
+        guard=True,
+        limit=None,
+        network_timeout=5,
+        resolver=PUBLIC,  # type: ignore[arg-type]
+        transport=server.transport(),
+    )
+
+    assert written == 70_000
+    assert target.getvalue() == b"x" * 70_000
+
+
+async def test_download_to_respects_the_limit() -> None:
+    server = Server()
+    server.routes["cdn.example/big"] = httpx.Response(200, content=b"x" * 100)
+
+    with pytest.raises(DownloadTooLargeError):
+        await download_to(
+            "http://cdn.example/big",
+            BytesIO(),
+            guard=True,
+            limit=10,
+            network_timeout=5,
+            resolver=PUBLIC,  # type: ignore[arg-type]
+            transport=server.transport(),
+        )

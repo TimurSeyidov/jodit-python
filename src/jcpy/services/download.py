@@ -1,20 +1,45 @@
 """File download."""
 
 import posixpath
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from jcpy.errors import HttpError
 from jcpy.sources import PATH_NOT_FOUND, is_path_within_root
 
 if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
     from jcpy.context import ActionContext
     from jcpy.sources import Source
 
 
-async def read_file(
+@dataclass(frozen=True, slots=True)
+class Download:
+    """File contents ready to stream.
+
+    Attributes:
+        size: Size in bytes, when the storage reports it.
+        chunks: Contents in chunks; the first one is already read, so
+            a missing file fails before the response starts.
+    """
+
+    size: int | None
+    chunks: AsyncIterator[bytes]
+
+
+async def _prepend(
+    first: bytes, rest: AsyncIterator[bytes]
+) -> AsyncIterator[bytes]:
+    yield first
+    async for chunk in rest:
+        yield chunk
+
+
+async def open_download(
     context: ActionContext, source: Source, name: str, relative_path: str
-) -> bytes:
-    """Read a file for download.
+) -> Download:
+    """Open a file for download without reading it into memory.
 
     Args:
         context: Action context (role and access control).
@@ -23,7 +48,7 @@ async def read_file(
         relative_path: Directory relative to the source root.
 
     Returns:
-        File contents.
+        Size and chunks of the file.
 
     Raises:
         HttpError: ``403`` without ``FILE_DOWNLOAD`` permission,
@@ -43,8 +68,10 @@ async def read_file(
         stat = await source.storage.stat(storage_path)
         if not stat.is_file:
             raise HttpError.bad_request("It is not a file!")
-        return await source.storage.read(storage_path)
+        chunks = source.storage.iter_file(storage_path)
+        first = await anext(chunks, b"")
     except HttpError:
         raise
     except Exception:
         raise HttpError.not_found("File or directory not exists") from None
+    return Download(stat.size, _prepend(first, chunks))

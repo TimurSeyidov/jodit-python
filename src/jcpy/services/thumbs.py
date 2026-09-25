@@ -64,9 +64,7 @@ def render_thumbnail(
 
 async def _is_directory(source: Source, pathname: str) -> bool:
     try:
-        return (
-            await source.storage.stat(source.relative(pathname))
-        ).is_directory
+        return await source.storage.directory_exists(source.relative(pathname))
     except Exception:
         return False
 

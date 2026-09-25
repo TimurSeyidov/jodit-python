@@ -6,7 +6,7 @@ Field names are snake_case in Python and camelCase in JSON.
 import tempfile
 from collections.abc import Callable
 from pathlib import Path
-from typing import Annotated, Any, Self
+from typing import Annotated, Any, Literal, Self
 
 from pydantic import (
     AnyUrl,
@@ -96,11 +96,26 @@ class S3Options(_Model):
     connect_timeout: PositiveFloat = 10
     read_timeout: PositiveFloat = 60
     max_attempts: PositiveInt = 3
+    server_side_encryption: (
+        Literal["AES256", "aws:kms", "aws:kms:dsse"] | None
+    ) = None
+    sse_kms_key_id: Annotated[str, Field(min_length=1)] | None = None
+    storage_class: Annotated[str, Field(min_length=1)] | None = None
+    cache_control: Annotated[str, Field(min_length=1)] | None = None
 
     @field_validator("endpoint", "public_base_url")
     @classmethod
     def _url(cls, value: str | None) -> str | None:
         return None if value is None else _check_url(value)
+
+    @model_validator(mode="after")
+    def _kms_key_needs_kms(self) -> Self:
+        if self.sse_kms_key_id is not None and not (
+            self.server_side_encryption or ""
+        ).startswith("aws:kms"):
+            msg = 'sseKmsKeyId needs serverSideEncryption "aws:kms"'
+            raise ValueError(msg)
+        return self
 
 
 class DynamicSourcesCache(_Model):

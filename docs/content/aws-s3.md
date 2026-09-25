@@ -42,6 +42,12 @@ All options live under `sources.<name>.s3`.
 | `connectTimeout` | `number` | `10` | Seconds to wait for a connection |
 | `readTimeout` | `number` | `60` | Seconds to wait for data on an open connection |
 | `maxAttempts` | `integer` | `3` | Attempts per request, first one included (standard retry mode: throttling and transient errors, with backoff) |
+| `serverSideEncryption` | `string` | bucket default | `AES256`, `aws:kms` or `aws:kms:dsse` |
+| `sseKmsKeyId` | `string` | AWS managed key | KMS key ID, ARN or alias; needs `serverSideEncryption` `aws:kms` or `aws:kms:dsse` |
+| `storageClass` | `string` | `STANDARD` | Storage class of uploaded files, e.g. `STANDARD_IA`, `INTELLIGENT_TIERING` |
+| `cacheControl` | `string` | none | `Cache-Control` header of uploaded files, e.g. `public, max-age=31536000` |
+
+Encryption and the storage class apply to uploads, copies, moves and generated files; folder markers get the encryption only. A copy keeps the source's `Cache-Control` and `Content-Type`. Archive classes (`GLACIER`, `DEEP_ARCHIVE`) are not a good fit: their objects cannot be read, so previews and thumbnails fail.
 
 `baseurl` of the source is what file paths in answers are relative to: the public URL of the prefix, ending with `/`.
 
@@ -114,6 +120,15 @@ On AWS this also needs "Block public access" relaxed for bucket policies (`Block
 
 The adapter never sets object ACLs; buckets created since April 2023 have ACLs disabled, and access goes through the bucket policy.
 
+### Private buckets
+
+`baseurl` must open for everyone who reads the content, not only for editors: the editor inserts `baseurl + path` into the HTML, and the file browser uses the same URL for previews, drag and drop and the image editor. Two setups keep the rest of the bucket private:
+
+- Keep public files under their own prefix, readable by the bucket policy above, and set it as the source `prefix`. Keys outside the prefix are never listed, read or written.
+- Put a CDN with access to the bucket in front of it and point `baseurl` at the CDN.
+
+Signed URLs are not generated: they expire (after 7 days at most), and content that links to them would break.
+
 ## IAM policy
 
 ```json
@@ -135,7 +150,7 @@ The adapter never sets object ACLs; buckets created since April 2023 have ACLs d
 }
 ```
 
-`s3:PutObject` covers copies, which rename and move use.
+`s3:PutObject` covers copies, which rename and move use. With `serverSideEncryption: "aws:kms"` and a customer managed key, also allow `kms:GenerateDataKey` and `kms:Decrypt` on that key.
 
 ## Bucket layout
 
@@ -154,8 +169,8 @@ Thumbnails cost one `GetObject` and one `PutObject` per image on the first listi
 ## Limits
 
 - Objects over 8 MB are copied in parts (multipart copy), so renaming and moving work for objects of any size; metadata such as `Content-Type` is kept.
-- Signed URLs are not generated: files must be readable through `baseurl`.
-- `fileUploadRemote` downloads through the connector's memory, bounded by `maxUploadFileSize`.
+- Signed URLs are not generated; see [Private buckets](#private-buckets).
+- Uploads and `fileUploadRemote` keep at most 1 MB of a file in memory, the rest goes to a temporary file, and reach S3 in parts; `fileDownload` streams in 64 KiB chunks. The upload size is bounded by `maxUploadFileSize`.
 
 ## Troubleshooting
 

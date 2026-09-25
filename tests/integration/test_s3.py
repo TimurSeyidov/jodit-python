@@ -243,6 +243,27 @@ class TestAdapter:
 
         assert keys(client, f"{PREFIX}/sub") == ["media/sub/nested.txt"]
 
+    async def test_streaming_round_trip(
+        self, storage: FileStorage, client: S3Client
+    ) -> None:
+        # Over the multipart threshold on upload, several chunks on read.
+        body = bytes(range(256)) * (9 * 4096)
+        await storage.write_file("stream/doc.pdf", BytesIO(body))
+
+        chunks = [chunk async for chunk in storage.iter_file("stream/doc.pdf")]
+
+        assert b"".join(chunks) == body
+        assert len(chunks) > 1
+        head = client.head_object(Bucket=BUCKET, Key="media/stream/doc.pdf")
+        assert head["ContentType"] == "application/pdf"
+
+    async def test_streaming_a_missing_object(
+        self, storage: FileStorage
+    ) -> None:
+        with pytest.raises(StorageError, match="File was not found"):
+            async for _ in storage.iter_file("nope.bin"):
+                pass  # pragma: no cover - fails before the first chunk
+
     async def test_content_type(
         self, storage: FileStorage, client: S3Client
     ) -> None:
@@ -250,6 +271,25 @@ class TestAdapter:
 
         head = client.head_object(Bucket=BUCKET, Key="media/picture.png")
         assert head["ContentType"] == "image/png"
+
+    async def test_object_options(self, minio: str, client: S3Client) -> None:
+        settings = {
+            **s3_settings(minio),
+            "storageClass": "REDUCED_REDUNDANCY",
+            "cacheControl": "max-age=3600",
+        }
+        storage = FileStorage(
+            S3StorageAdapter(S3Options.model_validate(settings))
+        )
+
+        await storage.write("a.txt", b"text")
+        await storage.write_file("b.txt", BytesIO(b"text"))
+        await storage.copy_file("a.txt", "c.txt")
+
+        for name in ("a.txt", "b.txt", "c.txt"):
+            head = client.head_object(Bucket=BUCKET, Key=f"media/{name}")
+            assert head["StorageClass"] == "REDUCED_REDUNDANCY"
+            assert head["CacheControl"] == "max-age=3600"
 
 
 def png() -> bytes:

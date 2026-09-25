@@ -16,12 +16,14 @@ from botocore.config import Config
 from botocore.exceptions import ClientError
 
 from jcpy.helpers.concurrency import gather_limited
-from jcpy.storage.base import StatEntry
+from jcpy.storage.base import CHUNK_SIZE, FileWasNotFoundError, StatEntry
+from jcpy.storage.threads import TransferThreads
 
 if TYPE_CHECKING:
     import builtins
     from collections.abc import AsyncIterator, Iterator
     from datetime import datetime
+    from typing import BinaryIO
 
     from mypy_boto3_s3.client import S3Client
     from mypy_boto3_s3.type_defs import ObjectIdentifierTypeDef
@@ -151,6 +153,25 @@ def create_client(options: S3Options) -> S3Client:
     return boto3.client("s3", **kwargs)
 
 
+def object_arguments(options: S3Options) -> dict[str, str]:
+    """Settings every stored object gets.
+
+    Args:
+        options: S3 settings.
+
+    Returns:
+        ``ServerSideEncryption``, ``SSEKMSKeyId``, ``StorageClass`` and
+        ``CacheControl`` arguments of an upload, for the options set.
+    """
+    values = {
+        "ServerSideEncryption": options.server_side_encryption,
+        "SSEKMSKeyId": options.sse_kms_key_id,
+        "StorageClass": options.storage_class,
+        "CacheControl": options.cache_control,
+    }
+    return {name: value for name, value in values.items() if value}
+
+
 def _is_not_found(error: ClientError) -> bool:
     code = str(error.response.get("Error", {}).get("Code", ""))
     status = error.response.get("ResponseMetadata", {}).get("HTTPStatusCode")
@@ -182,6 +203,20 @@ class S3StorageAdapter:
         self.bucket = options.bucket
         self.prefix = normalize_s3_path(options.prefix or "")
         self.client = client or create_client(options)
+        self._transfers = TransferThreads()
+        self._upload_args = object_arguments(options)
+        # A copy keeps the metadata (Cache-Control included), but not the
+        # encryption or storage class; folder markers only need encryption.
+        self._copy_args = {
+            name: value
+            for name, value in self._upload_args.items()
+            if name != "CacheControl"
+        }
+        self._marker_args = {
+            name: value
+            for name, value in self._copy_args.items()
+            if name != "StorageClass"
+        }
         self.public_base_url = (
             options.public_base_url or default_public_base_url(options)
         ).rstrip("/")
@@ -218,14 +253,62 @@ class S3StorageAdapter:
             contents: File contents.
         """
         key = self._key(path)
-        await to_thread.run_sync(
+        await self._transfers.run(
             lambda: self.client.upload_fileobj(
                 BytesIO(contents),
                 self.bucket,
                 key,
-                ExtraArgs={"ContentType": _content_type(key)},
+                ExtraArgs=self._extra_args(key),
             )
         )
+
+    async def write_file(self, path: str, file: BinaryIO) -> None:
+        """Upload an object from a readable binary file.
+
+        Large bodies go up in parts; nothing is held in memory.
+
+        Args:
+            path: File path.
+            file: Source positioned at the start of the contents.
+        """
+        key = self._key(path)
+        await self._transfers.run(
+            lambda: self.client.upload_fileobj(
+                file,
+                self.bucket,
+                key,
+                ExtraArgs=self._extra_args(key),
+            )
+        )
+
+    async def iter_file(self, path: str) -> AsyncIterator[bytes]:
+        """Download an object in chunks.
+
+        Args:
+            path: File path.
+
+        Yields:
+            Chunks of at most ``CHUNK_SIZE`` bytes.
+
+        Raises:
+            FileWasNotFoundError: The object does not exist.
+        """
+        try:
+            response = await to_thread.run_sync(
+                lambda: self.client.get_object(
+                    Bucket=self.bucket, Key=self._key(path)
+                )
+            )
+        except ClientError as error:
+            if _is_not_found(error):
+                raise FileWasNotFoundError(path) from None
+            raise
+        body = response["Body"]
+        try:
+            while chunk := await self._transfers.run(body.read, CHUNK_SIZE):
+                yield chunk
+        finally:
+            await to_thread.run_sync(body.close)
 
     async def read(self, path: str) -> bytes:
         """Download an object.
@@ -243,7 +326,7 @@ class S3StorageAdapter:
             )
             return response["Body"].read()
 
-        return await to_thread.run_sync(get)
+        return await self._transfers.run(get)
 
     async def delete_file(self, path: str) -> None:
         """Delete an object; a missing one is not an error.
@@ -265,11 +348,7 @@ class S3StorageAdapter:
         """
         if not normalize_s3_path(path):
             return
-        await to_thread.run_sync(
-            lambda: self.client.put_object(
-                Bucket=self.bucket, Key=self._dir_key(path), Body=b""
-            )
-        )
+        await to_thread.run_sync(self._put_marker, self._dir_key(path))
 
     async def stat(self, path: str) -> StatEntry:
         """Describe an object, or a folder (explicit or implied).
@@ -464,8 +543,16 @@ class S3StorageAdapter:
         )
         return page.get("KeyCount", 0) > 0
 
+    def _extra_args(self, key: str) -> dict[str, str]:
+        return {"ContentType": _content_type(key), **self._upload_args}
+
     def _put_marker(self, key: str) -> None:
-        self.client.put_object(Bucket=self.bucket, Key=key, Body=b"")
+        self.client.put_object(
+            Bucket=self.bucket,
+            Key=key,
+            Body=b"",
+            **self._marker_args,  # type: ignore[arg-type]
+        )
 
     def _copy_object(self, source_key: str, target_key: str) -> None:
         # Managed copy: objects over 8 MB are copied in parts, so there is
@@ -474,6 +561,7 @@ class S3StorageAdapter:
             CopySource={"Bucket": self.bucket, "Key": source_key},
             Bucket=self.bucket,
             Key=target_key,
+            ExtraArgs=self._copy_args or None,
         )
 
     async def copy_file(self, source: str, destination: str) -> None:
@@ -483,7 +571,7 @@ class S3StorageAdapter:
             source: Existing file path.
             destination: New file path.
         """
-        await to_thread.run_sync(
+        await self._transfers.run(
             self._copy_object, self._key(source), self._key(destination)
         )
 
@@ -523,7 +611,7 @@ class S3StorageAdapter:
             else:
                 jobs.append(
                     partial(
-                        to_thread.run_sync,
+                        self._transfers.run,
                         self._copy_object,
                         source_key,
                         target_key,

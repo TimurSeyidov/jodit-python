@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Literal, Protocol
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
+    from typing import BinaryIO
 
 
 @dataclass(frozen=True, slots=True)
@@ -173,5 +174,40 @@ class StorageAdapter(Protocol):
         Args:
             source: Existing path.
             destination: New path.
+        """
+        ...
+
+
+CHUNK_SIZE = 64 * 1024
+"""Bytes per chunk when file contents are streamed."""
+
+
+class StreamingStorageAdapter(StorageAdapter, Protocol):
+    """Adapter that also moves file contents without buffering them.
+
+    Both methods are optional for adapters: ``FileStorage`` falls back
+    to ``read``/``write`` when an adapter lacks them.
+    """
+
+    async def write_file(self, path: str, file: BinaryIO) -> None:
+        """Create or replace a file from a readable binary file.
+
+        Args:
+            path: File path.
+            file: Source positioned at the start of the contents.
+        """
+        ...
+
+    def iter_file(self, path: str) -> AsyncIterator[bytes]:
+        """Read a file in chunks of at most ``CHUNK_SIZE`` bytes.
+
+        Args:
+            path: File path.
+
+        Returns:
+            Chunks of the contents, in order.
+
+        Raises:
+            FileWasNotFoundError: The file does not exist.
         """
         ...

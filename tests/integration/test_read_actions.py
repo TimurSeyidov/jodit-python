@@ -9,6 +9,7 @@ from jcpy.services import resolve_url
 from jcpy.services.resolve_url import resolve_file_by_url
 from jcpy.sources import SourcePool
 from jcpy.storage import register_storage_adapter
+from jcpy.storage.base import FileWasNotFoundError, StatEntry
 from jcpy.storage.local import LocalStorageAdapter
 from jcpy.v1.get_local_file_by_url import handler
 from tests.conftest import (
@@ -21,13 +22,13 @@ from tests.conftest import (
 from tests.memory_storage import MemoryStorageAdapter
 
 if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
     from pathlib import Path
 
     from httpx import AsyncClient, Response
 
     from jcpy.services.resolve_url import ResolvedFile
     from jcpy.sources import Source
-    from jcpy.storage.base import StatEntry
     from jcpy.types import JsonObject, JsonValue
     from tests.conftest import ClientFactory
 
@@ -218,6 +219,68 @@ async def download(http: AsyncClient, **params: str) -> Response:
 
 
 class TestFileDownload:
+    async def test_streams_large_files(
+        self,
+        connector_client: ClientFactory,
+        root: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        body = bytes(range(256)) * 12_000  # about 3 MB
+        write_file(root, "big.bin", body)
+
+        def no_full_read(*_: object) -> bytes:
+            msg = "the whole file must not be read"
+            raise AssertionError(msg)
+
+        monkeypatch.setattr(LocalStorageAdapter, "read", no_full_read)
+        async with connector_client(source_config(root)) as http:
+            response = await download(http, name="big.bin")
+
+        assert response.status_code == 200
+        assert response.headers["content-length"] == str(len(body))
+        assert response.content == body
+
+    async def test_unknown_size_is_sent_without_length(
+        self,
+        connector_client: ClientFactory,
+        root: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        write_file(root, "a.txt", "abc")
+        original = LocalStorageAdapter.stat
+
+        async def sizeless(self: LocalStorageAdapter, path: str) -> StatEntry:
+            entry = await original(self, path)
+            return StatEntry(entry.path, entry.is_file)
+
+        monkeypatch.setattr(LocalStorageAdapter, "stat", sizeless)
+        async with connector_client(source_config(root)) as http:
+            response = await download(http, name="a.txt")
+
+        assert response.status_code == 200
+        assert "content-length" not in response.headers
+        assert response.content == b"abc"
+
+    async def test_file_vanishing_before_the_read(
+        self,
+        connector_client: ClientFactory,
+        root: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        write_file(root, "gone.txt", "x")
+
+        async def vanished(*_: object) -> AsyncIterator[bytes]:
+            nothing: tuple[bytes, ...] = ()
+            for chunk in nothing:  # an async generator that fails at once
+                yield chunk
+            raise FileWasNotFoundError("gone.txt")
+
+        monkeypatch.setattr(LocalStorageAdapter, "iter_file", vanished)
+        async with connector_client(source_config(root)) as http:
+            response = await download(http, name="gone.txt")
+
+        assert response.status_code == 404
+
     async def test_download(
         self, connector_client: ClientFactory, root: Path
     ) -> None:

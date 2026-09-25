@@ -2,6 +2,20 @@
 
 All notable changes to this project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- S3 options `serverSideEncryption`, `sseKmsKeyId`, `storageClass` and `cacheControl`, applied to uploads, copies and moves; folder markers get the encryption.
+- Optional adapter methods `write_file(path, file)` and `iter_file(path)` (`jcpy.storage.StreamingStorageAdapter`) to move contents without holding them in memory.
+
+### Changed
+
+- `fileDownload` streams the file in 64 KiB chunks instead of reading it into memory.
+- Uploads and `fileUploadRemote` write to storage from a temporary file (at most 1 MB in memory); S3 receives them in parts.
+- The built-in adapters run transfers (reads, writes, copies) in a thread pool of their own, 16 threads per adapter, apart from quick operations.
+- Folder checks (parent of an upload or a new folder, move and copy targets, thumbnail folders) take one S3 request instead of two.
+
 ## [0.1.1] - 2026-09-25
 
 ### Added
@@ -45,5 +59,6 @@ First release.
 - A rejected upload never overwrites an existing file; `imageSave` obeys the `extensions` list.
 - Error messages do not reveal absolute server paths.
 
+[Unreleased]: https://github.com/TimurSeyidov/jodit-python/compare/v0.1.1...HEAD
 [0.1.1]: https://github.com/TimurSeyidov/jodit-python/releases/tag/v0.1.1
 [0.1.0]: https://github.com/TimurSeyidov/jodit-python/releases/tag/v0.1.0

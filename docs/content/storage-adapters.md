@@ -73,9 +73,16 @@ A name that is not registered fails the request that uses the source with `400 U
 | `async copy_file(source, destination)` | Copy a file, creating the destination's parents |
 | `async move_file(source, destination)` | Move a file **or a directory** |
 
+Two optional methods (`jcpy.storage.StreamingStorageAdapter`) move file contents without holding them in memory; without them the connector falls back to `write` and `read`:
+
+| Method | Contract |
+|---|---|
+| `async write_file(path, file: BinaryIO)` | Create or replace a file from a readable binary file positioned at the start; used by uploads |
+| `iter_file(path) -> AsyncIterator[bytes]` | File contents in chunks (`CHUNK_SIZE`, 64 KiB, is a good size); raise `FileWasNotFoundError(path)` before the first chunk when missing; used by `fileDownload` |
+
 `StatEntry(path, is_file, size=None, last_modified_ms=None)` is in `jcpy.storage`, next to `StorageError` and `FileWasNotFoundError`. Exceptions raised by an adapter are wrapped with the operation (`Unable to write the file. Reason: ...`) and answered with `500` or `400` depending on the action.
 
-Blocking libraries should run in threads (`anyio.to_thread.run_sync`), as the built-in adapters do, to keep the event loop free.
+Blocking libraries should run in threads (`anyio.to_thread.run_sync`) to keep the event loop free. The built-in adapters run transfers (reads, writes, copies) in a pool of their own, 16 threads per adapter, so large files do not hold up the quick operations in anyio's default pool.
 
 The built-in adapters also guarantee:
 

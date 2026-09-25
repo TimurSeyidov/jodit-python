@@ -1,8 +1,9 @@
 """Uploads from a remote URL."""
 
 import posixpath
+import tempfile
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, BinaryIO, cast
 from urllib.parse import unquote
 
 from jcpy.errors import HttpError
@@ -16,6 +17,10 @@ if TYPE_CHECKING:
 
 
 NOT_WHITELISTED = "File type is not in white list"
+
+
+SPOOL_SIZE = 1024 * 1024
+"""Bytes of a remote download kept in memory before spilling to disk."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -112,32 +117,38 @@ async def upload_from_url(
         if config.max_upload_file_size
         else None
     )
-    try:
-        contents = await ssrf.download(
-            url,
-            guard=not config.allow_private_network_uploads,
-            limit=limit,
-            network_timeout=config.timeout_limit,
-        )
-    except ssrf.DownloadTooLargeError:
-        # The extension is checked before the size.
-        if not source.is_safe_file(safe_name):
-            raise HttpError.forbidden(NOT_WHITELISTED) from None
-        raise
+    # Up to SPOOL_SIZE in memory, the rest on disk.
+    with tempfile.SpooledTemporaryFile(max_size=SPOOL_SIZE) as spool:
+        # A binary file in every respect; typeshed does not say so.
+        body = cast("BinaryIO", spool)
+        try:
+            await ssrf.download_to(
+                url,
+                body,
+                guard=not config.allow_private_network_uploads,
+                limit=limit,
+                network_timeout=config.timeout_limit,
+            )
+        except ssrf.DownloadTooLargeError:
+            # The extension is checked before the size.
+            if not source.is_safe_file(safe_name):
+                raise HttpError.forbidden(NOT_WHITELISTED) from None
+            raise
 
-    target = await _target_path(source, directory, safe_name)
-    storage_path = source.storage_path(target)
-    # Check before writing: a rejected download must never overwrite
-    # (and then remove) an existing file of the same name.
-    if not source.is_safe_file(storage_path):
-        raise HttpError.forbidden(NOT_WHITELISTED)
-    await context.access.check_permission(
-        context.role,
-        "FILE_UPLOAD",
-        source.get_root(),
-        source.get_extension(target),
-    )
-    await source.storage.write(storage_path, contents)
+        target = await _target_path(source, directory, safe_name)
+        storage_path = source.storage_path(target)
+        # Check before writing: a rejected download must never overwrite
+        # (and then remove) an existing file of the same name.
+        if not source.is_safe_file(storage_path):
+            raise HttpError.forbidden(NOT_WHITELISTED)
+        await context.access.check_permission(
+            context.role,
+            "FILE_UPLOAD",
+            source.get_root(),
+            source.get_extension(target),
+        )
+        body.seek(0)
+        await source.storage.write_file(storage_path, body)
     return RemoteFile(
         posixpath.basename(target), source.is_image(storage_path)
     )

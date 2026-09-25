@@ -11,6 +11,7 @@ import ipaddress
 import socket
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
+from typing import BinaryIO
 
 import anyio
 import httpx
@@ -190,34 +191,20 @@ class Fetched:
     content_type: str | None
 
 
-async def fetch(
+async def _stream(
     url: str,
+    consume: Callable[[bytes], Awaitable[None]],
     *,
     guard: bool,
     limit: int | None,
     network_timeout: float,
-    resolver: Resolver = resolve_host,
-    transport: httpx.AsyncBaseTransport | None = None,
-) -> Fetched:
-    """Download a URL, re-checking every redirect hop.
-
-    Args:
-        url: URL to download.
-        guard: Apply the SSRF checks (off only for trusted networks).
-        limit: Abort once the body exceeds this many bytes.
-        network_timeout: Network timeout in seconds.
-        resolver: Host name resolver for the checks.
-        transport: HTTP transport (for tests).
+    resolver: Resolver,
+    transport: httpx.AsyncBaseTransport | None,
+) -> tuple[str, str | None]:
+    """Stream a URL body into ``consume``, re-checking every redirect.
 
     Returns:
-        Final URL, body and content type.
-
-    Raises:
-        HttpError: SSRF refusals (see ``check_url``), ``400 Too many
-            redirects``, ``400 File was not loaded: HTTP <status>`` for
-            unsuccessful responses, ``400 File was not loaded: <reason>``
-            for network errors.
-        DownloadTooLargeError: The body exceeds ``limit``.
+        Final URL and ``Content-Type``.
     """
     current = url
     hops = 0
@@ -254,19 +241,111 @@ async def fetch(
                             f"File was not loaded: HTTP {response.status_code}"
                         )
                         raise HttpError.bad_request(msg)
-                    body = bytearray()
+                    size = 0
                     async for chunk in response.aiter_bytes():
-                        body += chunk
-                        if limit is not None and len(body) > limit:
+                        size += len(chunk)
+                        if limit is not None and size > limit:
                             raise DownloadTooLargeError
-                    return Fetched(
-                        current,
-                        bytes(body),
-                        response.headers.get("content-type"),
-                    )
+                        await consume(chunk)
+                    return current, response.headers.get("content-type")
             except httpx.HTTPError as error:
                 msg = f"File was not loaded: {error}"
                 raise HttpError.bad_request(msg) from None
+
+
+async def fetch(
+    url: str,
+    *,
+    guard: bool,
+    limit: int | None,
+    network_timeout: float,
+    resolver: Resolver = resolve_host,
+    transport: httpx.AsyncBaseTransport | None = None,
+) -> Fetched:
+    """Download a URL, re-checking every redirect hop.
+
+    Args:
+        url: URL to download.
+        guard: Apply the SSRF checks (off only for trusted networks).
+        limit: Abort once the body exceeds this many bytes.
+        network_timeout: Network timeout in seconds.
+        resolver: Host name resolver for the checks.
+        transport: HTTP transport (for tests).
+
+    Returns:
+        Final URL, body and content type.
+
+    Raises:
+        HttpError: SSRF refusals (see ``check_url``), ``400 Too many
+            redirects``, ``400 File was not loaded: HTTP <status>`` for
+            unsuccessful responses, ``400 File was not loaded: <reason>``
+            for network errors.
+        DownloadTooLargeError: The body exceeds ``limit``.
+    """
+    body = bytearray()
+
+    async def collect(chunk: bytes) -> None:
+        body.extend(chunk)
+
+    final_url, content_type = await _stream(
+        url,
+        collect,
+        guard=guard,
+        limit=limit,
+        network_timeout=network_timeout,
+        resolver=resolver,
+        transport=transport,
+    )
+    return Fetched(final_url, bytes(body), content_type)
+
+
+async def download_to(
+    url: str,
+    file: BinaryIO,
+    *,
+    guard: bool,
+    limit: int | None,
+    network_timeout: float,
+    resolver: Resolver = resolve_host,
+    transport: httpx.AsyncBaseTransport | None = None,
+) -> int:
+    """Download a URL body into a file without holding it in memory.
+
+    The checks and errors are those of ``fetch``.
+
+    Args:
+        url: URL to download.
+        file: Writable binary file receiving the body.
+        guard: Apply the SSRF checks (off only for trusted networks).
+        limit: Abort once the body exceeds this many bytes.
+        network_timeout: Network timeout in seconds.
+        resolver: Host name resolver for the checks.
+        transport: HTTP transport (for tests).
+
+    Returns:
+        Number of bytes written.
+
+    Raises:
+        HttpError: See ``fetch``.
+        DownloadTooLargeError: The body exceeds ``limit``.
+    """
+    written = 0
+
+    async def write(chunk: bytes) -> None:
+        nonlocal written
+        await anyio.to_thread.run_sync(file.write, chunk)
+        written += len(chunk)
+
+    await _stream(
+        url,
+        write,
+        guard=guard,
+        limit=limit,
+        network_timeout=network_timeout,
+        resolver=resolver,
+        transport=transport,
+    )
+    return written
 
 
 async def download(

@@ -1,8 +1,11 @@
 """File uploads."""
 
+import os
 import posixpath
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
+
+from anyio import to_thread
 
 from jcpy.errors import HttpError
 from jcpy.helpers.js import node_basename, parse_bytes, sanitize_filename
@@ -54,6 +57,20 @@ async def _free_name(source: Source, directory: str, file_name: str) -> str:
             return target
 
 
+async def _upload_size(upload: UploadFile) -> int:
+    """Size of an uploaded file, measured when the parser left it unset."""
+    if upload.size is not None:
+        return upload.size
+
+    def measure() -> int:
+        upload.file.seek(0, os.SEEK_END)
+        size = upload.file.tell()
+        upload.file.seek(0)
+        return size
+
+    return await to_thread.run_sync(measure)
+
+
 def _check_upload(source: Source, storage_path: str, size: int) -> None:
     if not source.is_safe_file(storage_path):
         raise HttpError.forbidden("File type is not in white list")
@@ -94,24 +111,25 @@ async def upload_files(
     directory = await source.get_path(relative_path)
     # Check every file before writing any: a rejected upload must never
     # overwrite (and then remove) an existing file of the same name.
-    pending: list[tuple[str, bytes]] = []
+    pending: list[tuple[str, UploadFile]] = []
     for upload in files:
         file_name = sanitize_filename(upload.filename or "", "_")
         target = await _free_name(source, directory, file_name)
         storage_path = source.storage_path(target)
-        contents = await upload.read()
-        _check_upload(source, storage_path, len(contents))
+        _check_upload(source, storage_path, await _upload_size(upload))
         await context.access.check_permission(
             context.role,
             "FILE_UPLOAD",
             source.get_root(),
             source.get_extension(storage_path),
         )
-        pending.append((storage_path, contents))
+        pending.append((storage_path, upload))
 
     stored: list[StoredFile] = []
-    for storage_path, contents in pending:
-        await source.storage.write(storage_path, contents)
+    for storage_path, upload in pending:
+        # Streamed from the upload's temporary file, not read into memory.
+        await upload.seek(0)
+        await source.storage.write_file(storage_path, upload.file)
         stat = await source.storage.stat(storage_path)
         stored.append(
             StoredFile(

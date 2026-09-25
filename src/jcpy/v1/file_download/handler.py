@@ -3,10 +3,10 @@
 from typing import TYPE_CHECKING
 from urllib.parse import quote
 
-from starlette.responses import Response
+from starlette.responses import Response, StreamingResponse
 
 from jcpy.errors import HttpError
-from jcpy.services.download import read_file
+from jcpy.services.download import open_download
 from jcpy.sources import SOURCE_NOT_FOUND
 from jcpy.validation import Issue, require_valid, string_field
 
@@ -59,7 +59,7 @@ async def file_download_handler(context: ActionContext) -> Response:
         context: Action context.
 
     Returns:
-        ``application/octet-stream`` response with the file contents.
+        ``application/octet-stream`` response streaming the file.
 
     Raises:
         HttpError: ``400`` for invalid parameters or a directory,
@@ -76,13 +76,16 @@ async def file_download_handler(context: ActionContext) -> Response:
     if not name:
         raise HttpError.bad_request("Name parameter is required")
 
-    contents = await read_file(context, sources[0], name, params.path)
-    return Response(
-        contents,
+    download = await open_download(context, sources[0], name, params.path)
+    headers = {
+        "Content-Description": "File Transfer",
+        "Content-Disposition": content_disposition(name),
+        "Content-Transfer-Encoding": "binary",
+    }
+    if download.size is not None:
+        headers["Content-Length"] = str(download.size)
+    return StreamingResponse(
+        download.chunks,
         media_type="application/octet-stream",
-        headers={
-            "Content-Description": "File Transfer",
-            "Content-Disposition": content_disposition(name),
-            "Content-Transfer-Encoding": "binary",
-        },
+        headers=headers,
     )
