@@ -199,9 +199,14 @@ class SftpServer:
             transport.set_subsystem_handler(
                 "sftp", paramiko.SFTPServer, self.interface
             )
-            with contextlib.suppress(paramiko.SSHException, EOFError):
-                transport.start_server(server=_Server(self.client_key))
             self.transports.append(transport)
+            # With an event the handshake runs in the transport's own
+            # thread: a client that drops (a rejected host key resets the
+            # connection on Linux) never stops the accept loop.
+            with contextlib.suppress(Exception):
+                transport.start_server(
+                    threading.Event(), server=_Server(self.client_key)
+                )
 
     def drop_connections(self) -> None:
         """Close every open connection from the server side."""
