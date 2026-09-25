@@ -27,7 +27,7 @@ Python/FastAPI implementation of the Jodit File Browser and Uploader connector.
 - **Pillow** for image processing and thumbnails
 - **httpx** for SSRF-safe remote downloads
 - **WeasyPrint** (PDF), **html-for-docx** (DOCX), **boto3** (S3), **paramiko** (SFTP) as optional extras
-- **pytest + Testcontainers** for testing (MinIO, vsftpd, OpenSSH)
+- **pytest + Testcontainers** for testing (MinIO, vsftpd, OpenSSH, Apache, rclone)
 - **uv**, **Ruff** and **MkDocs Material** for tooling and docs
 
 ## Installation
@@ -144,7 +144,7 @@ app = create_app("config.json", access_control=load_rules)
 
 Without `credentials` the AWS default chain is used (environment, profile, instance role). MinIO, Cloudflare R2, Yandex Object Storage and others work through `endpoint` (plus `forcePathStyle: true` where needed). Other backends implement `jcpy.StorageAdapter` and are registered with `register_storage_adapter("name", factory)`.
 
-### FTP and SFTP servers
+### FTP, SFTP and WebDAV servers
 
 ```json
 {
@@ -165,7 +165,7 @@ Without `credentials` the AWS default chain is used (environment, profile, insta
 }
 ```
 
-`storageAdapter: "ftp"` with an `ftp` block works the same way (`tls: true` for FTPS). The SFTP host key is always checked (`hostKey`, `knownHostsFile` or the system `known_hosts`); get it with `ssh-keyscan`. Writes are atomic (a temporary file renamed over the target), and connections are pooled and reopened when they drop.
+`storageAdapter: "ftp"` with an `ftp` block works the same way (`tls: true` for FTPS), and so does `"webdav"` with a `webdav` block (`url`, `username`, `password`) for Apache, nginx, Nextcloud and other WebDAV servers. The SFTP host key is always checked (`hostKey`, `knownHostsFile` or the system `known_hosts`); get it with `ssh-keyscan`. Writes are atomic (a temporary file renamed over the target), and connections are pooled and reopened when they drop.
 
 ### Multi-tenant sources
 
@@ -218,6 +218,7 @@ app.include_router(
 - [FastAPI Integration](https://timurseyidov.github.io/jodit-python/integration/) - Mounting, prefixes, several instances
 - [AWS S3 & S3-compatible](https://timurseyidov.github.io/jodit-python/aws-s3/) - Built-in S3 adapter, MinIO, R2, Yandex
 - [FTP & SFTP](https://timurseyidov.github.io/jodit-python/ftp-sftp/) - Files on FTP, FTPS and SFTP servers
+- [WebDAV](https://timurseyidov.github.io/jodit-python/webdav/) - Files on WebDAV servers (Apache, nginx, Nextcloud)
 - [Storage Adapters](https://timurseyidov.github.io/jodit-python/storage-adapters/) - Custom adapters, registering by name
 - [Dynamic Sources](https://timurseyidov.github.io/jodit-python/dynamic-sources/) - Multi-tenant: resolve sources per request
 - [Documents](https://timurseyidov.github.io/jodit-python/documents/) - PDF and DOCX generation
@@ -241,7 +242,7 @@ The site is built from [`docs/`](docs) (`make docs` serves it locally, `make doc
 - **Authentication** - a per-request callback: cookies, JWT, sessions
 - **Security** - SSRF-safe remote downloads, confinement to the source root (symlinks included), POST-only mode, CORS allowlist
 - **FastAPI integration** - standalone app or router, several isolated instances in one application
-- **Storage** - local filesystem, AWS S3 / S3-compatible, FTP / FTPS and SFTP out of the box, custom adapters registered by name
+- **Storage** - local filesystem, AWS S3 / S3-compatible, FTP / FTPS, SFTP and WebDAV out of the box, custom adapters registered by name
 - **Multi-tenant** - sources resolved per request, one instance for many tenants
 - **OpenAPI** - OpenAPI 3.1 and Swagger UI generated from the schemas
 - **Typed** - mypy `--strict`, ships `py.typed`

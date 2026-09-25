@@ -1,7 +1,7 @@
-"""FTP and SFTP adapters against real servers in Docker.
+"""FTP, SFTP and WebDAV adapters against real servers in Docker.
 
-vsftpd (plain and FTPS, no MLSD) and OpenSSH; skipped when no Docker
-daemon is reachable.
+vsftpd (plain and FTPS, no MLSD), OpenSSH, Apache mod_dav and rclone;
+skipped when no Docker daemon is reachable.
 """
 
 import ftplib
@@ -10,16 +10,19 @@ import random
 import socket
 import time
 import uuid
+from pathlib import Path
 from typing import TYPE_CHECKING
 
+import httpx
 import paramiko
 import pytest
 from docker.errors import DockerException
 from testcontainers.core.container import DockerContainer
 
-from jcpy.config.models import FtpOptions, SftpOptions
+from jcpy.config.models import FtpOptions, SftpOptions, WebdavOptions
 from jcpy.storage.ftp import FtpStorageAdapter
 from jcpy.storage.sftp import SftpStorageAdapter
+from jcpy.storage.webdav import WebdavStorageAdapter
 from tests.adapter_contract import AdapterContract
 from tests.certificates import self_signed_certificate
 from tests.conftest import make_app, open_client
@@ -27,7 +30,6 @@ from tests.docker import docker_available
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Callable, Iterator
-    from pathlib import Path
 
     from jcpy.types import JsonObject
 
@@ -35,7 +37,9 @@ USER = "user"
 PASSWORD = "secret"  # noqa: S105 - test server
 FTP_IMAGE = os.environ.get("FTP_IMAGE", "delfer/alpine-ftp-server:latest")
 SFTP_IMAGE = os.environ.get("SFTP_IMAGE", "atmoz/sftp:alpine")
-PASSIVE_PORTS = 6
+APACHE_IMAGE = os.environ.get("APACHE_IMAGE", "httpd:2.4")
+RCLONE_IMAGE = os.environ.get("RCLONE_IMAGE", "rclone/rclone:latest")
+PASSIVE_PORTS = 20
 
 pytestmark = [
     pytest.mark.docker,
@@ -50,7 +54,13 @@ def wait_for(check: Callable[[], object], what: str) -> None:
     while True:
         try:
             check()
-        except OSError, EOFError, ftplib.Error, paramiko.SSHException:
+        except (
+            OSError,
+            EOFError,
+            ftplib.Error,
+            paramiko.SSHException,
+            httpx.TransportError,
+        ):
             if time.monotonic() > deadline:
                 pytest.fail(f"{what} did not start")
             time.sleep(0.5)
@@ -260,22 +270,110 @@ class TestOpenSsh(AdapterContract):
         adapter.close()
 
 
+@pytest.fixture(scope="module")
+def apache_url() -> Iterator[str]:
+    config = Path(__file__).parents[1] / "fixtures" / "webdav" / "httpd.conf"
+    container = (
+        DockerContainer(APACHE_IMAGE)
+        .with_volume_mapping(
+            str(config), "/usr/local/apache2/conf/httpd.conf", "ro"
+        )
+        .with_command(
+            "sh -c 'mkdir -p /dav /var/dav"
+            " && chown daemon:daemon /dav /var/dav"
+            f" && htpasswd -bc /var/dav/users {USER} {PASSWORD}"
+            " && exec httpd-foreground'"
+        )
+        .with_exposed_ports(80)
+    )
+    with container:
+        url = (
+            f"http://{container.get_container_host_ip()}:"
+            f"{container.get_exposed_port(80)}/dav/"
+        )
+        wait_for(lambda: dav_ready(url), "Apache")
+        yield url
+
+
+@pytest.fixture(scope="module")
+def rclone_url() -> Iterator[str]:
+    container = (
+        DockerContainer(RCLONE_IMAGE)
+        .with_command(
+            f"serve webdav /data --addr :8080 --user {USER} --pass {PASSWORD}"
+        )
+        .with_exposed_ports(8080)
+    )
+    with container:
+        url = (
+            f"http://{container.get_container_host_ip()}:"
+            f"{container.get_exposed_port(8080)}/"
+        )
+        wait_for(lambda: dav_ready(url), "rclone")
+        yield url
+
+
+def dav_ready(url: str) -> None:
+    response = httpx.request(
+        "PROPFIND", url, auth=(USER, PASSWORD), headers={"Depth": "0"}
+    )
+    if response.status_code != httpx.codes.MULTI_STATUS:
+        raise OSError(response.status_code)
+
+
+def webdav_options(url: str) -> WebdavOptions:
+    return WebdavOptions.model_validate(
+        {"url": url, "username": USER, "password": PASSWORD}
+    )
+
+
+async def isolated_webdav(url: str) -> WebdavStorageAdapter:
+    """Adapter rooted in a new collection with a space in its name."""
+    directory = f"source {uuid.uuid4().hex[:8]}"
+    setup = WebdavStorageAdapter(webdav_options(url))
+    await setup.create_directory(directory)
+    await setup.aclose()
+    return WebdavStorageAdapter(webdav_options(f"{url}{directory}"))
+
+
+class TestApache(AdapterContract):
+    @pytest.fixture
+    async def adapter(
+        self, apache_url: str
+    ) -> AsyncIterator[WebdavStorageAdapter]:
+        adapter = await isolated_webdav(apache_url)
+        yield adapter
+        await adapter.aclose()
+
+
+class TestRclone(AdapterContract):
+    @pytest.fixture
+    async def adapter(
+        self, rclone_url: str
+    ) -> AsyncIterator[WebdavStorageAdapter]:
+        adapter = await isolated_webdav(rclone_url)
+        yield adapter
+        await adapter.aclose()
+
+
 class TestConnector:
-    @pytest.mark.parametrize("adapter_name", ["ftp", "sftp"])
+    @pytest.mark.parametrize("adapter_name", ["ftp", "sftp", "webdav"])
     async def test_upload_list_and_download(
-        self,
-        adapter_name: str,
-        ftp_server: tuple[str, int],
-        sftp_server: tuple[str, int, str],
+        self, adapter_name: str, request: pytest.FixtureRequest
     ) -> None:
+        options: JsonObject
         if adapter_name == "ftp":
-            adapter: (
-                FtpStorageAdapter | SftpStorageAdapter
-            ) = await isolated_ftp(ftp_server)
+            ftp = await isolated_ftp(request.getfixturevalue("ftp_server"))
+            options = ftp.options.model_dump(by_alias=True)
+            ftp.close()
+        elif adapter_name == "sftp":
+            sftp = await isolated_sftp(request.getfixturevalue("sftp_server"))
+            options = sftp.options.model_dump(by_alias=True)
+            sftp.close()
         else:
-            adapter = await isolated_sftp(sftp_server)
-        options = adapter.options.model_dump(by_alias=True)
-        adapter.close()
+            dav = await isolated_webdav(request.getfixturevalue("apache_url"))
+            options = dav.options.model_dump(by_alias=True)
+            await dav.aclose()
         config: JsonObject = {
             "sources": {
                 "server": {

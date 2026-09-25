@@ -81,6 +81,8 @@ dev = [
     "pyftpdlib>=2.0",
     "types-paramiko>=3.5",
     "pyopenssl>=24",
+    "wsgidav>=4.3",
+    "cheroot>=10",
 ]
 docs = [
     "mkdocs>=1.6.1,<2",
@@ -147,8 +149,17 @@ module = ["weasyprint", "weasyprint.*", "html4docx", "html4docx.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-# Test FTP server; Docker client used by Testcontainers.
-module = ["pyftpdlib", "pyftpdlib.*", "docker", "docker.*"]
+# Test FTP and WebDAV servers; Docker client used by Testcontainers.
+module = [
+    "pyftpdlib",
+    "pyftpdlib.*",
+    "docker",
+    "docker.*",
+    "wsgidav",
+    "wsgidav.*",
+    "cheroot",
+    "cheroot.*",
+]
 ignore_missing_imports = true
 
 [tool.pydantic-mypy]

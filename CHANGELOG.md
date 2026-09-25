@@ -7,6 +7,7 @@ All notable changes to this project are documented in this file. The format is b
 ### Added
 
 - `ftp` storage adapter for FTP and FTPS (explicit TLS, certificate checked) servers, with no extra dependency: `MLST`/`MLSD` or `SIZE`/`MDTM`/`LIST` (Unix and Windows formats), atomic writes, pooled connections reopened when they drop.
+- `webdav` storage adapter with no extra dependency (httpx): Basic, Digest or bearer-token login, atomic writes, server-side copies and moves that never replace a folder, deletes that never remove a folder by mistake, works behind reverse proxies that rewrite paths.
 - `sftp` storage adapter (extra `[sftp]`, paramiko): the server's host key is always checked (`hostKey`, `knownHostsFile` or the system `known_hosts`), password or private key login, atomic writes (`posix-rename` when available), pooled connections.
 
 - S3 options `serverSideEncryption`, `sseKmsKeyId`, `storageClass` and `cacheControl`, applied to uploads, copies and moves; folder markers get the encryption.

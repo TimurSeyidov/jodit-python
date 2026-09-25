@@ -22,6 +22,7 @@ from jcpy.storage import local as local_module
 from jcpy.storage.ftp import FtpStorageAdapter
 from jcpy.storage.local import UnsupportedEntryError
 from jcpy.storage.sftp import SftpStorageAdapter
+from jcpy.storage.webdav import WebdavStorageAdapter
 from tests.memory_storage import MemoryStorageAdapter
 
 if TYPE_CHECKING:
@@ -352,6 +353,7 @@ class TestRegistry:
         [
             ("ftp", {"host": "h"}, FtpStorageAdapter),
             ("sftp", {"host": "h", "username": "u"}, SftpStorageAdapter),
+            ("webdav", {"url": "https://h/dav/"}, WebdavStorageAdapter),
         ],
     )
     def test_file_server_adapters(
@@ -361,7 +363,7 @@ class TestRegistry:
 
         assert isinstance(create_storage_adapter(settings), adapter_class)
 
-    @pytest.mark.parametrize("name", ["ftp", "sftp"])
+    @pytest.mark.parametrize("name", ["ftp", "sftp", "webdav"])
     def test_file_server_adapters_need_options(self, name: str) -> None:
         settings = SourceConfig.model_construct(
             name="s", title="S", baseurl="http://s/", storage_adapter=name

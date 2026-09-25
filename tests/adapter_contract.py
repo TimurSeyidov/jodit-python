@@ -31,7 +31,7 @@ async def chunks(adapter: StreamingStorageAdapter, path: str) -> list[bytes]:
 
 
 class FailingReader:
-    """Binary source whose reads fail after the first chunk."""
+    """Binary source of ``BODY`` whose reads fail after the first chunk."""
 
     def __init__(self) -> None:
         self.position = 0
@@ -42,9 +42,9 @@ class FailingReader:
         self.position += CHUNK_SIZE
         return BODY[:CHUNK_SIZE]
 
-    def seek(self, position: int) -> int:
-        self.position = position
-        return position
+    def seek(self, offset: int, whence: int = 0) -> int:
+        self.position = len(BODY) + offset if whence == 2 else offset
+        return self.position
 
     def tell(self) -> int:
         return self.position

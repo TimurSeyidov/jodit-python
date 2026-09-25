@@ -1,0 +1,14 @@
+{
+  "sources": {
+    "cloud": {
+      "title": "Cloud files",
+      "baseurl": "https://www.example.com/uploads/",
+      "storageAdapter": "webdav",
+      "webdav": {
+        "url": "https://cloud.example.com/remote.php/dav/files/editor/uploads/",
+        "username": "editor",
+        "password": "app-password"
+      }
+    }
+  }
+}

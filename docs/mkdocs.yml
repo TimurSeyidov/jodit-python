@@ -87,6 +87,7 @@ nav:
       - Storage Adapters: storage-adapters.md
       - AWS S3 & S3-compatible: aws-s3.md
       - FTP & SFTP: ftp-sftp.md
+      - WebDAV: webdav.md
       - Dynamic Sources (multi-tenant): dynamic-sources.md
       - Documents (PDF & DOCX): documents.md
   - Development:

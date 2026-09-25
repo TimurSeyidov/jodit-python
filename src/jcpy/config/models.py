@@ -159,6 +159,34 @@ class SftpOptions(_Model):
         return self
 
 
+class WebdavOptions(_Model):
+    """Options of the built-in ``webdav`` storage adapter."""
+
+    url: Annotated[str, Field(min_length=1)]
+    username: str | None = None
+    password: str | None = None
+    token: str | None = None
+    auth: Literal["basic", "digest"] = "basic"
+    verify_certificate: bool = True
+    timeout: PositiveFloat = 30
+    connections: Annotated[int, Field(ge=1, le=64)] = 8
+
+    @field_validator("url")
+    @classmethod
+    def _url(cls, value: str) -> str:
+        if not value.startswith(("http://", "https://")):
+            msg = "url must be an http:// or https:// URL"
+            raise ValueError(msg)
+        return _check_url(value)
+
+    @model_validator(mode="after")
+    def _one_login(self) -> Self:
+        if self.token is not None and self.username is not None:
+            msg = "set username/password or token, not both"
+            raise ValueError(msg)
+        return self
+
+
 class DynamicSourcesCache(_Model):
     """Cache limits for sources built by ``resolve_sources``."""
 
@@ -348,6 +376,7 @@ class SourceConfig(BaseModel):
     s3: S3Options | None = None
     ftp: FtpOptions | None = None
     sftp: SftpOptions | None = None
+    webdav: WebdavOptions | None = None
 
     @field_validator("baseurl")
     @classmethod
@@ -365,7 +394,7 @@ class SourceConfig(BaseModel):
         if self.is_local and not self.root:
             msg = "root is required for local storage"
             raise ValueError(msg)
-        for adapter in ("s3", "ftp", "sftp"):
+        for adapter in ("s3", "ftp", "sftp", "webdav"):
             if (
                 self.storage_adapter == adapter
                 and getattr(self, adapter) is None
@@ -403,7 +432,7 @@ class SourceConfig(BaseModel):
 
 _OWN_FIELDS = frozenset(
     {"name", "title", "baseurl", "root", "defaultFilesKey"}
-    | {"storageAdapter", "s3", "ftp", "sftp"}
+    | {"storageAdapter", "s3", "ftp", "sftp", "webdav"}
 )
 _OVERRIDABLE = frozenset(
     info.alias or name

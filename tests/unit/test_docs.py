@@ -14,6 +14,7 @@ from jcpy.config.models import (
     S3Options,
     SftpOptions,
     SourceConfig,
+    WebdavOptions,
 )
 from jcpy.helpers.case import constant_case
 from jcpy.v1 import ACTIONS
@@ -34,6 +35,7 @@ def aliases(
         | S3Options
         | FtpOptions
         | SftpOptions
+        | WebdavOptions
     ],
 ) -> set[str]:
     return {info.alias or name for name, info in model.model_fields.items()}
@@ -70,11 +72,19 @@ def test_ftp_option_is_documented(key: str) -> None:
     assert f"| `{option}` |" in section.split("\n## ")[0]
 
 
-@pytest.mark.parametrize("name", ["ftp", "sftp"])
-def test_ftp_examples_are_valid(name: str) -> None:
+@pytest.mark.parametrize("key", sorted(aliases(WebdavOptions)))
+def test_webdav_option_is_documented(key: str) -> None:
+    assert f"| `{key}` |" in page("webdav.md")
+
+
+@pytest.mark.parametrize(
+    ("name", "source"),
+    [("ftp", "site"), ("sftp", "site"), ("webdav", "cloud")],
+)
+def test_file_server_examples_are_valid(name: str, source: str) -> None:
     config = load_config(ROOT / "examples" / "config" / f"{name}.json")
 
-    assert config.sources["site"].storage_adapter == name
+    assert config.sources[source].storage_adapter == name
 
 
 @pytest.mark.parametrize("action", sorted(ACTIONS))
