@@ -1,0 +1,35 @@
+name: Docker Hub description
+
+# Copies README.md to the Docker Hub repository page (overview) and sets
+# its short description. Needs the DOCKERHUB_IMAGE variable and a
+# DOCKERHUB_TOKEN with Read, Write, Delete access (Docker Hub requires
+# it for description updates).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "README.md"
+      - ".github/workflows/dockerhub-description.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  description:
+    name: Update Docker Hub description
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Update description
+        uses: peter-evans/dockerhub-description@v5
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ vars.DOCKERHUB_IMAGE }}
+          short-description: Jodit File Browser and Uploader connector for Python (FastAPI)
+          readme-filepath: ./README.md
+          # Relative links (LICENSE, docs/...) point to GitHub.
+          enable-url-completion: true

@@ -24,9 +24,6 @@ jodit-python is a Python/FastAPI implementation of the [Jodit](https://xdsoft.ne
 uv add "jodit-python[all]"        # or: pip install "jodit-python[all]"
 ```
 
-!!! note "Release status"
-    The PyPI package and the Docker Hub image are not published yet. Until then install from the repository: `uv add git+https://github.com/TimurSeyidov/jodit-python` and build the image locally (see [Docker](docker.md)).
-
 Python 3.14+ is required. `[all]` adds PDF export (WeasyPrint, which needs the Pango system library), DOCX export and S3 storage; each can also be installed alone (`[pdf]`, `[docx]`, `[s3]`), see [Installation](installation.md#installation).
 
 ## Quick Start

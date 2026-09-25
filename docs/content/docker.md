@@ -8,10 +8,11 @@ description: Building and running the jodit-python image, configuration and reve
 ## Quick start
 
 ```bash
-docker build --target prod -t jodit-python .
-docker run --rm -p 8081:8081 -v $(pwd)/files:/app/files jodit-python
+docker run --rm -p 8081:8081 -v $(pwd)/files:/app/files w2fb/jodit-python
 curl http://localhost:8081/ping
 ```
+
+The image is published on Docker Hub as [`w2fb/jodit-python`](https://hub.docker.com/r/w2fb/jodit-python) with the tags `latest`, `0.1` and `0.1.0` (`linux/amd64`, `linux/arm64`). To build it from the repository instead: `docker build --target prod -t jodit-python .`
 
 Or with Compose (`docker-compose.yml` in the repository):
 
@@ -30,7 +31,7 @@ docker run --rm -p 8081:8081 \
   -v $(pwd)/config.json:/app/config.json:ro \
   -e CONFIG_FILE=/app/config.json \
   -v /var/www/uploads:/app/files \
-  jodit-python
+  w2fb/jodit-python
 ```
 
 With `root` in the file pointing to `/app/files` (or wherever the files are mounted).
@@ -43,7 +44,7 @@ docker run --rm -p 8081:8081 \
   -e SOURCE_ROOT=/app/files \
   -e SOURCE_BASEURL=https://cdn.example.com/uploads/ \
   -v /var/www/uploads:/app/files \
-  jodit-python
+  w2fb/jodit-python
 ```
 
 ### Inline JSON
@@ -52,7 +53,7 @@ docker run --rm -p 8081:8081 \
 docker run --rm -p 8081:8081 \
   -e CONFIG='{"debug": false, "sources": {"files": {"title": "Files", "root": "/app/files", "baseurl": "https://cdn.example.com/files/"}}}' \
   -v /var/www/uploads:/app/files \
-  jodit-python
+  w2fb/jodit-python
 ```
 
 ### S3
@@ -61,7 +62,7 @@ docker run --rm -p 8081:8081 \
 docker run --rm -p 8081:8081 \
   -v $(pwd)/s3.json:/app/config.json:ro -e CONFIG_FILE=/app/config.json \
   -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY \
-  jodit-python
+  w2fb/jodit-python
 ```
 
 See [AWS S3](aws-s3.md) for `s3.json`.
@@ -71,7 +72,7 @@ See [AWS S3](aws-s3.md) for `s3.json`.
 Callbacks (authentication, tenants...) live in code, so an application with them gets a small derived image:
 
 ```dockerfile
-FROM jodit-python
+FROM w2fb/jodit-python:0.1
 COPY main.py config.json /app/
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8081"]
 ```

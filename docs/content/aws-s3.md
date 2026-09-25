@@ -23,7 +23,7 @@ Or with Docker:
 docker run --rm -p 8081:8081 \
   -e CONFIG_FILE=/app/config.json -v $(pwd)/s3.json:/app/config.json:ro \
   -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY \
-  jodit-python
+  w2fb/jodit-python
 ```
 
 ## Options

@@ -90,12 +90,11 @@ CONFIG_FILE=/etc/jodit/config.json jcpy
 === "Docker"
 
     ```bash
-    docker build --target prod -t jodit-python .
     docker run --rm -p 8081:8081 \
       -v $(pwd)/config.json:/app/config.json:ro \
       -e CONFIG_FILE=/app/config.json \
       -v /var/www/uploads:/app/files \
-      jodit-python
+      w2fb/jodit-python
     ```
 
     See [Docker](docker.md).

@@ -1,11 +1,12 @@
 # Jodit Connector Application (Python)
 
-[![Version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FTimurSeyidov%2Fjodit-python%2Fmain%2Fpyproject.toml&query=%24.project.version&label=version)](pyproject.toml)
+[![PyPI](https://img.shields.io/pypi/v/jodit-python)](https://pypi.org/project/jodit-python/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/w2fb/jodit-python)](https://hub.docker.com/r/w2fb/jodit-python)
 [![CI](https://github.com/TimurSeyidov/jodit-python/actions/workflows/ci.yml/badge.svg)](https://github.com/TimurSeyidov/jodit-python/actions/workflows/ci.yml)
 [![Docs](https://github.com/TimurSeyidov/jodit-python/actions/workflows/docs.yml/badge.svg)](https://timurseyidov.github.io/jodit-python/)
 [![Coverage](https://codecov.io/gh/TimurSeyidov/jodit-python/graph/badge.svg)](https://codecov.io/gh/TimurSeyidov/jodit-python)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python 3.14+](https://img.shields.io/badge/python-3.14%2B-blue.svg)](https://www.python.org/)
+[![Python](https://img.shields.io/pypi/pyversions/jodit-python)](https://pypi.org/project/jodit-python/)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![mypy: strict](https://img.shields.io/badge/mypy-strict-blue.svg)](https://mypy-lang.org/)
 
@@ -33,6 +34,8 @@ Python/FastAPI implementation of the Jodit File Browser and Uploader connector.
 
 ```bash
 pip install "jodit-python[all]"
+# or run the Docker image
+docker run --rm -p 8081:8081 -v $(pwd)/files:/app/files w2fb/jodit-python
 ```
 
 Python 3.14+. Optional features are extras:
