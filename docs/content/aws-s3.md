@@ -39,6 +39,9 @@ All options live under `sources.<name>.s3`.
 | `prefix` | `string` | `""` | Key prefix acting as the source root, e.g. `uploads/site-a` |
 | `credentials` | `object` | AWS default chain | `accessKeyId`, `secretAccessKey`, optional `sessionToken` |
 | `publicBaseUrl` | `string` | bucket URL | Base of `S3StorageAdapter.public_url()`; the connector's answers use the source `baseurl` |
+| `connectTimeout` | `number` | `10` | Seconds to wait for a connection |
+| `readTimeout` | `number` | `60` | Seconds to wait for data on an open connection |
+| `maxAttempts` | `integer` | `3` | Attempts per request, first one included (standard retry mode: throttling and transient errors, with backoff) |
 
 `baseurl` of the source is what file paths in answers are relative to: the public URL of the prefix, ending with `/`.
 
@@ -141,7 +144,7 @@ S3 has keys, not folders; the adapter follows the AWS console convention:
 - `/photos/cat.jpg` in the browser is the object `<prefix>/photos/cat.jpg`.
 - Creating a folder writes an empty `<prefix>/photos/` object. Folders that exist only because objects sit under them are listed too.
 - Thumbnails go to `<prefix>/photos/_thumbs/cat.jpg`, as on disk; the `_thumbs` folder is hidden from listings.
-- Rename and move are copy plus delete; moving a folder copies every object under it.
+- Rename and move are copy plus delete. Moving a folder copies its objects concurrently (16 at a time) and deletes the source only after every copy succeeded, so a failure leaves the source intact.
 - Removing a folder deletes every key under it, 1000 per request.
 
 Objects uploaded by other tools appear when they are under the prefix and their extension is in `extensions`.
@@ -150,7 +153,7 @@ Thumbnails cost one `GetObject` and one `PutObject` per image on the first listi
 
 ## Limits
 
-- `CopyObject` is limited to 5 GB, so larger objects cannot be renamed or moved. Uploads are multipart and have no such limit.
+- Objects over 8 MB are copied in parts (multipart copy), so renaming and moving work for objects of any size; metadata such as `Content-Type` is kept.
 - Signed URLs are not generated: files must be readable through `baseurl`.
 - `fileUploadRemote` downloads through the connector's memory, bounded by `maxUploadFileSize`.
 

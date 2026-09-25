@@ -3,12 +3,11 @@
 import math
 import posixpath
 from dataclasses import dataclass
-from functools import cmp_to_key
+from functools import cmp_to_key, partial
 from typing import TYPE_CHECKING
 
-import anyio
-
 from jcpy.errors import HttpError
+from jcpy.helpers.concurrency import gather_limited
 from jcpy.helpers.js import (
     format_bytes,
     format_datetime,
@@ -97,17 +96,10 @@ async def _describe_all(
     source: Source, entries: Sequence[StatEntry]
 ) -> list[StatEntry | None]:
     """Describe entries concurrently, keeping their order."""
-    results: list[StatEntry | None] = [None] * len(entries)
-    limiter = anyio.CapacityLimiter(STAT_CONCURRENCY)
-
-    async def describe(index: int, entry: StatEntry) -> None:
-        async with limiter:
-            results[index] = await _describe(source, entry)
-
-    async with anyio.create_task_group() as group:
-        for index, entry in enumerate(entries):
-            group.start_soon(describe, index, entry)
-    return results
+    return await gather_limited(
+        [partial(_describe, source, entry) for entry in entries],
+        STAT_CONCURRENCY,
+    )
 
 
 def _to_item(

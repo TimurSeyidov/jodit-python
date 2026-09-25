@@ -1,9 +1,11 @@
 """File and folder changes: remove, create, move, copy, rename."""
 
 import posixpath
+from functools import partial
 from typing import TYPE_CHECKING, Literal
 
 from jcpy.errors import HttpError
+from jcpy.helpers.concurrency import gather_limited
 from jcpy.helpers.js import node_basename, node_extname, sanitize_filename
 from jcpy.sources import PATH_NOT_FOUND, is_path_within_root, node_join
 
@@ -268,13 +270,18 @@ async def copy_path(
             entry
             async for entry in source.storage.list(source_storage, deep=True)
         ]
+        copies = []
         for entry in entries:
             suffix = entry.path[len(source_storage) :]
             entry_target = posixpath.normpath(f"{target}/{suffix}")
             if entry.is_directory:
                 await source.storage.create_directory(entry_target)
             else:
-                await source.storage.copy_file(entry.path, entry_target)
+                copies.append(
+                    partial(source.storage.copy_file, entry.path, entry_target)
+                )
+        # Folders exist now; files are copied concurrently.
+        await gather_limited(copies)
     except Exception as error:
         raise HttpError.bad_request(f"Unable to copy: {error}") from None
 

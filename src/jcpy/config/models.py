@@ -13,6 +13,7 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    PositiveFloat,
     PositiveInt,
     ValidationError,
     field_validator,
@@ -92,6 +93,9 @@ class S3Options(_Model):
     prefix: str | None = None
     credentials: S3Credentials | None = None
     public_base_url: str | None = None
+    connect_timeout: PositiveFloat = 10
+    read_timeout: PositiveFloat = 60
+    max_attempts: PositiveInt = 3
 
     @field_validator("endpoint", "public_base_url")
     @classmethod

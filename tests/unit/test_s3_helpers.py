@@ -87,6 +87,11 @@ def test_public_url_prefers_explicit_base() -> None:
     )
 
 
+def setting(config: object, name: str) -> object:
+    """Read a botocore ``Config`` value (set dynamically, untyped)."""
+    return getattr(config, name)
+
+
 def test_client_settings() -> None:
     adapter = S3StorageAdapter(
         options(
@@ -105,6 +110,26 @@ def test_client_settings() -> None:
     assert adapter.client.meta.region_name == "eu-west-1"
     assert adapter.client.meta.endpoint_url == "http://minio:9000"
     assert getattr(client_config, "s3") == {"addressing_style": "path"}  # noqa: B009
+    assert setting(client_config, "connect_timeout") == 10
+    assert setting(client_config, "read_timeout") == 60
+    assert setting(client_config, "retries") == {
+        "total_max_attempts": 3,
+        "mode": "standard",
+    }
+
+
+def test_timeouts_and_retries_are_configurable() -> None:
+    adapter = S3StorageAdapter(
+        options(connectTimeout=2.5, readTimeout=30, maxAttempts=5)
+    )
+
+    client_config = adapter.client.meta.config
+    assert setting(client_config, "connect_timeout") == 2.5
+    assert setting(client_config, "read_timeout") == 30
+    assert setting(client_config, "retries") == {
+        "total_max_attempts": 5,
+        "mode": "standard",
+    }
 
 
 def stubbed(**values: object) -> tuple[S3StorageAdapter, Stubber]:
@@ -131,7 +156,11 @@ def test_default_credential_chain(monkeypatch: pytest.MonkeyPatch) -> None:
 
     S3StorageAdapter(options())
 
-    assert calls == [{"service": "s3", "region_name": "us-east-1"}]
+    (call,) = calls
+    assert call["service"] == "s3"
+    assert call["region_name"] == "us-east-1"
+    # No keys passed: boto3 falls back to the default credential chain.
+    assert not {"aws_access_key_id", "aws_secret_access_key"} & set(call)
 
 
 async def test_root_needs_no_marker() -> None:

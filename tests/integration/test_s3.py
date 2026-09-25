@@ -18,7 +18,7 @@ from PIL import Image
 from testcontainers.core.container import DockerContainer
 
 from jcpy.config.models import S3Options
-from jcpy.storage import FileStorage
+from jcpy.storage import FileStorage, StorageError
 from jcpy.storage.s3 import S3StorageAdapter
 from tests.conftest import make_app, open_client
 
@@ -207,6 +207,41 @@ class TestAdapter:
         assert keys(client, f"{PREFIX}/renamed") == []
         with pytest.raises(Exception, match="Path not found"):
             await storage.move_file("nowhere", "x")
+
+    async def test_large_copy_keeps_type_and_bytes(
+        self, storage: FileStorage, client: S3Client
+    ) -> None:
+        # Over the 8 MB multipart threshold: copied part by part.
+        body = bytes(range(256)) * (9 * 4096)
+        await storage.write("big.pdf", body)
+        await storage.copy_file("big.pdf", "copies/big.pdf")
+
+        head = client.head_object(Bucket=BUCKET, Key="media/copies/big.pdf")
+        assert head["ContentType"] == "application/pdf"
+        assert head["ContentLength"] == len(body)
+        assert await storage.read("copies/big.pdf") == body
+
+    async def test_failed_folder_move_keeps_the_source(
+        self,
+        storage: FileStorage,
+        client: S3Client,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        adapter = storage.adapter
+        assert isinstance(adapter, S3StorageAdapter)
+        original = adapter._copy_object
+
+        def flaky(source_key: str, target_key: str) -> None:
+            if source_key.endswith("nested.txt"):
+                msg = "network down"
+                raise OSError(msg)
+            original(source_key, target_key)
+
+        monkeypatch.setattr(adapter, "_copy_object", flaky)
+        with pytest.raises(StorageError, match="network down"):
+            await storage.move_file("sub", "moved")
+
+        assert keys(client, f"{PREFIX}/sub") == ["media/sub/nested.txt"]
 
     async def test_content_type(
         self, storage: FileStorage, client: S3Client

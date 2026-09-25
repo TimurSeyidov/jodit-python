@@ -6,6 +6,7 @@ a ``/`` implies its parent folders.
 """
 
 import mimetypes
+from functools import partial
 from io import BytesIO
 from typing import TYPE_CHECKING, Any
 
@@ -14,6 +15,7 @@ from anyio import to_thread
 from botocore.config import Config
 from botocore.exceptions import ClientError
 
+from jcpy.helpers.concurrency import gather_limited
 from jcpy.storage.base import StatEntry
 
 if TYPE_CHECKING:
@@ -113,7 +115,8 @@ def create_client(options: S3Options) -> S3Client:
 
     Args:
         options: S3 settings; without ``credentials`` the AWS default
-            chain (environment, profile, instance role) is used.
+            chain (environment, profile, instance role) is used. Timeouts
+            and retries (standard mode) come from the options.
 
     Returns:
         S3 client.
@@ -121,14 +124,25 @@ def create_client(options: S3Options) -> S3Client:
     kwargs: dict[str, Any] = {"region_name": options.region or DEFAULT_REGION}
     if options.endpoint is not None:
         kwargs["endpoint_url"] = options.endpoint
+    config = Config(
+        connect_timeout=options.connect_timeout,
+        read_timeout=options.read_timeout,
+        retries={
+            "total_max_attempts": options.max_attempts,
+            "mode": "standard",
+        },
+    )
     if options.force_path_style is not None:
-        kwargs["config"] = Config(
-            s3={
-                "addressing_style": (
-                    "path" if options.force_path_style else "virtual"
-                )
-            }
+        config = config.merge(
+            Config(
+                s3={
+                    "addressing_style": (
+                        "path" if options.force_path_style else "virtual"
+                    )
+                }
+            )
         )
+    kwargs["config"] = config
     if options.credentials is not None:
         kwargs["aws_access_key_id"] = options.credentials.access_key_id
         kwargs["aws_secret_access_key"] = options.credentials.secret_access_key
@@ -454,14 +468,16 @@ class S3StorageAdapter:
         self.client.put_object(Bucket=self.bucket, Key=key, Body=b"")
 
     def _copy_object(self, source_key: str, target_key: str) -> None:
-        self.client.copy_object(
-            Bucket=self.bucket,
+        # Managed copy: objects over 8 MB are copied in parts, so there is
+        # no 5 GB limit; metadata (Content-Type...) is kept either way.
+        self.client.copy(
             CopySource={"Bucket": self.bucket, "Key": source_key},
+            Bucket=self.bucket,
             Key=target_key,
         )
 
     async def copy_file(self, source: str, destination: str) -> None:
-        """Copy an object.
+        """Copy an object (any size, metadata kept).
 
         Args:
             source: Existing file path.
@@ -473,6 +489,9 @@ class S3StorageAdapter:
 
     async def move_file(self, source: str, destination: str) -> None:
         """Move an object, or a whole folder by copying then deleting.
+
+        Folder contents are copied concurrently; the source is deleted
+        only after every copy succeeded.
 
         Args:
             source: Existing path.
@@ -491,14 +510,27 @@ class S3StorageAdapter:
 
         from_key = self._dir_key(source)
         to_key = self._dir_key(destination)
+        jobs = []
         async for entry in self.list(source, deep=True):
             source_key = self._key(entry.path)
             target_key = to_key + source_key[len(from_key) :]
             if entry.is_directory:
-                await to_thread.run_sync(self._put_marker, f"{target_key}/")
-            else:
-                await to_thread.run_sync(
-                    self._copy_object, source_key, target_key
+                jobs.append(
+                    partial(
+                        to_thread.run_sync, self._put_marker, f"{target_key}/"
+                    )
                 )
+            else:
+                jobs.append(
+                    partial(
+                        to_thread.run_sync,
+                        self._copy_object,
+                        source_key,
+                        target_key,
+                    )
+                )
+        # Copy everything (concurrently) before deleting anything: a failed
+        # copy leaves the source intact.
+        await gather_limited(jobs)
         await self.create_directory(destination)
         await self.delete_directory(source)
