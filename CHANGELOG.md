@@ -2,6 +2,25 @@
 
 All notable changes to this project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-09-25
+
+### Added
+
+- S3 options `connectTimeout` (10 s), `readTimeout` (60 s) and `maxAttempts` (3 attempts in total, standard retry mode).
+- The Docker Hub page is published from the README.
+
+### Changed
+
+- Listings take size and modification time from the storage listing and call `stat` only when they are missing, concurrently: an S3 folder is listed with one request instead of one per entry.
+- Folder copies (every storage) and S3 folder moves run concurrently, 16 operations at a time; an S3 folder move deletes the source only after every copy succeeded.
+- Local listings skip symlinks, FIFOs and sockets (with a warning) instead of failing.
+
+### Fixed
+
+- S3: objects over 5 GB can be copied, renamed and moved (multipart copy); metadata such as `Content-Type` is kept.
+- S3: deleting a folder reports objects that could not be deleted instead of succeeding silently, and no longer loops on them.
+- Local storage: writes and copies are atomic; a failed write leaves the previous file intact.
+
 ## [0.1.0] - 2026-09-25
 
 First release.
@@ -26,4 +45,5 @@ First release.
 - A rejected upload never overwrites an existing file; `imageSave` obeys the `extensions` list.
 - Error messages do not reveal absolute server paths.
 
+[0.1.1]: https://github.com/TimurSeyidov/jodit-python/releases/tag/v0.1.1
 [0.1.0]: https://github.com/TimurSeyidov/jodit-python/releases/tag/v0.1.0
