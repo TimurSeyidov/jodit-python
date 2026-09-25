@@ -26,8 +26,8 @@ Python/FastAPI implementation of the Jodit File Browser and Uploader connector.
 - **Pydantic 2** for the configuration and API schemas
 - **Pillow** for image processing and thumbnails
 - **httpx** for SSRF-safe remote downloads
-- **WeasyPrint** (PDF), **html-for-docx** (DOCX), **boto3** (S3) as optional extras
-- **pytest + Testcontainers** for testing (MinIO for S3)
+- **WeasyPrint** (PDF), **html-for-docx** (DOCX), **boto3** (S3), **paramiko** (SFTP) as optional extras
+- **pytest + Testcontainers** for testing (MinIO, vsftpd, OpenSSH)
 - **uv**, **Ruff** and **MkDocs Material** for tooling and docs
 
 ## Installation
@@ -42,6 +42,7 @@ Python 3.14+. Optional features are extras:
 - `[pdf]` (`generatePdf`, needs the Pango system library: `brew install pango` on macOS, `libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0` on Debian/Ubuntu)
 - `[docx]` (`generateDocx`)
 - `[s3]` (S3 storage)
+- `[sftp]` (SFTP storage; FTP needs no extra)
 - `[all]` installs them all. Without an extra the connector still works and the action that needs it answers `501` naming what to install.
 
 For development: [uv](https://docs.astral.sh/uv/) (`make sync` installs everything).
@@ -143,6 +144,29 @@ app = create_app("config.json", access_control=load_rules)
 
 Without `credentials` the AWS default chain is used (environment, profile, instance role). MinIO, Cloudflare R2, Yandex Object Storage and others work through `endpoint` (plus `forcePathStyle: true` where needed). Other backends implement `jcpy.StorageAdapter` and are registered with `register_storage_adapter("name", factory)`.
 
+### FTP and SFTP servers
+
+```json
+{
+  "sources": {
+    "site": {
+      "title": "Website files",
+      "baseurl": "https://www.example.com/uploads/",
+      "storageAdapter": "sftp",
+      "sftp": {
+        "host": "files.example.com",
+        "username": "editor",
+        "privateKeyFile": "/run/secrets/editor_ed25519",
+        "hostKey": "ssh-ed25519 AAAA...",
+        "directory": "/var/www/uploads"
+      }
+    }
+  }
+}
+```
+
+`storageAdapter: "ftp"` with an `ftp` block works the same way (`tls: true` for FTPS). The SFTP host key is always checked (`hostKey`, `knownHostsFile` or the system `known_hosts`); get it with `ssh-keyscan`. Writes are atomic (a temporary file renamed over the target), and connections are pooled and reopened when they drop.
+
 ### Multi-tenant sources
 
 ```python
@@ -193,6 +217,7 @@ app.include_router(
 - [Configuration](https://timurseyidov.github.io/jodit-python/config/) - All configuration options
 - [FastAPI Integration](https://timurseyidov.github.io/jodit-python/integration/) - Mounting, prefixes, several instances
 - [AWS S3 & S3-compatible](https://timurseyidov.github.io/jodit-python/aws-s3/) - Built-in S3 adapter, MinIO, R2, Yandex
+- [FTP & SFTP](https://timurseyidov.github.io/jodit-python/ftp-sftp/) - Files on FTP, FTPS and SFTP servers
 - [Storage Adapters](https://timurseyidov.github.io/jodit-python/storage-adapters/) - Custom adapters, registering by name
 - [Dynamic Sources](https://timurseyidov.github.io/jodit-python/dynamic-sources/) - Multi-tenant: resolve sources per request
 - [Documents](https://timurseyidov.github.io/jodit-python/documents/) - PDF and DOCX generation
@@ -216,7 +241,7 @@ The site is built from [`docs/`](docs) (`make docs` serves it locally, `make doc
 - **Authentication** - a per-request callback: cookies, JWT, sessions
 - **Security** - SSRF-safe remote downloads, confinement to the source root (symlinks included), POST-only mode, CORS allowlist
 - **FastAPI integration** - standalone app or router, several isolated instances in one application
-- **Storage** - local filesystem or AWS S3 / S3-compatible out of the box, custom adapters registered by name
+- **Storage** - local filesystem, AWS S3 / S3-compatible, FTP / FTPS and SFTP out of the box, custom adapters registered by name
 - **Multi-tenant** - sources resolved per request, one instance for many tenants
 - **OpenAPI** - OpenAPI 3.1 and Swagger UI generated from the schemas
 - **Typed** - mypy `--strict`, ships `py.typed`

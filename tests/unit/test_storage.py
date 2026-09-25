@@ -19,7 +19,9 @@ from jcpy.storage import (
     register_storage_adapter,
 )
 from jcpy.storage import local as local_module
+from jcpy.storage.ftp import FtpStorageAdapter
 from jcpy.storage.local import UnsupportedEntryError
+from jcpy.storage.sftp import SftpStorageAdapter
 from tests.memory_storage import MemoryStorageAdapter
 
 if TYPE_CHECKING:
@@ -344,6 +346,29 @@ class TestRegistry:
             'Unknown storage adapter "azure" for source "s". '
             "Registered adapters: local"
         )
+
+    @pytest.mark.parametrize(
+        ("name", "options", "adapter_class"),
+        [
+            ("ftp", {"host": "h"}, FtpStorageAdapter),
+            ("sftp", {"host": "h", "username": "u"}, SftpStorageAdapter),
+        ],
+    )
+    def test_file_server_adapters(
+        self, name: str, options: dict[str, str], adapter_class: type
+    ) -> None:
+        settings = self.settings(storageAdapter=name, **{name: options})
+
+        assert isinstance(create_storage_adapter(settings), adapter_class)
+
+    @pytest.mark.parametrize("name", ["ftp", "sftp"])
+    def test_file_server_adapters_need_options(self, name: str) -> None:
+        settings = SourceConfig.model_construct(
+            name="s", title="S", baseurl="http://s/", storage_adapter=name
+        )
+
+        with pytest.raises(HttpError, match=f'needs an "{name}" options'):
+            create_storage_adapter(settings)
 
     def test_custom_adapter(self) -> None:
         adapter = MemoryStorageAdapter()

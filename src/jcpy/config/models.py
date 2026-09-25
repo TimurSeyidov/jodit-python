@@ -118,6 +118,47 @@ class S3Options(_Model):
         return self
 
 
+class FtpOptions(_Model):
+    """Options of the built-in ``ftp`` storage adapter."""
+
+    host: Annotated[str, Field(min_length=1)]
+    port: Annotated[int, Field(ge=1, le=65535)] = 21
+    username: str = "anonymous"
+    password: str = ""
+    directory: str = ""
+    tls: bool = False
+    verify_certificate: bool = True
+    timeout: PositiveFloat = 30
+    connections: Annotated[int, Field(ge=1, le=64)] = 4
+    idle_timeout: PositiveFloat = 60
+    encoding: str = "utf-8"
+
+
+class SftpOptions(_Model):
+    """Options of the built-in ``sftp`` storage adapter."""
+
+    host: Annotated[str, Field(min_length=1)]
+    port: Annotated[int, Field(ge=1, le=65535)] = 22
+    username: Annotated[str, Field(min_length=1)]
+    password: str | None = None
+    private_key: str | None = None
+    private_key_file: str | None = None
+    passphrase: str | None = None
+    host_key: str | list[str] | None = None
+    known_hosts_file: str | None = None
+    directory: str = ""
+    timeout: PositiveFloat = 30
+    connections: Annotated[int, Field(ge=1, le=64)] = 4
+    idle_timeout: PositiveFloat = 300
+
+    @model_validator(mode="after")
+    def _one_key_source(self) -> Self:
+        if self.private_key is not None and self.private_key_file is not None:
+            msg = "set privateKey or privateKeyFile, not both"
+            raise ValueError(msg)
+        return self
+
+
 class DynamicSourcesCache(_Model):
     """Cache limits for sources built by ``resolve_sources``."""
 
@@ -305,6 +346,8 @@ class SourceConfig(BaseModel):
     default_files_key: str | None = None
     storage_adapter: str | None = None
     s3: S3Options | None = None
+    ftp: FtpOptions | None = None
+    sftp: SftpOptions | None = None
 
     @field_validator("baseurl")
     @classmethod
@@ -322,9 +365,16 @@ class SourceConfig(BaseModel):
         if self.is_local and not self.root:
             msg = "root is required for local storage"
             raise ValueError(msg)
-        if self.storage_adapter == "s3" and self.s3 is None:
-            msg = 's3 options are required for storageAdapter "s3"'
-            raise ValueError(msg)
+        for adapter in ("s3", "ftp", "sftp"):
+            if (
+                self.storage_adapter == adapter
+                and getattr(self, adapter) is None
+            ):
+                msg = (
+                    f"{adapter} options are required for "
+                    f'storageAdapter "{adapter}"'
+                )
+                raise ValueError(msg)
         return self
 
     @property
@@ -353,7 +403,7 @@ class SourceConfig(BaseModel):
 
 _OWN_FIELDS = frozenset(
     {"name", "title", "baseurl", "root", "defaultFilesKey"}
-    | {"storageAdapter", "s3"}
+    | {"storageAdapter", "s3", "ftp", "sftp"}
 )
 _OVERRIDABLE = frozenset(
     info.alias or name

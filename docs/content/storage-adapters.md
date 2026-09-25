@@ -7,12 +7,14 @@ description: How sources store files, the StorageAdapter interface and registeri
 
 ## Overview
 
-A source keeps its files in a **storage adapter**. Two are built in:
+A source keeps its files in a **storage adapter**. Four are built in:
 
 | Name | Storage | Settings |
 |---|---|---|
 | `local` (default) | Directory on the server | `root` |
 | `s3` | AWS S3 or an S3-compatible service | `s3` block ([AWS S3](aws-s3.md)); needs the `s3` extra |
+| `ftp` | Directory on an FTP or FTPS server | `ftp` block ([FTP & SFTP](ftp-sftp.md)) |
+| `sftp` | Directory on an SFTP (SSH) server | `sftp` block ([FTP & SFTP](ftp-sftp.md)); needs the `sftp` extra |
 
 Anything else (a database, another object store, a remote API) plugs in as a custom adapter registered under a name.
 

@@ -5,8 +5,6 @@ Docker daemon is reachable.
 """
 
 import os
-import shutil
-import subprocess
 import time
 from io import BytesIO
 from typing import TYPE_CHECKING
@@ -21,6 +19,7 @@ from jcpy.config.models import S3Options
 from jcpy.storage import FileStorage, StorageError
 from jcpy.storage.s3 import S3StorageAdapter
 from tests.conftest import make_app, open_client
+from tests.docker import docker_available
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Iterator
@@ -37,16 +36,6 @@ PASSWORD = "minioadmin"  # noqa: S105 - MinIO test default
 # MinIO no longer publishes free images on quay.io or Docker Hub;
 # Chainguard builds the same server. MINIO_IMAGE overrides it.
 IMAGE = os.environ.get("MINIO_IMAGE", "cgr.dev/chainguard/minio:latest")
-
-
-def docker_available() -> bool:
-    docker = shutil.which("docker")
-    if docker is None:
-        return False
-    result = subprocess.run(  # noqa: S603 - fixed arguments
-        [docker, "info"], capture_output=True, check=False
-    )
-    return result.returncode == 0
 
 
 pytestmark = [

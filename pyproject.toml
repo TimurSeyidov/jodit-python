@@ -37,7 +37,9 @@ pdf = ["weasyprint>=66"]
 docx = ["beautifulsoup4>=4.12", "html-for-docx>=1.2", "python-docx>=1.1"]
 # The s3 storage adapter
 s3 = ["boto3>=1.35"]
-all = ["jodit-python[pdf,docx,s3]"]
+# The sftp storage adapter
+sftp = ["paramiko>=3.5"]
+all = ["jodit-python[pdf,docx,s3,sftp]"]
 
 [project.urls]
 Homepage = "https://github.com/TimurSeyidov/jodit-python"
@@ -76,6 +78,9 @@ dev = [
     "ruff>=0.11",
     "testcontainers[minio]>=4.9",
     "types-pyyaml>=6.0.12.20260906",
+    "pyftpdlib>=2.0",
+    "types-paramiko>=3.5",
+    "pyopenssl>=24",
 ]
 docs = [
     "mkdocs>=1.6.1,<2",
@@ -111,7 +116,11 @@ exempt-modules = ["typing", "fastapi", "starlette.requests"]
 
 [tool.ruff.lint.per-file-ignores]
 # Test setup may touch the filesystem synchronously.
-"tests/**" = ["S101", "ASYNC240"]
+"tests/**" = ["S101", "ASYNC240", "S106"]
+# Plain FTP is what the ftp adapter is for; FTPS is an option.
+"src/jcpy/storage/ftp.py" = ["S321"]
+"tests/unit/test_ftp.py" = ["S321"]
+"tests/integration/test_file_servers.py" = ["S321"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["jcpy"]
@@ -135,6 +144,11 @@ include = ["src", "tests"]
 [[tool.mypy.overrides]]
 # No type information is published for these libraries.
 module = ["weasyprint", "weasyprint.*", "html4docx", "html4docx.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# Test FTP server; Docker client used by Testcontainers.
+module = ["pyftpdlib", "pyftpdlib.*", "docker", "docker.*"]
 ignore_missing_imports = true
 
 [tool.pydantic-mypy]

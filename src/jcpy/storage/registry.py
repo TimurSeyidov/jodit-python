@@ -35,7 +35,8 @@ def get_registered_storage_adapters() -> list[str]:
     """List registered adapter names.
 
     Returns:
-        Names in registration order; ``local`` and ``s3`` are built in.
+        Names in registration order; ``local``, ``s3``, ``ftp`` and
+        ``sftp`` are built in.
     """
     return list(_registry)
 
@@ -99,5 +100,31 @@ def _s3_factory(source: SourceConfig) -> StorageAdapter:
     return S3StorageAdapter(source.s3)
 
 
+def _options_required(source: SourceConfig, adapter: str) -> HttpError:
+    msg = (
+        f'Source "{source.name}" uses the {adapter} adapter and needs an '
+        f'"{adapter}" options block'
+    )
+    return HttpError.bad_request(msg)
+
+
+def _ftp_factory(source: SourceConfig) -> StorageAdapter:
+    if source.ftp is None:
+        raise _options_required(source, "ftp")
+    from jcpy.storage.ftp import FtpStorageAdapter
+
+    return FtpStorageAdapter(source.ftp)
+
+
+def _sftp_factory(source: SourceConfig) -> StorageAdapter:
+    if source.sftp is None:
+        raise _options_required(source, "sftp")
+    with optional_feature("sftp", "The sftp storage adapter"):
+        from jcpy.storage.sftp import SftpStorageAdapter
+    return SftpStorageAdapter(source.sftp)
+
+
 register_storage_adapter(LOCAL_ADAPTER, _local_factory)
 register_storage_adapter("s3", _s3_factory)
+register_storage_adapter("ftp", _ftp_factory)
+register_storage_adapter("sftp", _sftp_factory)

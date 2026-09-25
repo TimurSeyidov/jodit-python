@@ -80,8 +80,10 @@ Source settings:
 | `baseurl` | `string` | Required. Absolute public URL of the source root; file links and thumbnails are built from it |
 | `root` | `string` | Directory of the source; required for local storage, a virtual prefix for other adapters |
 | `defaultFilesKey` | `string` | Overrides the global [`defaultFilesKey`](#defaultFilesKey) |
-| `storageAdapter` | `string` | `local` (default), `s3` or a [registered](storage-adapters.md) name |
+| `storageAdapter` | `string` | `local` (default), `s3`, `ftp`, `sftp` or a [registered](storage-adapters.md) name |
 | `s3` | `object` | Options of the `s3` adapter, required with it ([AWS S3](aws-s3.md)) |
+| `ftp` | `object` | Options of the `ftp` adapter, required with it ([FTP & SFTP](ftp-sftp.md)) |
+| `sftp` | `object` | Options of the `sftp` adapter, required with it ([FTP & SFTP](ftp-sftp.md)) |
 | *any global setting* | | [Per-source override](#per-source-overrides) |
 
 The connector does not serve the files: `baseurl` must point to a web server or a CDN that does.

@@ -7,7 +7,14 @@ import pytest
 
 from jcpy.acl import DEFAULT_RULES
 from jcpy.config.loader import load_config
-from jcpy.config.models import AppConfig, PdfConfig, S3Options, SourceConfig
+from jcpy.config.models import (
+    AppConfig,
+    FtpOptions,
+    PdfConfig,
+    S3Options,
+    SftpOptions,
+    SourceConfig,
+)
 from jcpy.helpers.case import constant_case
 from jcpy.v1 import ACTIONS
 
@@ -20,7 +27,14 @@ def page(name: str) -> str:
 
 
 def aliases(
-    model: type[AppConfig | SourceConfig | PdfConfig | S3Options],
+    model: type[
+        AppConfig
+        | SourceConfig
+        | PdfConfig
+        | S3Options
+        | FtpOptions
+        | SftpOptions
+    ],
 ) -> set[str]:
     return {info.alias or name for name, info in model.model_fields.items()}
 
@@ -41,6 +55,26 @@ def test_nested_setting_is_documented(key: str) -> None:
 @pytest.mark.parametrize("key", sorted(aliases(S3Options)))
 def test_s3_option_is_documented(key: str) -> None:
     assert f"`{key}`" in page("aws-s3.md")
+
+
+@pytest.mark.parametrize(
+    "key",
+    sorted(
+        {f"ftp.{k}" for k in aliases(FtpOptions)}
+        | {f"sftp.{k}" for k in aliases(SftpOptions)}
+    ),
+)
+def test_ftp_option_is_documented(key: str) -> None:
+    adapter, _, option = key.partition(".")
+    section = page("ftp-sftp.md").split(f"## {adapter.upper()} options")[1]
+    assert f"| `{option}` |" in section.split("\n## ")[0]
+
+
+@pytest.mark.parametrize("name", ["ftp", "sftp"])
+def test_ftp_examples_are_valid(name: str) -> None:
+    config = load_config(ROOT / "examples" / "config" / f"{name}.json")
+
+    assert config.sources["site"].storage_adapter == name
 
 
 @pytest.mark.parametrize("action", sorted(ACTIONS))

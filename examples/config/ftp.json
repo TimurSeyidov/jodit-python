@@ -1,0 +1,16 @@
+{
+  "sources": {
+    "site": {
+      "title": "Website files",
+      "baseurl": "https://www.example.com/uploads/",
+      "storageAdapter": "ftp",
+      "ftp": {
+        "host": "ftp.example.com",
+        "username": "editor",
+        "password": "change-me",
+        "directory": "/public_html/uploads",
+        "tls": true
+      }
+    }
+  }
+}

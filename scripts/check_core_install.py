@@ -1,7 +1,7 @@
 """Check an installation of jodit-python without extras.
 
-The core must import and serve files, while PDF, DOCX and S3 answer
-``501`` naming the missing extra. Run it in an environment holding only
+The core must import and serve files, while PDF, DOCX, S3 and SFTP
+answer ``501`` naming the missing extra. Run it in an environment holding only
 the core dependencies:
 
     uv sync --frozen --no-dev
@@ -18,7 +18,7 @@ from pathlib import Path
 
 from httpx import ASGITransport, AsyncClient
 
-OPTIONAL = ("weasyprint", "boto3", "docx", "html4docx", "bs4")
+OPTIONAL = ("weasyprint", "boto3", "docx", "html4docx", "bs4", "paramiko")
 
 
 async def check() -> list[str]:
@@ -39,6 +39,7 @@ async def check() -> list[str]:
             ("/generatePdf", {"html": "<p>x</p>"}, 501, "[pdf]"),
             ("/generateDocx", {"html": "<p>x</p>"}, 501, "[docx]"),
             ("/files", {"source": "bucket"}, 501, "[s3]"),
+            ("/files", {"source": "server"}, 501, "[sftp]"),
         ]
         for path, params, status, text in expectations:
             response = await http.get(path, params=params)
@@ -77,6 +78,12 @@ def main() -> int:
                         "baseurl": "http://localhost/bucket/",
                         "storageAdapter": "s3",
                         "s3": {"bucket": "b"},
+                    },
+                    "server": {
+                        "title": "Server",
+                        "baseurl": "http://localhost/server/",
+                        "storageAdapter": "sftp",
+                        "sftp": {"host": "localhost", "username": "u"},
                     },
                 },
             }

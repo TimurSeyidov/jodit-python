@@ -14,7 +14,15 @@ if TYPE_CHECKING:
     from jcpy.types import JsonObject
     from tests.conftest import ClientFactory
 
-OPTIONAL = ("weasyprint", "boto3", "botocore", "docx", "html4docx", "bs4")
+OPTIONAL = (
+    "weasyprint",
+    "boto3",
+    "botocore",
+    "docx",
+    "html4docx",
+    "bs4",
+    "paramiko",
+)
 
 
 def test_importing_the_package_loads_no_extra() -> None:
@@ -61,12 +69,21 @@ async def test_document_actions_without_their_extra(
     assert invalid.status_code == 400
 
 
-async def test_s3_source_without_the_extra(
+@pytest.mark.parametrize(
+    ("adapter", "options"),
+    [
+        ("s3", {"bucket": "b"}),
+        ("sftp", {"host": "localhost", "username": "u"}),
+    ],
+)
+async def test_storage_without_its_extra(
     connector_client: ClientFactory,
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
+    adapter: str,
+    options: JsonObject,
 ) -> None:
-    monkeypatch.setitem(sys.modules, "jcpy.storage.s3", None)
+    monkeypatch.setitem(sys.modules, f"jcpy.storage.{adapter}", None)
     write_file(tmp_path, "a.txt", "a")
     local_source = source_config(tmp_path)["sources"]
     assert isinstance(local_source, dict)
@@ -76,8 +93,8 @@ async def test_s3_source_without_the_extra(
             "bucket": {
                 "title": "Bucket",
                 "baseurl": "http://localhost/bucket/",
-                "storageAdapter": "s3",
-                "s3": {"bucket": "b"},
+                "storageAdapter": adapter,
+                adapter: options,
             },
         }
     }
@@ -88,4 +105,4 @@ async def test_s3_source_without_the_extra(
 
     assert local.status_code == 200
     assert bucket.status_code == 501
-    assert "jodit-python[s3]" in bucket.json()["data"]["messages"][0]
+    assert f"jodit-python[{adapter}]" in bucket.json()["data"]["messages"][0]
