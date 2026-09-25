@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Jodit Connector API",
-    "version": "0.1.1",
+    "version": "0.2.0",
     "description": "Jodit FileBrowser and Uploader connector for Python.",
     "license": {
       "name": "MIT",
