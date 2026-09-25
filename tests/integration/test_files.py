@@ -9,6 +9,7 @@ import pytest
 from PIL import Image
 
 from jcpy.helpers.js import format_datetime
+from jcpy.storage.file_storage import FileStorage
 from tests.conftest import (
     BASEURL,
     make_app,
@@ -477,3 +478,36 @@ async def test_excluded_directories(
 
     assert ".tmb" not in names(source)
     assert "_thumbs" not in names(source)
+
+
+async def test_listing_uses_metadata_from_the_listing(
+    connector_client: ClientFactory,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    for index in range(30):
+        write_file(tmp_path, f"f{index:02}.txt", "x" * index)
+    (tmp_path / "sub").mkdir()
+    calls: list[str] = []
+    original = FileStorage.stat
+
+    async def counting_stat(self: FileStorage, path: str) -> StatEntry:
+        calls.append(path)
+        return await original(self, path)
+
+    monkeypatch.setattr(FileStorage, "stat", counting_stat)
+    config = source_config(tmp_path, createThumb=False)
+    async with connector_client(config) as http:
+        response = await http.get(
+            "/files",
+            params={"source": "test", "mods[withFolders]": "true"},
+        )
+
+    (source,) = response.json()["data"]["sources"]
+    assert len(source["files"]) == 31
+    assert {item["size"] for item in source["files"] if "size" in item} >= {
+        "0B",
+        "29B",
+    }
+    # Local listings already carry size and time: no stat per entry.
+    assert calls == []

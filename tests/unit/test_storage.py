@@ -18,6 +18,7 @@ from jcpy.storage import (
     is_local_storage_source,
     register_storage_adapter,
 )
+from jcpy.storage import local as local_module
 from jcpy.storage.local import UnsupportedEntryError
 from tests.memory_storage import MemoryStorageAdapter
 
@@ -112,18 +113,61 @@ class TestLocalAdapter:
             "directory:sub/deeper",
             "file:sub/deeper/c.txt",
         }
-        entry = await anext(aiter(storage.list("sub", deep=False)))
-        assert entry.size is None
-        assert entry.last_modified_ms is None
+        entries = {
+            entry.path: entry
+            async for entry in storage.list("sub", deep=False)
+        }
+        # Listings carry what stat would return, so callers need no stat.
+        for path, entry in entries.items():
+            assert entry == await storage.stat(path)
 
-    async def test_list_rejects_symlinks(
-        self, storage: FileStorage, root: Path
+    async def test_list_skips_symlinks_and_fifos(
+        self,
+        storage: FileStorage,
+        root: Path,
+        caplog: pytest.LogCaptureFixture,
     ) -> None:
         await storage.write("a.txt", b"")
         (root / "link").symlink_to(root / "a.txt")
+        os.mkfifo(root / "pipe")
 
-        with pytest.raises(StorageError, match="Unsupported file entry"):
-            await collect(storage, "", deep=False)
+        assert await collect(storage, "", deep=True) == {"file:a.txt"}
+        assert "Skipping link" in caplog.text
+        assert "Skipping pipe" in caplog.text
+
+    async def test_write_is_atomic(
+        self,
+        storage: FileStorage,
+        root: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        await storage.write("a.txt", b"old")
+
+        def broken_write(path: Path, contents: bytes) -> None:
+            path.write_bytes(contents[:1])
+            msg = "disk full"
+            raise OSError(msg)
+
+        monkeypatch.setattr(local_module, "_write_new", broken_write)
+        with pytest.raises(StorageError, match="disk full"):
+            await storage.write("a.txt", b"new contents")
+
+        # The old file survives and no temporary file is left behind.
+        assert (root / "a.txt").read_bytes() == b"old"
+        assert sorted(p.name for p in root.iterdir()) == ["a.txt"]
+
+    async def test_written_files_follow_the_umask(
+        self, storage: FileStorage, root: Path
+    ) -> None:
+        old_umask = os.umask(0o022)
+        try:
+            await storage.write("a.txt", b"a")
+            await storage.copy_file("a.txt", "b.txt")
+        finally:
+            os.umask(old_umask)
+
+        for name in ("a.txt", "b.txt"):
+            assert (root / name).stat().st_mode & 0o777 == 0o644
 
     async def test_list_missing_directory(self, storage: FileStorage) -> None:
         with pytest.raises(StorageError, match="Unable to list directory"):

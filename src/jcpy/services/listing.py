@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from functools import cmp_to_key
 from typing import TYPE_CHECKING
 
+import anyio
+
 from jcpy.errors import HttpError
 from jcpy.helpers.js import (
     format_bytes,
@@ -17,8 +19,11 @@ from jcpy.helpers.js import (
 from jcpy.services.thumbs import ThumbCounter, make_thumb
 from jcpy.sources import PATH_NOT_FOUND
 
+STAT_CONCURRENCY = 16
+"""Most ``stat`` calls a listing runs at once."""
+
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from collections.abc import Callable, Sequence
 
     from jcpy.sources import Source
     from jcpy.storage.base import StatEntry
@@ -71,12 +76,47 @@ async def _require_directory(source: Source, relative: str) -> None:
         raise HttpError.not_found(PATH_NOT_FOUND)
 
 
-async def _to_item(
-    source: Source, entry: StatEntry, options: ListOptions
-) -> _Item | None:
+async def _describe(source: Source, entry: StatEntry) -> StatEntry | None:
+    """Size and time of an entry: from the listing, else from ``stat``.
+
+    Returns:
+        Metadata, ``None`` when the entry cannot be read.
+    """
+    known = entry.last_modified_ms is not None and (
+        entry.is_directory or entry.size is not None
+    )
+    if known:
+        return entry
     try:
-        stat = await source.storage.stat(entry.path)
+        return await source.storage.stat(entry.path)
     except Exception:
+        return None
+
+
+async def _describe_all(
+    source: Source, entries: Sequence[StatEntry]
+) -> list[StatEntry | None]:
+    """Describe entries concurrently, keeping their order."""
+    results: list[StatEntry | None] = [None] * len(entries)
+    limiter = anyio.CapacityLimiter(STAT_CONCURRENCY)
+
+    async def describe(index: int, entry: StatEntry) -> None:
+        async with limiter:
+            results[index] = await _describe(source, entry)
+
+    async with anyio.create_task_group() as group:
+        for index, entry in enumerate(entries):
+            group.start_soon(describe, index, entry)
+    return results
+
+
+def _to_item(
+    source: Source,
+    entry: StatEntry,
+    stat: StatEntry | None,
+    options: ListOptions,
+) -> _Item | None:
+    if stat is None:
         return None
     name = posixpath.basename(entry.path)
     mtime = stat.last_modified_ms or 0
@@ -185,12 +225,16 @@ async def list_items(
     storage_path = "" if display_path == "/" else display_path
     await _require_directory(source, storage_path)
 
+    entries = [
+        entry
+        async for entry in source.storage.list(storage_path)
+        if not source.is_excluded(entry.path)
+    ]
+    stats = await _describe_all(source, entries)
     items: list[_Item] = []
     word = options.filter_word.lower()
-    async for entry in source.storage.list(storage_path):
-        if source.is_excluded(entry.path):
-            continue
-        item = await _to_item(source, entry, options)
+    for entry, stat in zip(entries, stats, strict=True):
+        item = _to_item(source, entry, stat, options)
         if item is None or (word and word not in item.name.lower()):
             continue
         items.append(item)

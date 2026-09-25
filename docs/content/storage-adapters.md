@@ -67,7 +67,7 @@ A name that is not registered fails the request that uses the source with `400 U
 | `async create_directory(path)` | Create a directory with its parents |
 | `async delete_directory(path)` | Delete a directory recursively; missing is not an error |
 | `async stat(path) -> StatEntry` | Size and modification time (epoch ms); raise when the path does not exist |
-| `list(path, *, deep) -> AsyncIterator[StatEntry]` | Entries of a directory (every level with `deep=True`); size and time may be unknown |
+| `list(path, *, deep) -> AsyncIterator[StatEntry]` | Entries of a directory (every level with `deep=True`); fill in size and time when the backend returns them, otherwise the connector calls `stat` for each entry |
 | `async file_exists(path) -> bool` | `True` for a file, not for a directory |
 | `async directory_exists(path) -> bool` | `True` for a directory (the root included) |
 | `async copy_file(source, destination)` | Copy a file, creating the destination's parents |
@@ -76,6 +76,11 @@ A name that is not registered fails the request that uses the source with `400 U
 `StatEntry(path, is_file, size=None, last_modified_ms=None)` is in `jcpy.storage`, next to `StorageError` and `FileWasNotFoundError`. Exceptions raised by an adapter are wrapped with the operation (`Unable to write the file. Reason: ...`) and answered with `500` or `400` depending on the action.
 
 Blocking libraries should run in threads (`anyio.to_thread.run_sync`), as the built-in adapters do, to keep the event loop free.
+
+The built-in adapters also guarantee:
+
+- `local` writes and copies atomically (a temporary file next to the target, then a rename), so readers never see a partial file; listings skip entries that are neither files nor directories (symlinks, FIFOs) and log a warning.
+- `s3` fails a folder deletion when any object could not be deleted instead of reporting success.
 
 ## Registering an adapter
 

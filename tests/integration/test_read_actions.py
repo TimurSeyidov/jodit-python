@@ -9,6 +9,7 @@ from jcpy.services import resolve_url
 from jcpy.services.resolve_url import resolve_file_by_url
 from jcpy.sources import SourcePool
 from jcpy.storage import register_storage_adapter
+from jcpy.storage.local import LocalStorageAdapter
 from jcpy.v1.get_local_file_by_url import handler
 from tests.conftest import (
     BASEURL,
@@ -168,8 +169,27 @@ class TestFolders:
             root_listing = await folders(http)
 
         assert through_link.status_code == 404
-        # Listings refuse directories containing symlinks altogether.
-        assert root_listing.status_code == 404
+        # The folder still lists; the link itself is not shown.
+        assert root_listing.status_code == 200
+        (source,) = root_listing.json()["data"]["sources"]
+        assert "evil-link" not in source["folders"]
+
+    async def test_unreadable_directory(
+        self,
+        connector_client: ClientFactory,
+        root: Path,
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        def unreadable(*_: object) -> list[object]:
+            msg = "Permission denied"
+            raise PermissionError(msg)
+
+        monkeypatch.setattr(LocalStorageAdapter, "_scan", unreadable)
+        async with connector_client(source_config(root)) as http:
+            response = await folders(http)
+
+        assert response.status_code == 404
+        assert response.json()["data"]["messages"] == ["Path does not exist"]
 
     async def test_path_rules(
         self, connector_client: ClientFactory, root: Path

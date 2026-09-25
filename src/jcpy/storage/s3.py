@@ -309,13 +309,11 @@ class S3StorageAdapter:
         seen: set[str] = set()
         entries: builtins.list[StatEntry] = []
 
-        def add_directory(directory: str, modified: float = 0) -> None:
+        def add_directory(directory: str) -> None:
             if directory and directory not in seen:
                 seen.add(directory)
                 entries.append(
-                    StatEntry(
-                        directory, is_file=False, last_modified_ms=modified
-                    )
+                    StatEntry(directory, is_file=False, last_modified_ms=0)
                 )
 
         for page in self._pages(dir_key, delimiter=not deep):
@@ -328,10 +326,8 @@ class S3StorageAdapter:
                 if not key or key == dir_key:
                     continue
                 if key.endswith("/"):
-                    add_directory(
-                        self._path(key),
-                        _milliseconds(item.get("LastModified")),
-                    )
+                    # Folders carry no time, as in ``stat``.
+                    add_directory(self._path(key))
                     continue
                 file_path = self._path(key)
                 if deep:
@@ -370,6 +366,9 @@ class S3StorageAdapter:
 
         Args:
             path: Directory path.
+
+        Raises:
+            OSError: Some objects could not be deleted.
         """
         dir_key = self._dir_key(path)
 
@@ -387,9 +386,24 @@ class S3StorageAdapter:
                 ]
                 if not keys:
                     return
-                self.client.delete_objects(
+                response = self.client.delete_objects(
                     Bucket=self.bucket, Delete={"Objects": keys, "Quiet": True}
                 )
+                # Quiet mode reports only failures; never ignore them (and
+                # never list the same undeletable keys again).
+                failed = response.get("Errors", [])
+                if failed:
+                    first = failed[0]
+                    reason = " ".join(
+                        part
+                        for part in (first.get("Code"), first.get("Message"))
+                        if part
+                    )
+                    msg = (
+                        f"{len(failed)} object(s) could not be deleted, "
+                        f"e.g. {self._path(first.get('Key', ''))}: {reason}"
+                    )
+                    raise OSError(msg)
                 if not page.get("IsTruncated"):
                     return
 

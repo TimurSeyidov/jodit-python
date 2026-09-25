@@ -9,6 +9,7 @@ from jcpy.config.loader import build_config
 from jcpy.errors import HttpError
 from jcpy.services.operations import make_folder
 from jcpy.sources import SourcePool
+from jcpy.storage.local import LocalStorageAdapter
 from tests.conftest import BASEURL, service_context, source_config, write_file
 
 if TYPE_CHECKING:
@@ -736,9 +737,16 @@ class TestCopy:
         assert messages(no_from) == ["From parameter is required"]
 
     async def test_copy_failure(
-        self, connector_client: ClientFactory, root: Path
+        self,
+        connector_client: ClientFactory,
+        root: Path,
+        monkeypatch: pytest.MonkeyPatch,
     ) -> None:
-        (root / "folder" / "link").symlink_to(root / "file.txt")
+        async def broken_copy(*_: object) -> None:
+            msg = "disk full"
+            raise OSError(msg)
+
+        monkeypatch.setattr(LocalStorageAdapter, "copy_file", broken_copy)
         async with connector_client(config(root)) as http:
             response = await call(
                 http, "folderCopy", **{"from": "folder", "path": "target"}

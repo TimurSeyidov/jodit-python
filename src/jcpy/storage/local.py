@@ -1,9 +1,11 @@
 """Local filesystem storage adapter."""
 
 import errno
+import logging
 import os
 import shutil
 import stat as stat_module
+import uuid
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -13,7 +15,30 @@ from jcpy.storage.base import FileWasNotFoundError, StatEntry
 
 if TYPE_CHECKING:
     import builtins
-    from collections.abc import AsyncIterator
+    from collections.abc import AsyncIterator, Callable
+
+logger = logging.getLogger("jcpy")
+
+
+def _replace_atomically(target: Path, fill: Callable[[Path], None]) -> None:
+    """Build a file next to ``target``, then swap it in atomically.
+
+    Readers never see a partial file and a failure leaves the previous
+    file intact. The temporary file gets the usual permissions (umask),
+    unlike ``mkstemp``'s 0600.
+    """
+    temporary = target.with_name(f".{uuid.uuid4().hex}.tmp")
+    try:
+        fill(temporary)
+        temporary.replace(target)
+    except BaseException:
+        temporary.unlink(missing_ok=True)
+        raise
+
+
+def _write_new(path: Path, contents: bytes) -> None:
+    with path.open("xb") as file:
+        file.write(contents)
 
 
 class UnsupportedEntryError(OSError):
@@ -26,8 +51,9 @@ class UnsupportedEntryError(OSError):
 class LocalStorageAdapter:
     """Storage adapter for a directory on the local filesystem.
 
-    Stats follow symlinks; listings refuse entries that are neither
-    files nor directories.
+    Stats follow symlinks; listings skip entries that are neither files
+    nor directories (symlinks, FIFOs, sockets). Writes and copies are
+    atomic.
 
     Args:
         root_dir: Directory holding the files; created on first write.
@@ -59,7 +85,11 @@ class LocalStorageAdapter:
             contents: File contents.
         """
         await self._ensure_parents(path)
-        await to_thread.run_sync(self._full(path).write_bytes, contents)
+        await to_thread.run_sync(
+            _replace_atomically,
+            self._full(path),
+            lambda temporary: _write_new(temporary, contents),
+        )
 
     async def read(self, path: str) -> bytes:
         """Read a whole file.
@@ -155,11 +185,8 @@ class LocalStorageAdapter:
             deep: Include nested entries.
 
         Yields:
-            Entries in filesystem order, without size or time.
-
-        Raises:
-            UnsupportedEntryError: An entry is neither a regular file
-                nor a directory.
+            Entries in filesystem order, with size and time; entries
+            that are neither files nor directories are skipped.
         """
         entries = await to_thread.run_sync(self._scan, path, deep)
         for entry in entries:
@@ -175,14 +202,18 @@ class LocalStorageAdapter:
                     relative = (
                         f"{current}/{item.name}" if current else item.name
                     )
-                    if item.is_file(follow_symlinks=False):
-                        result.append(StatEntry(relative, is_file=True))
-                    elif item.is_dir(follow_symlinks=False):
-                        result.append(StatEntry(relative, is_file=False))
-                        if deep:
+                    if item.is_file(follow_symlinks=False) or item.is_dir(
+                        follow_symlinks=False
+                    ):
+                        info = item.stat(follow_symlinks=False)
+                        result.append(self._entry(info, relative))
+                        if deep and item.is_dir(follow_symlinks=False):
                             pending.append(relative)
                     else:
-                        raise UnsupportedEntryError
+                        logger.warning(
+                            "Skipping %s: not a regular file or directory",
+                            relative,
+                        )
         return result
 
     async def file_exists(self, path: str) -> bool:
@@ -232,8 +263,11 @@ class LocalStorageAdapter:
             destination: New file path.
         """
         await self._ensure_parents(destination)
+        origin = self._full(source)
         await to_thread.run_sync(
-            shutil.copyfile, self._full(source), self._full(destination)
+            _replace_atomically,
+            self._full(destination),
+            lambda temporary: shutil.copyfile(origin, temporary),
         )
 
     async def move_file(self, source: str, destination: str) -> None:

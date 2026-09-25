@@ -208,6 +208,59 @@ async def test_delete_directory_in_batches() -> None:
     stubber.assert_no_pending_responses()
 
 
+async def test_delete_directory_reports_failed_objects() -> None:
+    adapter, stubber = stubbed()
+    stubber.add_response(
+        "list_objects_v2",
+        {"Contents": [{"Key": "media/d/1"}, {"Key": "media/d/2"}]},
+        {"Bucket": "my-bucket", "Prefix": "media/d/", "MaxKeys": 1000},
+    )
+    stubber.add_response(
+        "delete_objects",
+        {
+            "Errors": [
+                {
+                    "Key": "media/d/2",
+                    "Code": "AccessDenied",
+                    "Message": "Access Denied",
+                }
+            ]
+        },
+        {
+            "Bucket": "my-bucket",
+            "Delete": {
+                "Objects": [{"Key": "media/d/1"}, {"Key": "media/d/2"}],
+                "Quiet": True,
+            },
+        },
+    )
+
+    with pytest.raises(OSError, match=r"1 object\(s\) could not be deleted"):
+        await adapter.delete_directory("d")
+
+    stubber.assert_no_pending_responses()
+
+
+async def test_delete_error_without_details() -> None:
+    adapter, stubber = stubbed()
+    stubber.add_response(
+        "list_objects_v2",
+        {"Contents": [{"Key": "media/d/1"}]},
+        {"Bucket": "my-bucket", "Prefix": "media/d/", "MaxKeys": 1000},
+    )
+    stubber.add_response(
+        "delete_objects",
+        {"Errors": [{}]},
+        {
+            "Bucket": "my-bucket",
+            "Delete": {"Objects": [{"Key": "media/d/1"}], "Quiet": True},
+        },
+    )
+
+    with pytest.raises(OSError, match=r"could not be deleted, e\.g\. : $"):
+        await adapter.delete_directory("d")
+
+
 def test_s3_source_needs_options() -> None:
     settings = SourceConfig.model_construct(
         name="s", title="S", baseurl="http://s/", storage_adapter="s3"
