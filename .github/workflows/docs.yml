@@ -6,6 +6,13 @@ name: Docs
 on:
   push:
     branches: [main]
+    # Rebuild only when something the site is made of changes.
+    paths:
+      - "docs/**"
+      - "examples/**"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/docs.yml"
   workflow_dispatch:
 
 permissions:

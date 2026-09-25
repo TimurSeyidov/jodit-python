@@ -1,0 +1,29 @@
+# Changelog
+
+All notable changes to this project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.1.0] - 2026-09-25
+
+First release.
+
+### Added
+
+- HTTP connector for the Jodit File Browser and Uploader: 22 actions (`files`, `folders`, `permissions`, `fileUpload`, `fileUploadRemote`, `fileRemove`, `fileMove`, `fileCopy`, `fileRename`, `fileDownload`, `getLocalFileByUrl`, `folderCreate`, `folderRemove`, `folderMove`, `folderCopy`, `folderRename`, `imageResize`, `imageCrop`, `imageSave`, `imageLoad`, `generatePdf`, `generateDocx`) and `/ping`; actions are called as `/?action=<name>` or `/<name>`, with GET or POST.
+- JSON configuration over built-in defaults (`config_file`, `CONFIG`, `CONFIG_FILE`), per-source overrides, callbacks passed in code.
+- `create_app()` for a standalone application and `create_router()` for mounting into FastAPI; several isolated instances in one application.
+- Authentication callback per request and access rules by role, path and extension (static, computed or loaded at runtime).
+- Thumbnails for images and SVG icons for folders and other files, with a pluggable icon generator.
+- Storage adapters: local filesystem, AWS S3 and S3-compatible services, custom adapters registered by name.
+- Sources resolved per request (multi-tenant) with a cache.
+- Optional extras: `[pdf]` (WeasyPrint), `[docx]` (html-for-docx), `[s3]` (boto3), `[all]`; without an extra its actions answer `501`.
+- OpenAPI 3.1 document and Swagger UI generated from the schemas; MkDocs documentation site.
+- Docker image (multi-stage, non-root, `linux/amd64` and `linux/arm64`), Dev Container, `make demo` with the Jodit PRO file browser.
+
+### Security
+
+- Remote downloads (`fileUploadRemote`, resources of PDF and DOCX) connect only to public addresses: the checked address is pinned, every redirect is checked, IPv6 forms of private IPv4 addresses are refused, the size is limited while streaming.
+- Paths are confined to the source root, symlinks included; access rules match the normalized requested path.
+- A rejected upload never overwrites an existing file; `imageSave` obeys the `extensions` list.
+- Error messages do not reveal absolute server paths.
+
+[0.1.0]: https://github.com/TimurSeyidov/jodit-python/releases/tag/v0.1.0

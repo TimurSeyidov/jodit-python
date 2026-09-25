@@ -8,6 +8,19 @@ license-files = ["LICENSE"]
 authors = [{ name = "Timur Seiidov", email = "tim@jlabs.pro" }]
 requires-python = ">=3.14"
 keywords = ["jodit", "file-manager", "uploader", "fastapi"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Framework :: FastAPI",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
 dependencies = [
     "fastapi>=0.115",
     "httpx>=0.28",
@@ -27,7 +40,11 @@ s3 = ["boto3>=1.35"]
 all = ["jodit-python[pdf,docx,s3]"]
 
 [project.urls]
+Homepage = "https://github.com/TimurSeyidov/jodit-python"
+Documentation = "https://timurseyidov.github.io/jodit-python/"
 Repository = "https://github.com/TimurSeyidov/jodit-python"
+Issues = "https://github.com/TimurSeyidov/jodit-python/issues"
+Changelog = "https://github.com/TimurSeyidov/jodit-python/blob/main/CHANGELOG.md"
 
 [project.scripts]
 jcpy = "jcpy.run:main"
