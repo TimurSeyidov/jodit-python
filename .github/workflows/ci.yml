@@ -18,7 +18,7 @@ concurrency:
 jobs:
   check:
     name: Lint, typecheck, tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       id-token: write  # Codecov upload without a token
@@ -72,7 +72,7 @@ jobs:
 
   core:
     name: Install without extras
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
 
@@ -92,7 +92,7 @@ jobs:
 
   docker:
     name: Docker image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: check
     steps:
       - uses: actions/checkout@v7
