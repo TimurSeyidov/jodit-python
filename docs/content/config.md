@@ -113,12 +113,14 @@ Allowed file extensions (lower case, without the dot). Uploads of other types ge
 
 <details><summary>Default list</summary>
 
-`jpg png gif jpeg bmp ico jpeg psd svg ttf tif ai txt css html js htm ini xml zip rar 7z gz tar pps ppt pptx odp xls xlsx csv doc docx pdf rtf avi flv 3gp mov mkv mp4 wmv webp`
+`jpg png gif jpeg bmp ico jpeg psd svg ttf tif ai txt css ini xml zip rar 7z gz tar pps ppt pptx odp xls xlsx csv doc docx pdf rtf avi flv 3gp mov mkv mp4 wmv webp`
 
 </details>
 
-!!! warning "Pages and scripts"
-    The default list contains `html`, `htm` and `js`. If `baseurl` is served from your site's domain, uploaded pages and scripts run there (stored XSS). List only the types you need, e.g. images and documents:
+!!! warning "Pages, scripts and SVG"
+    Pages and scripts (`html`, `htm`, `js`) are not in the default list: if `baseurl` is served from your site's domain, uploaded pages and scripts run there (stored XSS). Add them to `extensions` only for sources where editors are trusted.
+
+    `svg` and `xml` are allowed, and an SVG opened directly runs the scripts it contains. The safest setup serves `baseurl` from a separate domain (`files.example.com`, not `example.com/uploads`), so nothing uploaded runs with your site's cookies. Otherwise list only the types you need, e.g. images and documents:
 
     ```json
     {"extensions": ["jpg", "jpeg", "png", "gif", "webp", "pdf", "docx", "xlsx"]}

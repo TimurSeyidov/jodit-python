@@ -32,6 +32,8 @@ def test_defaults_match_jodit_nodejs() -> None:
     assert config.thumb_folder_name == "_thumbs"
     assert config.max_upload_file_size == "8mb"
     assert "webp" in config.extensions
+    # Pages and scripts are not accepted by default (stored XSS).
+    assert not {"html", "htm", "js"} & set(config.extensions)
     assert config.pdf.paper.format == "A4"
     assert config.dynamic_sources_cache.ttl_ms == 60_000
     assert config.access_control == []

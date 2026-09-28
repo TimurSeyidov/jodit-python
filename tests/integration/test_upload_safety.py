@@ -112,6 +112,37 @@ async def test_denied_remote_upload_keeps_the_existing_file(
     assert (tmp_path / "contract.pdf").read_text() == "signed"
 
 
+@pytest.mark.parametrize("name", ["page.html", "page.HTM", "app.js"])
+async def test_pages_and_scripts_are_refused_by_default(
+    connector_client: ClientFactory, tmp_path: Path, name: str
+) -> None:
+    async with connector_client(source_config(tmp_path)) as http:
+        response = await http.post(
+            "/fileUpload",
+            files={"files[0]": (name, b"<script>alert(1)</script>")},
+        )
+
+    assert response.status_code == 403
+    assert response.json()["data"]["messages"] == [
+        "File type is not in white list"
+    ]
+    assert not (tmp_path / name).exists()
+
+
+async def test_pages_can_be_allowed_explicitly(
+    connector_client: ClientFactory, tmp_path: Path
+) -> None:
+    config = source_config(tmp_path, extensions=["html"])
+
+    async with connector_client(config) as http:
+        response = await http.post(
+            "/fileUpload", files={"files[0]": ("page.html", b"<p>x</p>")}
+        )
+
+    assert response.status_code == 200, response.text
+    assert (tmp_path / "page.html").read_bytes() == b"<p>x</p>"
+
+
 @pytest.mark.parametrize("new_name", ["shell.php", "page.exe", "evil.html"])
 async def test_image_save_obeys_extensions(
     connector_client: ClientFactory, tmp_path: Path, new_name: str

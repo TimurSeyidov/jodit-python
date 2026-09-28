@@ -3,6 +3,8 @@
 import os
 from pathlib import Path
 
+# Pages and scripts (html, htm, js) are left out: served from the site's
+# domain they would run there. Sources that need them list them.
 EXTENSIONS = (
     "jpg",
     "png",
@@ -18,9 +20,6 @@ EXTENSIONS = (
     "ai",
     "txt",
     "css",
-    "html",
-    "js",
-    "htm",
     "ini",
     "xml",
     "zip",
