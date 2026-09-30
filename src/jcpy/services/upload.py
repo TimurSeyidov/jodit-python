@@ -9,6 +9,7 @@ from anyio import to_thread
 
 from jcpy.errors import HttpError
 from jcpy.helpers.js import node_basename, parse_bytes, sanitize_filename
+from jcpy.services.svg_uploads import cleaned_svg, needs_cleaning
 
 if TYPE_CHECKING:
     from starlette.datastructures import UploadFile
@@ -111,7 +112,7 @@ async def upload_files(
     directory = await source.get_path(relative_path)
     # Check every file before writing any: a rejected upload must never
     # overwrite (and then remove) an existing file of the same name.
-    pending: list[tuple[str, UploadFile]] = []
+    pending: list[tuple[str, UploadFile, bytes | None]] = []
     for upload in files:
         file_name = sanitize_filename(upload.filename or "", "_")
         target = await _free_name(source, directory, file_name)
@@ -123,13 +124,20 @@ async def upload_files(
             source.get_root(),
             source.get_extension(storage_path),
         )
-        pending.append((storage_path, upload))
+        contents = None
+        if needs_cleaning(source, storage_path):
+            await upload.seek(0)
+            contents = await cleaned_svg(await upload.read())
+        pending.append((storage_path, upload, contents))
 
     stored: list[StoredFile] = []
-    for storage_path, upload in pending:
-        # Streamed from the upload's temporary file, not read into memory.
-        await upload.seek(0)
-        await source.storage.write_file(storage_path, upload.file)
+    for storage_path, upload, contents in pending:
+        if contents is not None:
+            await source.storage.write(storage_path, contents)
+        else:
+            # Streamed from the upload's temporary file, not into memory.
+            await upload.seek(0)
+            await source.storage.write_file(storage_path, upload.file)
         stat = await source.storage.stat(storage_path)
         stored.append(
             StoredFile(

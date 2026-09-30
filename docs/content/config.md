@@ -122,7 +122,7 @@ Allowed file extensions (lower case, without the dot). Uploads of other types ge
 !!! warning "Pages, scripts and SVG"
     Pages and scripts (`html`, `htm`, `js`) are not in the default list: if `baseurl` is served from your site's domain, uploaded pages and scripts run there (stored XSS). Add them to `extensions` only for sources where editors are trusted.
 
-    `svg` and `xml` are allowed, and an SVG opened directly runs the scripts it contains. The safest setup serves `baseurl` from a separate domain (`files.example.com`, not `example.com/uploads`), so nothing uploaded runs with your site's cookies. Otherwise list only the types you need, e.g. images and documents:
+    Uploaded SVG images are cleaned of scripts (see [`sanitizeSvg`](#sanitizeSvg)); `xml` files are stored as they are. The safest setup still serves `baseurl` from a separate domain (`files.example.com`, not `example.com/uploads`), so nothing uploaded runs with your site's cookies. Otherwise list only the types you need, e.g. images and documents:
 
     ```json
     {"extensions": ["jpg", "jpeg", "png", "gif", "webp", "pdf", "docx", "xlsx"]}
@@ -274,6 +274,21 @@ Jodit.make('#editor', {
   filebrowser: { ajax: { url: '/connector/', method: 'POST' } }
 });
 ```
+
+### `sanitizeSvg` {#sanitizeSvg}
+`boolean` · default `true`
+
+Remove active content from `.svg` files saved by `fileUpload`, `fileUploadRemote` and `imageSave`, before they are stored. An SVG opened directly runs its scripts on the domain that serves it, so these are dropped:
+
+- `<script>`, `<foreignObject>`, `<iframe>`, `<embed>`, `<object>`, `<handler>` and every element in the XHTML namespace;
+- event attributes (`onload`, `onclick`...);
+- `href`, `src` and similar links to `javascript:`, `vbscript:` or `data:` URLs other than PNG, JPEG, GIF and WebP images;
+- animations (`<set>`, `<animate>`...) that change a link or an event attribute, or set such a URL;
+- processing instructions (such as `<?xml-stylesheet?>`), comments and the DOCTYPE.
+
+Shapes, gradients, text, `<style>`, `<use>` and editor metadata (Inkscape, Illustrator) are kept. The file is parsed without entities and external references: a file that declares entities, is not well-formed XML or whose root is not `<svg>` is refused with `400 File is not a valid SVG image` before anything of the upload is written.
+
+Turn it off only when every uploader is trusted and SVG files must stay byte for byte. Like other settings it can be set per source.
 
 ### `allowPrivateNetworkUploads` {#allowPrivateNetworkUploads}
 `boolean` · default `false`

@@ -15,6 +15,7 @@ from jcpy.helpers.js import (
     sanitize_filename,
     slugify,
 )
+from jcpy.services.svg_uploads import cleaned_svg, needs_cleaning
 from jcpy.sources import PATH_NOT_FOUND, is_path_within_root
 
 if TYPE_CHECKING:
@@ -367,6 +368,8 @@ async def save_image(
     )
 
     storage_path = source.storage_path(destination)
+    if needs_cleaning(source, storage_path):
+        contents = await cleaned_svg(contents)
     try:
         try:
             exists = await source.storage.file_exists(storage_path)

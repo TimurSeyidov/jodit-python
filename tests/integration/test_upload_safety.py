@@ -32,6 +32,77 @@ def gif_with_payload() -> bytes:
     return output.getvalue() + b"<script>alert(1)</script><?php system(1); ?>"
 
 
+EVIL_SVG = (
+    b'<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)">'
+    b'<script>alert(2)</script><a href="javascript:alert(3)"><rect/></a>'
+    b"</svg>"
+)
+
+
+async def test_svg_uploads_are_cleaned(
+    connector_client: ClientFactory, tmp_path: Path
+) -> None:
+    async with connector_client(source_config(tmp_path)) as http:
+        response = await http.post(
+            "/fileUpload", files={"files[0]": ("logo.svg", EVIL_SVG)}
+        )
+
+    assert response.status_code == 200, response.text
+    stored = (tmp_path / "logo.svg").read_bytes()
+    assert b"<rect" in stored
+    assert b"alert" not in stored
+
+
+async def test_svg_cleaning_can_be_turned_off(
+    connector_client: ClientFactory, tmp_path: Path
+) -> None:
+    config = source_config(tmp_path, sanitizeSvg=False)
+
+    async with connector_client(config) as http:
+        await http.post(
+            "/fileUpload", files={"files[0]": ("logo.svg", EVIL_SVG)}
+        )
+
+    assert (tmp_path / "logo.svg").read_bytes() == EVIL_SVG
+
+
+async def test_invalid_svg_keeps_the_existing_file(
+    connector_client: ClientFactory, tmp_path: Path
+) -> None:
+    write_file(tmp_path, "logo.svg", "<svg>kept</svg>")
+
+    async with connector_client(replace_config(tmp_path)) as http:
+        response = await http.post(
+            "/fileUpload",
+            files={
+                "files[0]": ("a.txt", b"fine"),
+                "files[1]": ("logo.svg", b"<html>not an svg</html>"),
+            },
+        )
+
+    assert response.status_code == 400
+    assert response.json()["data"]["messages"] == [
+        "File is not a valid SVG image: the root element is not <svg>"
+    ]
+    assert (tmp_path / "logo.svg").read_text() == "<svg>kept</svg>"
+    # Nothing is written when any file of the upload is refused.
+    assert not (tmp_path / "a.txt").exists()
+
+
+async def test_image_save_as_svg_needs_svg_data(
+    connector_client: ClientFactory, tmp_path: Path
+) -> None:
+    async with connector_client(source_config(tmp_path)) as http:
+        response = await http.post(
+            "/imageSave",
+            data={"newname": "edited.svg"},
+            files={"files[0]": ("edited.gif", gif_with_payload())},
+        )
+
+    assert response.status_code == 400
+    assert not (tmp_path / "edited.svg").exists()
+
+
 async def test_denied_upload_keeps_the_existing_file(
     connector_client: ClientFactory, tmp_path: Path
 ) -> None:

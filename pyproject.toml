@@ -22,6 +22,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
+    "defusedxml>=0.7",
     "fastapi>=0.115",
     "httpx>=0.28",
     "pillow>=11.0",
@@ -88,6 +89,7 @@ dev = [
     "wsgidav>=4.3",
     "cheroot>=10",
     "gcp-storage-emulator>=2024.8",
+    "types-defusedxml>=0.7",
 ]
 docs = [
     "mkdocs>=1.6.1,<2",

@@ -244,7 +244,7 @@ The site is built from [`docs/`](docs) (`make docs` serves it locally, `make doc
 - **Document generation** - PDF and DOCX from HTML (optional extras)
 - **Access control** - rules by role, path and extension; static, computed or loaded at runtime
 - **Authentication** - a per-request callback: cookies, JWT, sessions
-- **Security** - SSRF-safe remote downloads, confinement to the source root (symlinks included), POST-only mode, CORS allowlist
+- **Security** - SSRF-safe remote downloads, SVG uploads cleaned of scripts, confinement to the source root (symlinks included), POST-only mode, CORS allowlist
 - **FastAPI integration** - standalone app or router, several isolated instances in one application
 - **Storage** - local filesystem, AWS S3 / S3-compatible, Azure Blob, Google Cloud Storage, FTP / FTPS, SFTP and WebDAV out of the box, custom adapters registered by name
 - **Multi-tenant** - sources resolved per request, one instance for many tenants

@@ -336,6 +336,7 @@ class AppConfig(_Model):
     default_role: str = "guest"
     allow_replace_source_file: bool = True
     allow_private_network_uploads: bool = False
+    sanitize_svg: bool = True
     baseurl: str = ""
     root: str = Field(default_factory=lambda: str(Path.cwd() / "files"))
     extensions: list[str] = Field(

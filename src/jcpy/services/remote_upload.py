@@ -6,10 +6,13 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, BinaryIO, cast
 from urllib.parse import unquote
 
+from anyio import to_thread
+
 from jcpy.errors import HttpError
 from jcpy.helpers import ssrf
 from jcpy.helpers.js import node_basename, parse_bytes, sanitize_filename
 from jcpy.helpers.urls import parse_url
+from jcpy.services.svg_uploads import cleaned_svg, needs_cleaning
 
 if TYPE_CHECKING:
     from jcpy.context import ActionContext
@@ -148,7 +151,11 @@ async def upload_from_url(
             source.get_extension(target),
         )
         body.seek(0)
-        await source.storage.write_file(storage_path, body)
+        if needs_cleaning(source, storage_path):
+            contents = await cleaned_svg(await to_thread.run_sync(body.read))
+            await source.storage.write(storage_path, contents)
+        else:
+            await source.storage.write_file(storage_path, body)
     return RemoteFile(
         posixpath.basename(target), source.is_image(storage_path)
     )

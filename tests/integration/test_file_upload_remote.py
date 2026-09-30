@@ -47,6 +47,10 @@ class Handler(BaseHTTPRequestHandler):
         "/big.txt": b"x" * 2048,
         "/big.php": b"x" * 2048,
         "/": b"root",
+        "/logo.svg": (
+            b'<svg xmlns="http://www.w3.org/2000/svg" onload="alert(1)">'
+            b"<script>alert(2)</script><rect/></svg>"
+        ),
     }
 
     def do_GET(self) -> None:
@@ -124,6 +128,18 @@ async def test_uploads_an_image(
         },
     }
     assert (root / "test-image.png").read_bytes() == png()
+
+
+async def test_svg_is_cleaned(
+    connector_client: ClientFactory, root: Path, remote: str
+) -> None:
+    async with connector_client(config(root)) as http:
+        response = await upload(http, f"{remote}/logo.svg")
+
+    assert response.status_code == 200, response.text
+    stored = (root / "logo.svg").read_bytes()
+    assert b"<rect" in stored
+    assert b"alert" not in stored
 
 
 async def test_name_and_directory(
