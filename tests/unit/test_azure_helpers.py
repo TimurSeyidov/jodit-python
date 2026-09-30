@@ -18,11 +18,11 @@ from jcpy.storage import azure as azure_module
 from jcpy.storage.azure import (
     AzureStorageAdapter,
     AzureStorageError,
-    _FullReader,
     account_name,
     batch_requests_work,
     create_container_client,
 )
+from jcpy.storage.streams import FullReader
 
 URL = "https://acct.blob.core.windows.net"
 
@@ -135,7 +135,7 @@ class TestFullReader:
             def read(self, size: int | None = -1) -> bytes:
                 return super().read(min(size or 1, 2) if size != -1 else -1)
 
-        reader = _FullReader(Trickle(b"abcdefg"))
+        reader = FullReader(Trickle(b"abcdefg"))
 
         assert reader.read(5) == b"abcde"
         assert reader.read(-1) == b"fg"

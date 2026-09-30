@@ -21,6 +21,7 @@ from jcpy.storage import (
 from jcpy.storage import local as local_module
 from jcpy.storage.azure import AzureStorageAdapter
 from jcpy.storage.ftp import FtpStorageAdapter
+from jcpy.storage.gcs import GcsStorageAdapter
 from jcpy.storage.local import UnsupportedEntryError
 from jcpy.storage.sftp import SftpStorageAdapter
 from jcpy.storage.webdav import WebdavStorageAdapter
@@ -360,6 +361,11 @@ class TestRegistry:
                 {"container": "files", "accountUrl": "https://a.blob/"},
                 AzureStorageAdapter,
             ),
+            (
+                "gcs",
+                {"bucket": "b", "anonymous": True},
+                GcsStorageAdapter,
+            ),
         ],
     )
     def test_file_server_adapters(
@@ -369,7 +375,7 @@ class TestRegistry:
 
         assert isinstance(create_storage_adapter(settings), adapter_class)
 
-    @pytest.mark.parametrize("name", ["ftp", "sftp", "webdav", "azure"])
+    @pytest.mark.parametrize("name", ["ftp", "sftp", "webdav", "azure", "gcs"])
     def test_file_server_adapters_need_options(self, name: str) -> None:
         settings = SourceConfig.model_construct(
             name="s", title="S", baseurl="http://s/", storage_adapter=name

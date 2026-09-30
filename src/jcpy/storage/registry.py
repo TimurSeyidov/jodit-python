@@ -36,7 +36,7 @@ def get_registered_storage_adapters() -> list[str]:
 
     Returns:
         Names in registration order; ``local``, ``s3``, ``ftp``, ``sftp``,
-        ``webdav`` and ``azure`` are built in.
+        ``webdav``, ``azure`` and ``gcs`` are built in.
     """
     return list(_registry)
 
@@ -140,9 +140,18 @@ def _azure_factory(source: SourceConfig) -> StorageAdapter:
     return AzureStorageAdapter(source.azure)
 
 
+def _gcs_factory(source: SourceConfig) -> StorageAdapter:
+    if source.gcs is None:
+        raise _options_required(source, "gcs")
+    with optional_feature("gcs", "The gcs storage adapter"):
+        from jcpy.storage.gcs import GcsStorageAdapter
+    return GcsStorageAdapter(source.gcs)
+
+
 register_storage_adapter(LOCAL_ADAPTER, _local_factory)
 register_storage_adapter("s3", _s3_factory)
 register_storage_adapter("ftp", _ftp_factory)
 register_storage_adapter("sftp", _sftp_factory)
 register_storage_adapter("webdav", _webdav_factory)
 register_storage_adapter("azure", _azure_factory)
+register_storage_adapter("gcs", _gcs_factory)

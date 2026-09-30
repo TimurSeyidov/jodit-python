@@ -11,6 +11,7 @@ from jcpy.config.models import (
     AppConfig,
     AzureOptions,
     FtpOptions,
+    GcsOptions,
     PdfConfig,
     S3Options,
     SftpOptions,
@@ -38,6 +39,7 @@ def aliases(
         | SftpOptions
         | WebdavOptions
         | AzureOptions
+        | GcsOptions
     ],
 ) -> set[str]:
     return {info.alias or name for name, info in model.model_fields.items()}
@@ -79,6 +81,11 @@ def test_azure_option_is_documented(key: str) -> None:
     assert f"| `{key}` |" in page("azure.md")
 
 
+@pytest.mark.parametrize("key", sorted(aliases(GcsOptions)))
+def test_gcs_option_is_documented(key: str) -> None:
+    assert f"| `{key}` |" in page("gcs.md")
+
+
 @pytest.mark.parametrize("key", sorted(aliases(WebdavOptions)))
 def test_webdav_option_is_documented(key: str) -> None:
     assert f"| `{key}` |" in page("webdav.md")
@@ -91,6 +98,7 @@ def test_webdav_option_is_documented(key: str) -> None:
         ("sftp", "site"),
         ("webdav", "cloud"),
         ("azure", "media"),
+        ("gcs", "media"),
     ],
 )
 def test_file_server_examples_are_valid(name: str, source: str) -> None:

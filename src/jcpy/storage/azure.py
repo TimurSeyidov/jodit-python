@@ -27,6 +27,7 @@ from azure.storage.blob import (
 from jcpy.helpers.concurrency import gather_limited
 from jcpy.storage.base import CHUNK_SIZE, FileWasNotFoundError, StatEntry
 from jcpy.storage.keys import build_key, normalize_key, strip_key_prefix
+from jcpy.storage.streams import FullReader
 from jcpy.storage.threads import TransferThreads
 
 if TYPE_CHECKING:
@@ -159,27 +160,6 @@ def batch_requests_work(client: ContainerClient) -> bool:
     return not path_style or bool(getattr(client, "_is_localhost", False))
 
 
-class _FullReader:
-    """File wrapper completing short reads.
-
-    The SDK sends what one ``read(n)`` returns as ``n`` bytes of a
-    request whose length is already announced.
-    """
-
-    def __init__(self, file: BinaryIO) -> None:
-        self.file = file
-
-    def read(self, size: int = -1) -> bytes:
-        if size < 0:
-            return self.file.read()
-        parts: list[bytes] = []
-        missing = size
-        while missing and (part := self.file.read(missing)):
-            parts.append(part)
-            missing -= len(part)
-        return b"".join(parts)
-
-
 class AzureStorageAdapter:
     """Storage adapter for one container (and optional name prefix).
 
@@ -307,7 +287,7 @@ class AzureStorageAdapter:
         start = file.tell()
         length = await to_thread.run_sync(file.seek, 0, 2) - start
         await to_thread.run_sync(file.seek, start)
-        reader = _FullReader(file)
+        reader = FullReader(file)
         await self._transfer(
             "write", path, partial(self._upload, path, reader, length)
         )

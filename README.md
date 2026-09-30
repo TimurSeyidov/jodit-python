@@ -26,8 +26,8 @@ Python/FastAPI implementation of the Jodit File Browser and Uploader connector.
 - **Pydantic 2** for the configuration and API schemas
 - **Pillow** for image processing and thumbnails
 - **httpx** for SSRF-safe remote downloads
-- **WeasyPrint** (PDF), **html-for-docx** (DOCX), **boto3** (S3), **azure-storage-blob** (Azure), **paramiko** (SFTP) as optional extras
-- **pytest + Testcontainers** for testing (MinIO, Azurite, vsftpd, OpenSSH, Apache, rclone)
+- **WeasyPrint** (PDF), **html-for-docx** (DOCX), **boto3** (S3), **azure-storage-blob** (Azure), **google-cloud-storage** (GCS), **paramiko** (SFTP) as optional extras
+- **pytest + Testcontainers** for testing (MinIO, Azurite, fake-gcs-server, vsftpd, OpenSSH, Apache, rclone)
 - **uv**, **Ruff** and **MkDocs Material** for tooling and docs
 
 ## Installation
@@ -43,6 +43,7 @@ Python 3.14+. Optional features are extras:
 - `[docx]` (`generateDocx`)
 - `[s3]` (S3 storage)
 - `[azure]` (Azure Blob storage)
+- `[gcs]` (Google Cloud Storage)
 - `[sftp]` (SFTP storage; FTP needs no extra)
 - `[all]` installs them all. Without an extra the connector still works and the action that needs it answers `501` naming what to install.
 
@@ -219,6 +220,7 @@ app.include_router(
 - [FastAPI Integration](https://timurseyidov.github.io/jodit-python/integration/) - Mounting, prefixes, several instances
 - [AWS S3 & S3-compatible](https://timurseyidov.github.io/jodit-python/aws-s3/) - Built-in S3 adapter, MinIO, R2, Yandex
 - [Azure Blob Storage](https://timurseyidov.github.io/jodit-python/azure/) - Built-in Azure adapter, managed identities, Azurite
+- [Google Cloud Storage](https://timurseyidov.github.io/jodit-python/gcs/) - Built-in GCS adapter, workload identity, emulators
 - [FTP & SFTP](https://timurseyidov.github.io/jodit-python/ftp-sftp/) - Files on FTP, FTPS and SFTP servers
 - [WebDAV](https://timurseyidov.github.io/jodit-python/webdav/) - Files on WebDAV servers (Apache, nginx, Nextcloud)
 - [Storage Adapters](https://timurseyidov.github.io/jodit-python/storage-adapters/) - Custom adapters, registering by name
@@ -244,7 +246,7 @@ The site is built from [`docs/`](docs) (`make docs` serves it locally, `make doc
 - **Authentication** - a per-request callback: cookies, JWT, sessions
 - **Security** - SSRF-safe remote downloads, confinement to the source root (symlinks included), POST-only mode, CORS allowlist
 - **FastAPI integration** - standalone app or router, several isolated instances in one application
-- **Storage** - local filesystem, AWS S3 / S3-compatible, Azure Blob, FTP / FTPS, SFTP and WebDAV out of the box, custom adapters registered by name
+- **Storage** - local filesystem, AWS S3 / S3-compatible, Azure Blob, Google Cloud Storage, FTP / FTPS, SFTP and WebDAV out of the box, custom adapters registered by name
 - **Multi-tenant** - sources resolved per request, one instance for many tenants
 - **OpenAPI** - OpenAPI 3.1 and Swagger UI generated from the schemas
 - **Typed** - mypy `--strict`, ships `py.typed`

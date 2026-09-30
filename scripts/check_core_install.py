@@ -1,7 +1,7 @@
 """Check an installation of jodit-python without extras.
 
-The core must import and serve files, while PDF, DOCX, S3, SFTP and
-Azure answer ``501`` naming the missing extra. Run it in an environment
+The core must import and serve files, while PDF, DOCX, S3, SFTP, Azure
+and GCS answer ``501`` naming the missing extra. Run it in an environment
 holding only the core dependencies:
 
     uv sync --frozen --no-dev
@@ -26,6 +26,7 @@ OPTIONAL = (
     "bs4",
     "paramiko",
     "azure",
+    "google.cloud.storage",
 )
 
 
@@ -49,6 +50,7 @@ async def check() -> list[str]:
             ("/files", {"source": "bucket"}, 501, "[s3]"),
             ("/files", {"source": "server"}, 501, "[sftp]"),
             ("/files", {"source": "blob"}, 501, "[azure]"),
+            ("/files", {"source": "gcs"}, 501, "[gcs]"),
         ]
         for path, params, status, text in expectations:
             response = await http.get(path, params=params)
@@ -61,13 +63,28 @@ async def check() -> list[str]:
     return failures
 
 
+def installed(name: str) -> bool:
+    """Tell whether a module can be imported.
+
+    Args:
+        name: Dotted module name.
+
+    Returns:
+        ``False`` also when a parent package is missing.
+    """
+    try:
+        return find_spec(name) is not None
+    except ModuleNotFoundError:
+        return False
+
+
 def main() -> int:
     """Check the installation.
 
     Returns:
         Process exit status.
     """
-    present = [name for name in OPTIONAL if find_spec(name) is not None]
+    present = [name for name in OPTIONAL if installed(name)]
     if present:
         print(f"not a core install, found: {', '.join(present)}")
         return 1
@@ -102,6 +119,12 @@ def main() -> int:
                             "container": "files",
                             "connectionString": "x",
                         },
+                    },
+                    "gcs": {
+                        "title": "GCS",
+                        "baseurl": "http://localhost/gcs/",
+                        "storageAdapter": "gcs",
+                        "gcs": {"bucket": "b", "anonymous": True},
                     },
                 },
             }

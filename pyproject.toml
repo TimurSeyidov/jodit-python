@@ -41,7 +41,9 @@ s3 = ["boto3>=1.35"]
 sftp = ["paramiko>=3.5"]
 # The azure storage adapter (azure-identity: managed identities, az login)
 azure = ["azure-storage-blob>=12.20", "azure-identity>=1.17"]
-all = ["jodit-python[pdf,docx,s3,sftp,azure]"]
+# The gcs storage adapter
+gcs = ["google-cloud-storage>=3.0"]
+all = ["jodit-python[pdf,docx,s3,sftp,azure,gcs]"]
 
 [project.urls]
 Homepage = "https://github.com/TimurSeyidov/jodit-python"
@@ -85,6 +87,7 @@ dev = [
     "pyopenssl>=24",
     "wsgidav>=4.3",
     "cheroot>=10",
+    "gcp-storage-emulator>=2024.8",
 ]
 docs = [
     "mkdocs>=1.6.1,<2",
@@ -149,6 +152,19 @@ include = ["src", "tests"]
 # No type information is published for these libraries.
 module = ["weasyprint", "weasyprint.*", "html4docx", "html4docx.*"]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# google-cloud-storage has no type information; google-auth only some.
+module = ["google.cloud", "google.cloud.*", "gcp_storage_emulator.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "jcpy.storage.gcs",
+    "tests.unit.test_gcs",
+    "tests.integration.test_gcs",
+]
+disallow_untyped_calls = false
 
 [[tool.mypy.overrides]]
 # Test FTP and WebDAV servers; Docker client used by Testcontainers.

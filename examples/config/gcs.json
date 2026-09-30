@@ -1,0 +1,13 @@
+{
+  "sources": {
+    "media": {
+      "title": "Media library",
+      "baseurl": "https://storage.googleapis.com/my-bucket/media/",
+      "storageAdapter": "gcs",
+      "gcs": {
+        "bucket": "my-bucket",
+        "prefix": "media"
+      }
+    }
+  }
+}

@@ -197,6 +197,35 @@ class AzureOptions(_Model):
         return self
 
 
+class GcsOptions(_Model):
+    """Options of the built-in ``gcs`` storage adapter."""
+
+    bucket: Annotated[str, Field(min_length=1)]
+    project: str | None = None
+    credentials_file: str | None = None
+    anonymous: bool = False
+    endpoint: str | None = None
+    prefix: str | None = None
+    public_base_url: str | None = None
+    timeout: PositiveFloat = 60
+    storage_class: (
+        Literal["STANDARD", "NEARLINE", "COLDLINE", "ARCHIVE"] | None
+    ) = None
+    cache_control: Annotated[str, Field(min_length=1)] | None = None
+
+    @field_validator("endpoint", "public_base_url")
+    @classmethod
+    def _url(cls, value: str | None) -> str | None:
+        return None if value is None else _check_url(value)
+
+    @model_validator(mode="after")
+    def _one_login(self) -> Self:
+        if self.anonymous and self.credentials_file is not None:
+            msg = "set credentialsFile or anonymous, not both"
+            raise ValueError(msg)
+        return self
+
+
 class WebdavOptions(_Model):
     """Options of the built-in ``webdav`` storage adapter."""
 
@@ -416,6 +445,7 @@ class SourceConfig(BaseModel):
     sftp: SftpOptions | None = None
     webdav: WebdavOptions | None = None
     azure: AzureOptions | None = None
+    gcs: GcsOptions | None = None
 
     @field_validator("baseurl")
     @classmethod
@@ -433,7 +463,7 @@ class SourceConfig(BaseModel):
         if self.is_local and not self.root:
             msg = "root is required for local storage"
             raise ValueError(msg)
-        for adapter in ("s3", "ftp", "sftp", "webdav", "azure"):
+        for adapter in ("s3", "ftp", "sftp", "webdav", "azure", "gcs"):
             if (
                 self.storage_adapter == adapter
                 and getattr(self, adapter) is None
@@ -471,7 +501,7 @@ class SourceConfig(BaseModel):
 
 _OWN_FIELDS = frozenset(
     {"name", "title", "baseurl", "root", "defaultFilesKey"}
-    | {"storageAdapter", "s3", "ftp", "sftp", "webdav", "azure"}
+    | {"storageAdapter", "s3", "ftp", "sftp", "webdav", "azure", "gcs"}
 )
 _OVERRIDABLE = frozenset(
     info.alias or name
