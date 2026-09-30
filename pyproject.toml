@@ -39,7 +39,9 @@ docx = ["beautifulsoup4>=4.12", "html-for-docx>=1.2", "python-docx>=1.1"]
 s3 = ["boto3>=1.35"]
 # The sftp storage adapter
 sftp = ["paramiko>=3.5"]
-all = ["jodit-python[pdf,docx,s3,sftp]"]
+# The azure storage adapter (azure-identity: managed identities, az login)
+azure = ["azure-storage-blob>=12.20", "azure-identity>=1.17"]
+all = ["jodit-python[pdf,docx,s3,sftp,azure]"]
 
 [project.urls]
 Homepage = "https://github.com/TimurSeyidov/jodit-python"

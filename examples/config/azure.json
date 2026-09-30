@@ -1,0 +1,14 @@
+{
+  "sources": {
+    "media": {
+      "title": "Media library",
+      "baseurl": "https://mediastore.blob.core.windows.net/files/media/",
+      "storageAdapter": "azure",
+      "azure": {
+        "accountUrl": "https://mediastore.blob.core.windows.net",
+        "container": "files",
+        "prefix": "media"
+      }
+    }
+  }
+}

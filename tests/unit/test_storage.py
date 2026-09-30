@@ -19,6 +19,7 @@ from jcpy.storage import (
     register_storage_adapter,
 )
 from jcpy.storage import local as local_module
+from jcpy.storage.azure import AzureStorageAdapter
 from jcpy.storage.ftp import FtpStorageAdapter
 from jcpy.storage.local import UnsupportedEntryError
 from jcpy.storage.sftp import SftpStorageAdapter
@@ -337,14 +338,14 @@ class TestRegistry:
             create_storage_adapter(settings)
 
     def test_unknown_adapter(self) -> None:
-        settings = self.settings(storageAdapter="azure")
+        settings = self.settings(storageAdapter="dropbox")
 
         with pytest.raises(HttpError) as info:
             create_storage_adapter(settings)
 
         assert info.value.status_code == 400
         assert info.value.message.startswith(
-            'Unknown storage adapter "azure" for source "s". '
+            'Unknown storage adapter "dropbox" for source "s". '
             "Registered adapters: local"
         )
 
@@ -354,6 +355,11 @@ class TestRegistry:
             ("ftp", {"host": "h"}, FtpStorageAdapter),
             ("sftp", {"host": "h", "username": "u"}, SftpStorageAdapter),
             ("webdav", {"url": "https://h/dav/"}, WebdavStorageAdapter),
+            (
+                "azure",
+                {"container": "files", "accountUrl": "https://a.blob/"},
+                AzureStorageAdapter,
+            ),
         ],
     )
     def test_file_server_adapters(
@@ -363,7 +369,7 @@ class TestRegistry:
 
         assert isinstance(create_storage_adapter(settings), adapter_class)
 
-    @pytest.mark.parametrize("name", ["ftp", "sftp", "webdav"])
+    @pytest.mark.parametrize("name", ["ftp", "sftp", "webdav", "azure"])
     def test_file_server_adapters_need_options(self, name: str) -> None:
         settings = SourceConfig.model_construct(
             name="s", title="S", baseurl="http://s/", storage_adapter=name

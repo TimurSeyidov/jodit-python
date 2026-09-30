@@ -159,6 +159,44 @@ class SftpOptions(_Model):
         return self
 
 
+class AzureOptions(_Model):
+    """Options of the built-in ``azure`` storage adapter."""
+
+    container: Annotated[str, Field(min_length=1)]
+    account_url: str | None = None
+    connection_string: str | None = None
+    account_key: str | None = None
+    sas_token: str | None = None
+    prefix: str | None = None
+    public_base_url: str | None = None
+    connect_timeout: PositiveFloat = 10
+    read_timeout: PositiveFloat = 60
+    max_attempts: PositiveInt = 3
+    max_concurrency: Annotated[int, Field(ge=1, le=64)] = 4
+    access_tier: Literal["Hot", "Cool", "Cold"] | None = None
+    cache_control: Annotated[str, Field(min_length=1)] | None = None
+
+    @field_validator("account_url", "public_base_url")
+    @classmethod
+    def _url(cls, value: str | None) -> str | None:
+        return None if value is None else _check_url(value)
+
+    @model_validator(mode="after")
+    def _one_way_in(self) -> Self:
+        if (self.account_url is None) == (self.connection_string is None):
+            msg = "set accountUrl or connectionString (one of them)"
+            raise ValueError(msg)
+        if self.connection_string is not None and (
+            self.account_key is not None or self.sas_token is not None
+        ):
+            msg = "accountKey and sasToken go with accountUrl"
+            raise ValueError(msg)
+        if self.account_key is not None and self.sas_token is not None:
+            msg = "set accountKey or sasToken, not both"
+            raise ValueError(msg)
+        return self
+
+
 class WebdavOptions(_Model):
     """Options of the built-in ``webdav`` storage adapter."""
 
@@ -377,6 +415,7 @@ class SourceConfig(BaseModel):
     ftp: FtpOptions | None = None
     sftp: SftpOptions | None = None
     webdav: WebdavOptions | None = None
+    azure: AzureOptions | None = None
 
     @field_validator("baseurl")
     @classmethod
@@ -394,7 +433,7 @@ class SourceConfig(BaseModel):
         if self.is_local and not self.root:
             msg = "root is required for local storage"
             raise ValueError(msg)
-        for adapter in ("s3", "ftp", "sftp", "webdav"):
+        for adapter in ("s3", "ftp", "sftp", "webdav", "azure"):
             if (
                 self.storage_adapter == adapter
                 and getattr(self, adapter) is None
@@ -432,7 +471,7 @@ class SourceConfig(BaseModel):
 
 _OWN_FIELDS = frozenset(
     {"name", "title", "baseurl", "root", "defaultFilesKey"}
-    | {"storageAdapter", "s3", "ftp", "sftp", "webdav"}
+    | {"storageAdapter", "s3", "ftp", "sftp", "webdav", "azure"}
 )
 _OVERRIDABLE = frozenset(
     info.alias or name

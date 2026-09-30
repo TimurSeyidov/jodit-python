@@ -7,12 +7,13 @@ description: How sources store files, the StorageAdapter interface and registeri
 
 ## Overview
 
-A source keeps its files in a **storage adapter**. Five are built in:
+A source keeps its files in a **storage adapter**. Six are built in:
 
 | Name | Storage | Settings |
 |---|---|---|
 | `local` (default) | Directory on the server | `root` |
 | `s3` | AWS S3 or an S3-compatible service | `s3` block ([AWS S3](aws-s3.md)); needs the `s3` extra |
+| `azure` | Azure Blob Storage container | `azure` block ([Azure Blob](azure.md)); needs the `azure` extra |
 | `ftp` | Directory on an FTP or FTPS server | `ftp` block ([FTP & SFTP](ftp-sftp.md)) |
 | `sftp` | Directory on an SFTP (SSH) server | `sftp` block ([FTP & SFTP](ftp-sftp.md)); needs the `sftp` extra |
 | `webdav` | Collection on a WebDAV server (Apache, nginx, Nextcloud) | `webdav` block ([WebDAV](webdav.md)) |

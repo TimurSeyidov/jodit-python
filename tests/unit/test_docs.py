@@ -9,6 +9,7 @@ from jcpy.acl import DEFAULT_RULES
 from jcpy.config.loader import load_config
 from jcpy.config.models import (
     AppConfig,
+    AzureOptions,
     FtpOptions,
     PdfConfig,
     S3Options,
@@ -36,6 +37,7 @@ def aliases(
         | FtpOptions
         | SftpOptions
         | WebdavOptions
+        | AzureOptions
     ],
 ) -> set[str]:
     return {info.alias or name for name, info in model.model_fields.items()}
@@ -72,6 +74,11 @@ def test_ftp_option_is_documented(key: str) -> None:
     assert f"| `{option}` |" in section.split("\n## ")[0]
 
 
+@pytest.mark.parametrize("key", sorted(aliases(AzureOptions)))
+def test_azure_option_is_documented(key: str) -> None:
+    assert f"| `{key}` |" in page("azure.md")
+
+
 @pytest.mark.parametrize("key", sorted(aliases(WebdavOptions)))
 def test_webdav_option_is_documented(key: str) -> None:
     assert f"| `{key}` |" in page("webdav.md")
@@ -79,7 +86,12 @@ def test_webdav_option_is_documented(key: str) -> None:
 
 @pytest.mark.parametrize(
     ("name", "source"),
-    [("ftp", "site"), ("sftp", "site"), ("webdav", "cloud")],
+    [
+        ("ftp", "site"),
+        ("sftp", "site"),
+        ("webdav", "cloud"),
+        ("azure", "media"),
+    ],
 )
 def test_file_server_examples_are_valid(name: str, source: str) -> None:
     config = load_config(ROOT / "examples" / "config" / f"{name}.json")

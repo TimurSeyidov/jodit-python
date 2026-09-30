@@ -1,8 +1,8 @@
 """Check an installation of jodit-python without extras.
 
-The core must import and serve files, while PDF, DOCX, S3 and SFTP
-answer ``501`` naming the missing extra. Run it in an environment holding only
-the core dependencies:
+The core must import and serve files, while PDF, DOCX, S3, SFTP and
+Azure answer ``501`` naming the missing extra. Run it in an environment
+holding only the core dependencies:
 
     uv sync --frozen --no-dev
     uv run --no-sync python scripts/check_core_install.py
@@ -18,7 +18,15 @@ from pathlib import Path
 
 from httpx import ASGITransport, AsyncClient
 
-OPTIONAL = ("weasyprint", "boto3", "docx", "html4docx", "bs4", "paramiko")
+OPTIONAL = (
+    "weasyprint",
+    "boto3",
+    "docx",
+    "html4docx",
+    "bs4",
+    "paramiko",
+    "azure",
+)
 
 
 async def check() -> list[str]:
@@ -40,6 +48,7 @@ async def check() -> list[str]:
             ("/generateDocx", {"html": "<p>x</p>"}, 501, "[docx]"),
             ("/files", {"source": "bucket"}, 501, "[s3]"),
             ("/files", {"source": "server"}, 501, "[sftp]"),
+            ("/files", {"source": "blob"}, 501, "[azure]"),
         ]
         for path, params, status, text in expectations:
             response = await http.get(path, params=params)
@@ -84,6 +93,15 @@ def main() -> int:
                         "baseurl": "http://localhost/server/",
                         "storageAdapter": "sftp",
                         "sftp": {"host": "localhost", "username": "u"},
+                    },
+                    "blob": {
+                        "title": "Blob",
+                        "baseurl": "http://localhost/blob/",
+                        "storageAdapter": "azure",
+                        "azure": {
+                            "container": "files",
+                            "connectionString": "x",
+                        },
                     },
                 },
             }

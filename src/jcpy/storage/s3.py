@@ -17,6 +17,7 @@ from botocore.exceptions import ClientError
 
 from jcpy.helpers.concurrency import gather_limited
 from jcpy.storage.base import CHUNK_SIZE, FileWasNotFoundError, StatEntry
+from jcpy.storage.keys import build_key, normalize_key, strip_key_prefix
 from jcpy.storage.threads import TransferThreads
 
 if TYPE_CHECKING:
@@ -30,63 +31,13 @@ if TYPE_CHECKING:
 
     from jcpy.config.models import S3Options
 
+normalize_s3_path = normalize_key
+build_object_key = build_key
+strip_object_prefix = strip_key_prefix
+
 DEFAULT_REGION = "us-east-1"
 DELETE_BATCH_SIZE = 1000
 _NOT_FOUND = frozenset({"404", "NoSuchKey", "NotFound"})
-
-
-def normalize_s3_path(path: str) -> str:
-    """Normalize a storage path to an S3 key fragment.
-
-    Args:
-        path: Path with any separators.
-
-    Returns:
-        Path with ``/`` only, no empty or ``.`` segments; ``""`` for the
-        root.
-    """
-    segments = path.replace("\\", "/").split("/")
-    return "/".join(part for part in segments if part and part != ".")
-
-
-def build_object_key(prefix: str, path: str) -> str:
-    """Build the object key of a storage path.
-
-    Args:
-        prefix: Key prefix acting as the source root.
-        path: Storage path.
-
-    Returns:
-        Object key.
-    """
-    normalized_prefix = normalize_s3_path(prefix)
-    normalized_path = normalize_s3_path(path)
-    if not normalized_prefix:
-        return normalized_path
-    if not normalized_path:
-        return normalized_prefix
-    return f"{normalized_prefix}/{normalized_path}"
-
-
-def strip_object_prefix(prefix: str, key: str) -> str:
-    """Turn an object key back into a storage path.
-
-    Args:
-        prefix: Key prefix acting as the source root.
-        key: Object key.
-
-    Returns:
-        Storage path; keys outside the prefix are only normalized.
-    """
-    normalized_prefix = normalize_s3_path(prefix)
-    if not normalized_prefix:
-        return normalize_s3_path(key)
-    if key == normalized_prefix:
-        return ""
-    with_slash = f"{normalized_prefix}/"
-    if key.startswith(with_slash):
-        return normalize_s3_path(key[len(with_slash) :])
-    return normalize_s3_path(key)
 
 
 def default_public_base_url(options: S3Options) -> str:

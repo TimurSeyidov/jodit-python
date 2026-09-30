@@ -35,8 +35,8 @@ def get_registered_storage_adapters() -> list[str]:
     """List registered adapter names.
 
     Returns:
-        Names in registration order; ``local``, ``s3``, ``ftp``, ``sftp``
-        and ``webdav`` are built in.
+        Names in registration order; ``local``, ``s3``, ``ftp``, ``sftp``,
+        ``webdav`` and ``azure`` are built in.
     """
     return list(_registry)
 
@@ -132,8 +132,17 @@ def _webdav_factory(source: SourceConfig) -> StorageAdapter:
     return WebdavStorageAdapter(source.webdav)
 
 
+def _azure_factory(source: SourceConfig) -> StorageAdapter:
+    if source.azure is None:
+        raise _options_required(source, "azure")
+    with optional_feature("azure", "The azure storage adapter"):
+        from jcpy.storage.azure import AzureStorageAdapter
+    return AzureStorageAdapter(source.azure)
+
+
 register_storage_adapter(LOCAL_ADAPTER, _local_factory)
 register_storage_adapter("s3", _s3_factory)
 register_storage_adapter("ftp", _ftp_factory)
 register_storage_adapter("sftp", _sftp_factory)
 register_storage_adapter("webdav", _webdav_factory)
+register_storage_adapter("azure", _azure_factory)

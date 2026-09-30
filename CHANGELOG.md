@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+### Added
+
+- `azure` storage adapter (extra `[azure]`) for Azure Blob Storage: connection string, account key, SAS token or the Azure default credential chain (managed identity, environment, `az login`); block uploads, streamed downloads (at most 4 MB in memory), server-side copies with a streamed fallback, `accessTier` and `cacheControl`; errors never show the account URL or a SAS token.
+
 ### Security
 
 - `html`, `htm` and `js` are no longer in the default `extensions`: pages and scripts uploaded to a `baseurl` on the site's domain would run there (stored XSS). Sources that need them list them in `extensions`; existing files of these types stop being listed until then.

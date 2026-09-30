@@ -22,6 +22,7 @@ OPTIONAL = (
     "html4docx",
     "bs4",
     "paramiko",
+    "azure",
 )
 
 
@@ -74,6 +75,7 @@ async def test_document_actions_without_their_extra(
     [
         ("s3", {"bucket": "b"}),
         ("sftp", {"host": "localhost", "username": "u"}),
+        ("azure", {"container": "files", "connectionString": "x"}),
     ],
 )
 async def test_storage_without_its_extra(

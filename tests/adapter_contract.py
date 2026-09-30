@@ -165,6 +165,18 @@ class AdapterContract:
         assert set(inner) == {"dir/inner.txt", "dir/empty"}
         assert shallow["top.txt"].size in {3, None}
 
+    async def test_folder_with_contents_is_listed_once(
+        self, adapter: StreamingStorageAdapter
+    ) -> None:
+        await adapter.create_directory("dir")
+        await adapter.write("dir/a.txt", b"a")
+
+        top = [entry.path async for entry in adapter.list("", deep=True)]
+        inner = [entry.path async for entry in adapter.list("dir", deep=False)]
+
+        assert sorted(top) == ["dir", "dir/a.txt"]
+        assert inner == ["dir/a.txt"]
+
     async def test_existence(self, adapter: StreamingStorageAdapter) -> None:
         await adapter.write("dir/file.txt", b"x")
 
