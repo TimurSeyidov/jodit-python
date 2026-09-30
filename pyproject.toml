@@ -1,6 +1,6 @@
 [project]
 name = "jodit-python"
-version = "0.3.0"
+version = "0.4.0"
 description = "Jodit FileBrowser and Uploader connector for Python"
 readme = "README.md"
 license = "MIT"
