@@ -12,7 +12,7 @@ docker run --rm -p 8081:8081 -v $(pwd)/files:/app/files w2fb/jodit-python
 curl http://localhost:8081/ping
 ```
 
-The image is published on Docker Hub as [`w2fb/jodit-python`](https://hub.docker.com/r/w2fb/jodit-python) with the tags `latest`, `0.1` and `0.1.0` (`linux/amd64`, `linux/arm64`). To build it from the repository instead: `docker build --target prod -t jodit-python .`
+The image is published on Docker Hub as [`w2fb/jodit-python`](https://hub.docker.com/r/w2fb/jodit-python) for `linux/amd64` and `linux/arm64`, tagged `latest`, `<major>.<minor>` (e.g. `0.4`) and the full version (e.g. `0.4.1`). To build it from the repository instead: `docker build --target prod -t jodit-python .`
 
 Or with Compose (`docker-compose.yml` in the repository):
 
@@ -84,15 +84,43 @@ Priority of the configuration: the argument of `create_app()`, then `CONFIG`, th
 | | |
 |---|---|
 | Base | `python:3.14-slim` |
-| User | `app` (non-root), home and workdir `/app` |
+| User | `app` (non-root, uid and gid `1000`), home and workdir `/app` |
 | Init | `tini` |
 | Port | `8081` (`PORT`, `HOST` change it) |
 | Files | `/app/files` (default source root) |
 | Health check | `GET /ping` every 30 s |
-| Extras | All Python extras (`[all]`: PDF, DOCX, S3), Pango, DejaVu and Liberation fonts |
+| Extras | All Python extras (`[all]`: PDF, DOCX, S3, SFTP, Azure, GCS), Pango, DejaVu and Liberation fonts |
 | Size | about 330 MB |
 
-Mounted directories must be writable by the `app` user (uid of the image's `app` account), e.g. `chown` them or run with `--user $(id -u):$(id -g)`.
+## Mounted folders
+
+The connector writes into `/app/files` (or wherever source roots point), so a folder mounted there must be writable by the user the container runs as. The image runs as uid `1000`, which is the first user on most Linux hosts and in WSL: a folder you created yourself usually just works.
+
+```yaml
+services:
+  jodit:
+    image: w2fb/jodit-python:latest
+    user: "1000:1000"          # your `id -u`:`id -g`, if not 1000
+    ports:
+      - "8081:8081"
+    environment:
+      CONFIG_FILE: /app/config.json
+    volumes:
+      - ./config.json:/app/config.json:ro
+      - ./upload:/app/files
+```
+
+When uploads fail with `Unable to write the file. Reason: Permission denied`:
+
+- **Another uid on the host.** Check `id -u` and `id -g` and put them in `user:` (or `--user $(id -u):$(id -g)` with `docker run`).
+- **The setting did not apply.** `docker compose restart` keeps the old container; run `docker compose up -d --force-recreate`, then `docker exec <container> id` must show your uid.
+- **Docker created the folder.** A folder that did not exist before the first start is created by Docker as `root`. Create it yourself first, or `sudo chown -R $(id -u):$(id -g) ./upload`.
+- **WSL with the project on a Windows drive** (`/mnt/c/...`). Linux permissions do not apply there, and Windows may lock fresh files. Keep the project inside the WSL file system (`~/...`).
+- **SELinux** (Fedora, RHEL). Add `:z` to the volume: `./upload:/app/files:z`.
+
+Every write goes to a temporary `.<random>.tmp` file in the target folder first and is then renamed over the target, so the container needs write access to the folder itself, not just to the files in it.
+
+Images before 0.4.2 ran as uid `999`. A folder given to that uid with `chown` needs `chown -R 1000:1000` (or `user: "999:999"`) after upgrading. Build with `--build-arg APP_UID=... --build-arg APP_GID=...` for another fixed uid.
 
 ## Stages
 

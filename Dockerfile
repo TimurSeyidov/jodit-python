@@ -68,14 +68,20 @@ CMD ["sh", "-c", "uv sync --frozen --all-groups && make dev"]
 # --- prod: minimal runtime ----------------------------------------------
 FROM python:${PYTHON_VERSION}-slim AS prod
 
+# uid/gid 1000: the first user on most Linux hosts and in WSL, so folders
+# mounted from the host are writable without chown or --user.
+ARG APP_UID=1000
+ARG APP_GID=1000
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         tini \
         libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 \
         fonts-dejavu-core fonts-liberation \
     && rm -rf /var/lib/apt/lists/* \
-    && groupadd --system app \
-    && useradd --system --gid app --home-dir /app app \
+    && groupadd --gid "${APP_GID}" app \
+    && useradd --uid "${APP_UID}" --gid "${APP_GID}" --home-dir /app \
+        --no-create-home --shell /usr/sbin/nologin app \
     && mkdir -p /app/files \
     && chown -R app:app /app
 
