@@ -6,6 +6,7 @@ Docker daemon is reachable.
 
 import os
 import time
+import uuid
 from io import BytesIO
 from typing import TYPE_CHECKING
 
@@ -18,6 +19,7 @@ from testcontainers.core.container import DockerContainer
 from jcpy.config.models import S3Options
 from jcpy.storage import FileStorage, StorageError
 from jcpy.storage.s3 import S3StorageAdapter
+from tests.adapter_contract import AdapterContract
 from tests.conftest import make_app, open_client
 from tests.docker import docker_available
 
@@ -119,6 +121,16 @@ async def listing(storage: FileStorage, path: str, *, deep: bool) -> set[str]:
         f"{entry.type}:{entry.path}"
         async for entry in storage.list(path, deep=deep)
     }
+
+
+class TestContract(AdapterContract):
+    @pytest.fixture
+    def adapter(self, minio: str, client: S3Client) -> S3StorageAdapter:
+        settings = {
+            **s3_settings(minio),
+            "prefix": f"c-{uuid.uuid4().hex[:8]}",
+        }
+        return S3StorageAdapter(S3Options.model_validate(settings))
 
 
 class TestAdapter:

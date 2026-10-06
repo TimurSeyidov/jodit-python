@@ -134,6 +134,20 @@ def test_timeouts_and_retries_are_configurable() -> None:
     }
 
 
+def without_existence_checks(adapter: S3StorageAdapter) -> None:
+    """Skip the file/folder checks that precede writes and deletes.
+
+    They are requests of their own; the storage contract tests cover them
+    against real services.
+    """
+
+    async def missing(path: str) -> bool:
+        return False
+
+    adapter.file_exists = missing  # type: ignore[method-assign]
+    adapter.directory_exists = missing  # type: ignore[method-assign]
+
+
 def stubbed(**values: object) -> tuple[S3StorageAdapter, Stubber]:
     adapter = S3StorageAdapter(
         options(
@@ -212,6 +226,7 @@ async def test_listing_skips_the_folder_itself() -> None:
 
 async def test_delete_directory_in_batches() -> None:
     adapter, stubber = stubbed()
+    without_existence_checks(adapter)
     for keys, truncated in ((["media/d/1", "media/d/2"], True), ([], False)):
         stubber.add_response(
             "list_objects_v2",
@@ -241,6 +256,7 @@ async def test_delete_directory_in_batches() -> None:
 
 async def test_delete_directory_reports_failed_objects() -> None:
     adapter, stubber = stubbed()
+    without_existence_checks(adapter)
     stubber.add_response(
         "list_objects_v2",
         {"Contents": [{"Key": "media/d/1"}, {"Key": "media/d/2"}]},
@@ -274,6 +290,7 @@ async def test_delete_directory_reports_failed_objects() -> None:
 
 async def test_delete_error_without_details() -> None:
     adapter, stubber = stubbed()
+    without_existence_checks(adapter)
     stubber.add_response(
         "list_objects_v2",
         {"Contents": [{"Key": "media/d/1"}]},
@@ -349,6 +366,7 @@ def test_invalid_object_options(values: dict[str, str]) -> None:
 
 async def test_uploads_get_the_object_options() -> None:
     adapter, stubber = stubbed(**OBJECT_OPTIONS)
+    without_existence_checks(adapter)
     stubber.add_response(
         "put_object",
         {},
@@ -371,6 +389,7 @@ async def test_uploads_get_the_object_options() -> None:
 
 async def test_folder_markers_are_encrypted() -> None:
     adapter, stubber = stubbed(**OBJECT_OPTIONS)
+    without_existence_checks(adapter)
     stubber.add_response(
         "put_object",
         {},
@@ -389,6 +408,7 @@ async def test_folder_markers_are_encrypted() -> None:
 
 async def test_copies_keep_encryption_and_storage_class() -> None:
     adapter, stubber = stubbed(**OBJECT_OPTIONS)
+    without_existence_checks(adapter)
     source = {"Bucket": "my-bucket", "Key": "media/a.txt"}
     stubber.add_response("head_object", {"ContentLength": 4}, source)
     stubber.add_response(
@@ -406,3 +426,13 @@ async def test_copies_keep_encryption_and_storage_class() -> None:
     await adapter.copy_file("a.txt", "b.txt")
 
     stubber.assert_no_pending_responses()
+
+
+async def test_read_does_not_hide_access_errors() -> None:
+    adapter, stubber = stubbed()
+    stubber.add_client_error(
+        "get_object", "AccessDenied", http_status_code=403
+    )
+
+    with pytest.raises(ClientError, match="AccessDenied"):
+        await adapter.read("secret.bin")

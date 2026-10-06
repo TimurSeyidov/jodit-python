@@ -49,6 +49,9 @@ class FailingReader:
     def tell(self) -> int:
         return self.position
 
+    def close(self) -> None:
+        self.position = 0
+
 
 class AdapterContract:
     async def test_write_and_read(

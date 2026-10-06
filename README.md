@@ -27,7 +27,7 @@ Python/FastAPI implementation of the Jodit File Browser and Uploader connector.
 - **Pillow** for image processing and thumbnails
 - **httpx** for SSRF-safe remote downloads
 - **WeasyPrint** (PDF), **html-for-docx** (DOCX), **boto3** (S3), **azure-storage-blob** (Azure), **google-cloud-storage** (GCS), **paramiko** (SFTP) as optional extras
-- **pytest + Testcontainers** for testing (MinIO, Azurite, fake-gcs-server, vsftpd, OpenSSH, Apache, rclone)
+- **pytest + Testcontainers** for testing (MinIO, OpenStack Swift, Ceph RGW, Azurite, fake-gcs-server, vsftpd, OpenSSH, Apache, rclone)
 - **uv**, **Ruff** and **MkDocs Material** for tooling and docs
 
 ## Installation
@@ -218,7 +218,7 @@ app.include_router(
 - [Access Control](https://timurseyidov.github.io/jodit-python/access-control/) - ACL rules and permissions
 - [Configuration](https://timurseyidov.github.io/jodit-python/config/) - All configuration options
 - [FastAPI Integration](https://timurseyidov.github.io/jodit-python/integration/) - Mounting, prefixes, several instances
-- [AWS S3 & S3-compatible](https://timurseyidov.github.io/jodit-python/aws-s3/) - Built-in S3 adapter, MinIO, R2, Yandex
+- [AWS S3 & S3-compatible](https://timurseyidov.github.io/jodit-python/aws-s3/) - Built-in S3 adapter, MinIO, R2, Yandex, OpenStack Swift, Ceph
 - [Azure Blob Storage](https://timurseyidov.github.io/jodit-python/azure/) - Built-in Azure adapter, managed identities, Azurite
 - [Google Cloud Storage](https://timurseyidov.github.io/jodit-python/gcs/) - Built-in GCS adapter, workload identity, emulators
 - [FTP & SFTP](https://timurseyidov.github.io/jodit-python/ftp-sftp/) - Files on FTP, FTPS and SFTP servers

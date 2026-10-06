@@ -196,13 +196,22 @@ class S3StorageAdapter:
             return self.public_base_url
         return f"{self.public_base_url}/{normalized}"
 
+    async def _refuse_directory(self, path: str) -> None:
+        """Keep an object from shadowing a folder of the same name."""
+        if normalize_s3_path(path) and await self.directory_exists(path):
+            raise IsADirectoryError(path)
+
     async def write(self, path: str, contents: bytes) -> None:
         """Upload an object (multipart for large bodies).
 
         Args:
             path: File path.
             contents: File contents.
+
+        Raises:
+            IsADirectoryError: A folder is at ``path``.
         """
+        await self._refuse_directory(path)
         key = self._key(path)
         await self._transfers.run(
             lambda: self.client.upload_fileobj(
@@ -221,7 +230,11 @@ class S3StorageAdapter:
         Args:
             path: File path.
             file: Source positioned at the start of the contents.
+
+        Raises:
+            IsADirectoryError: A folder is at ``path``.
         """
+        await self._refuse_directory(path)
         key = self._key(path)
         await self._transfers.run(
             lambda: self.client.upload_fileobj(
@@ -269,6 +282,9 @@ class S3StorageAdapter:
 
         Returns:
             Object body.
+
+        Raises:
+            FileWasNotFoundError: The object does not exist.
         """
 
         def get() -> bytes:
@@ -277,14 +293,26 @@ class S3StorageAdapter:
             )
             return response["Body"].read()
 
-        return await self._transfers.run(get)
+        try:
+            return await self._transfers.run(get)
+        except ClientError as error:
+            if _is_not_found(error):
+                raise FileWasNotFoundError(path) from None
+            raise
 
     async def delete_file(self, path: str) -> None:
         """Delete an object; a missing one is not an error.
 
         Args:
             path: File path.
+
+        Raises:
+            IsADirectoryError: ``path`` is a folder.
         """
+        if not await self.file_exists(path):
+            if normalize_s3_path(path) and await self.directory_exists(path):
+                raise IsADirectoryError(path)
+            return
         await to_thread.run_sync(
             lambda: self.client.delete_object(
                 Bucket=self.bucket, Key=self._key(path)
@@ -296,9 +324,18 @@ class S3StorageAdapter:
 
         Args:
             path: Directory path; the root needs no marker.
+
+        Raises:
+            NotADirectoryError: A file is where a parent folder should be.
         """
-        if not normalize_s3_path(path):
+        normalized = normalize_s3_path(path)
+        if not normalized:
             return
+        parts = normalized.split("/")
+        for index in range(1, len(parts) + 1):
+            ancestor = "/".join(parts[:index])
+            if await self.file_exists(ancestor):
+                raise NotADirectoryError(ancestor)
         await to_thread.run_sync(self._put_marker, self._dir_key(path))
 
     async def stat(self, path: str) -> StatEntry:
@@ -408,12 +445,17 @@ class S3StorageAdapter:
     async def delete_directory(self, path: str) -> None:
         """Delete every object below a folder, in batches of 1000.
 
+        A file at ``path`` is deleted too.
+
         Args:
             path: Directory path.
 
         Raises:
             OSError: Some objects could not be deleted.
         """
+        if normalize_s3_path(path) and await self.file_exists(path):
+            await self.delete_file(path)
+            return
         dir_key = self._dir_key(path)
 
         def delete() -> None:
@@ -521,7 +563,11 @@ class S3StorageAdapter:
         Args:
             source: Existing file path.
             destination: New file path.
+
+        Raises:
+            IsADirectoryError: A folder is at ``destination``.
         """
+        await self._refuse_directory(destination)
         await self._transfers.run(
             self._copy_object, self._key(source), self._key(destination)
         )

@@ -4,12 +4,17 @@ All notable changes to this project are documented in this file. The format is b
 
 ## [Unreleased]
 
+### Fixed
+
+- S3: reading a missing object reports "file not found" instead of a raw `NoSuchKey`; an object is never written or copied over a folder of the same name, a folder is never created below a file, `delete_file` refuses folders and `delete_directory` removes a file at the path, as with the other adapters.
+
 ### Changed
 
 - The Docker image runs as uid and gid `1000` instead of the system account `999`, so folders mounted from the host (most Linux users, WSL) are writable without `chown` or `--user`. A folder given to uid `999` before needs `chown -R 1000:1000` or `user: "999:999"`. `APP_UID` and `APP_GID` build arguments pick another uid.
 
 ### Documentation
 
+- S3: OpenStack Swift (`s3api`) and Ceph RADOS Gateway, tested against the storage contract next to MinIO; how to use them from OpenStack clouds.
 - Docker: mounted folders, with a Compose example and the usual causes of `Permission denied` (uid, a container not recreated, folders Docker created, WSL on a Windows drive, SELinux).
 
 ## [0.4.1] - 2026-09-30

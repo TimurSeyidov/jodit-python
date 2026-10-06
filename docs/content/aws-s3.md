@@ -71,6 +71,10 @@ This keeps secrets out of configuration files. Use `credentials` when one connec
 | DigitalOcean Spaces | `https://<region>.digitaloceanspaces.com` | `false` | the space region |
 | Backblaze B2 | `https://s3.<region>.backblazeb2.com` | `false` | the bucket region |
 | Wasabi | `https://s3.<region>.wasabisys.com` | `false` | the bucket region |
+| OpenStack Swift (`s3api`) | the provider's S3 endpoint | `true` | the provider's, often `us-east-1` |
+| Ceph RADOS Gateway | `https://<rgw-host>` | `true` | the zonegroup name, often `default` |
+
+MinIO, OpenStack Swift and Ceph RGW are tested against the same storage contract as the other adapters (Docker images in the test suite); the other services are configured the same way but not tested.
 
 MinIO next to the connector in Docker Compose:
 
@@ -94,6 +98,17 @@ MinIO next to the connector in Docker Compose:
 ```
 
 The connector talks to MinIO at `minio:9000` inside the network; the browser loads files from `localhost:9000` (`baseurl`).
+
+### OpenStack clouds
+
+Object storage in OpenStack clouds (OVHcloud, Infomaniak, Catalyst Cloud, Cleura, private clouds) is OpenStack Swift or Ceph RADOS Gateway. Both speak the S3 API, so the `s3` adapter works with them:
+
+- **Credentials.** Swift's S3 layer takes EC2-style credentials from Keystone: `openstack ec2 credentials create` prints an `access` and a `secret` for the current project. Ceph RGW users have keys of their own (`radosgw-admin user create`), or Keystone EC2 credentials when RGW is wired to Keystone.
+- **Endpoint.** The provider documents an S3 endpoint for each region; it is not the Swift (`/v1/AUTH_...`) URL. Use `forcePathStyle: true` unless the provider supports bucket subdomains.
+- **Containers are buckets.** A Swift container created in Horizon or with `openstack container create` is the `bucket`.
+- **Public files.** Make the container public on the provider's side (a public read ACL in Horizon, or a bucket policy where the gateway supports one) and use its public URL as `baseurl`.
+
+The native Swift API with Keystone authentication (without the S3 layer) is not supported.
 
 ## Serving the files
 
@@ -180,8 +195,8 @@ Thumbnails cost one `GetObject` and one `PutObject` per image on the first listi
 Files upload but do not show in the editor
 :   Open `baseurl` + a file name in a browser. A `403` there means the bucket policy or the CDN is missing.
 
-MinIO answers `NoSuchBucket` or `301`
-:   Set `forcePathStyle: true`; otherwise boto3 addresses `bucket.minio:9000`, which does not resolve.
+MinIO or Ceph answers `NoSuchBucket` or `301`
+:   Set `forcePathStyle: true`; otherwise boto3 addresses `bucket.minio:9000`, which does not resolve. With Ceph RGW, also use the host name the gateway is configured for (`rgw_dns_name` or the zonegroup host names): requests for other names can be read as bucket names.
 
 Wrong region
 :   AWS answers `PermanentRedirect` naming the right region; set `region` to it.
