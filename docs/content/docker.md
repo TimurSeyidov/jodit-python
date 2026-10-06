@@ -120,7 +120,7 @@ When uploads fail with `Unable to write the file. Reason: Permission denied`:
 
 Every write goes to a temporary `.<random>.tmp` file in the target folder first and is then renamed over the target, so the container needs write access to the folder itself, not just to the files in it.
 
-Images before 0.4.2 ran as uid `999`. A folder given to that uid with `chown` needs `chown -R 1000:1000` (or `user: "999:999"`) after upgrading. Build with `--build-arg APP_UID=... --build-arg APP_GID=...` for another fixed uid.
+Images before 0.5.0 ran as uid `999`. A folder given to that uid with `chown` needs `chown -R 1000:1000` (or `user: "999:999"`) after upgrading. Build with `--build-arg APP_UID=... --build-arg APP_GID=...` for another fixed uid.
 
 ## Stages
 
