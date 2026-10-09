@@ -101,6 +101,8 @@ uv run uvicorn main:app --port 8081
 }
 ```
 
+Jodit only reads answers sent with `200`, `201` or `202`, so for the Jodit FileBrowser and Uploader set `"errorHttpStatus": false`: errors are then sent with `200`, as by the PHP connector, and Jodit shows their message (`data.code` keeps the status). See [errorHttpStatus](https://timurseyidov.github.io/jodit-python/config/#errorHttpStatus).
+
 Without an explicit path the configuration is read from the `CONFIG` environment variable (JSON text) or the file named by `CONFIG_FILE`.
 
 Access rules live in `accessControl` (the last matching rule wins, unlisted actions are allowed):

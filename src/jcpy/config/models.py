@@ -329,6 +329,7 @@ class AppConfig(_Model):
     allow_cross_origin: bool = False
     allowed_origins: list[str] | None = None
     only_post: bool = Field(default=False, alias="onlyPOST")
+    error_http_status: bool = True
     safe_thumbs_count_in_one_time: int = 20
     source_class_name: str = "FileSystem"
     access_control: list[AccessControlRule] = Field(default_factory=list)

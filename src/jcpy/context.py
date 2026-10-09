@@ -270,8 +270,9 @@ class ActionContext:
         """Select the sources named by the ``source`` parameter.
 
         Returns:
-            All sources when the parameter is empty, otherwise the one
-            with that name.
+            All sources when the parameter is empty, or ``"default"``
+            and no source has that name, otherwise the one with that
+            name.
 
         Raises:
             HttpError: ``404 Source not found`` for an unknown name.

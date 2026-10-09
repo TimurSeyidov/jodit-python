@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `errorHttpStatus` setting (default `true`, unchanged behaviour). With `false` an action's error envelope is sent with HTTP `200`, as by the PHP connector, and `data.code` keeps the status (`403`, `404`...). Jodit's Ajax accepts only `200`, `201` and `202`: with other statuses its Uploader and FileBrowser show the reason phrase ("Forbidden") instead of the connector's message. `/ping` keeps its `405` under `onlyPOST`.
+
+### Fixed
+
+- `source=default`, which Jodit's FileBrowser sends after a click on the root item `.` of the folder tree, is treated as no source (every source for `files` and `folders`, the first one for `fileUpload`, `folderCreate` and the other actions), as in the PHP connector, instead of answering `404 Source not found`. A configured source named `default` is still selected by that name.
+
 ## [0.5.0] - 2026-10-06
 
 ### Fixed

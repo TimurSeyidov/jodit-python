@@ -36,6 +36,17 @@ In Python the validated settings are `AppConfig` attributes in snake_case (`conf
 
 Log failed requests with tracebacks to the `jcpy` logger. Set `false` in production to log less; answers are the same either way.
 
+### `errorHttpStatus` {#errorHttpStatus}
+`boolean` · default `true`
+
+Send an action's error with its HTTP status (`400`, `403`, `404`...). With `false` every error envelope of an action is sent with `200`, as the PHP connector does; `success: false` and `data.code` still tell the error apart:
+
+```json
+{"success": false, "data": {"code": 403, "messages": ["File type is not in white list"]}}
+```
+
+Jodit accepts only `200`, `201` and `202` (`successStatuses`): on any other status its Ajax rejects with the HTTP reason phrase (HTTP/1.1), so the Uploader and the FileBrowser show "Forbidden" or "Not Found" instead of the connector's message. Set `false` when Jodit talks to the connector. `/ping`, CORS preflights and file contents are not affected.
+
 ### `title` {#title}
 `string` · default `""`
 
@@ -358,7 +369,7 @@ A source may set any global setting except `sources`; the value applies to that 
 }
 ```
 
-Overrides are validated like global settings; an invalid one stops the start with the source name in the message. Settings that act before a source is known (`onlyPOST`, CORS, `accessControl`, `defaultRole`) are read from the global level only.
+Overrides are validated like global settings; an invalid one stops the start with the source name in the message. Settings that act before a source is known (`onlyPOST`, `errorHttpStatus`, CORS, `accessControl`, `defaultRole`) are read from the global level only.
 
 ## Examples
 

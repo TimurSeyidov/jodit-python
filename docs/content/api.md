@@ -20,7 +20,7 @@ POST /                      (body: action=files&source=default&path=photos)
 - Parameters come from the query string, a form body (`application/x-www-form-urlencoded` or `multipart/form-data`) or a JSON body. When a name is in several places the path wins over the query string, and the query string over the body.
 - Nested values use brackets, as the `qs` package parses them: `box[w]=100&box[h]=50`, `mods[withFolders]=true`, `files[0]=...`.
 - Every action accepts `GET` and `POST`, except `imageSave` and `imageLoad` (POST only). With [`onlyPOST`](config.md#onlyPOST) every `GET` gets `405`.
-- `source` selects a source; without it listings (`files`, `folders`) cover every source (and fail with `404` if `path` is missing in any of them) and other actions use the first one. `path` is a directory inside the source (the root when omitted).
+- `source` selects a source; without it listings (`files`, `folders`) cover every source (and fail with `404` if `path` is missing in any of them) and other actions use the first one. `source=default`, which Jodit sends for the root of the folder tree, means the same as no `source` unless a source is named `default`. `path` is a directory inside the source (the root when omitted).
 
 ### Answers
 
@@ -33,6 +33,8 @@ Errors carry the HTTP status in the status line and in `data.code`:
 ```json
 {"success": false, "data": {"code": 404, "messages": ["File or directory not exists"]}}
 ```
+
+With [`errorHttpStatus: false`](config.md#errorHttpStatus) the status line is `200` and only `data.code` carries the status, as in the PHP connector; Jodit then shows the connector's message.
 
 | Status | When |
 |---|---|

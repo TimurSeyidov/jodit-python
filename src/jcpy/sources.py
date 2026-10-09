@@ -29,6 +29,12 @@ logger = logging.getLogger("jcpy")
 VIRTUAL_ROOT = "/"
 PATH_NOT_FOUND = "Path does not exist"
 SOURCE_NOT_FOUND = "Source not found"
+DEFAULT_SOURCE = "default"
+"""Source name Jodit sends for the root item of the folder tree.
+
+As in the PHP connector it means no particular source, unless a source
+with this name is configured.
+"""
 
 _SLASHES = re.compile(r"/+")
 
@@ -347,7 +353,8 @@ class SourcePool:
         """Select the sources a request works on.
 
         Args:
-            source: Requested source name; all sources when empty.
+            source: Requested source name; all sources when empty or
+                ``"default"`` and no source has that name.
             role: User role.
             action: Requested action.
             access: Access control; refusals for a source root are
@@ -361,7 +368,10 @@ class SourcePool:
                 ``400`` for an unknown storage adapter, ``501`` for an
                 adapter whose extra is not installed.
         """
-        sources = list(self._build().values())
+        built = self._build()
+        if source == DEFAULT_SOURCE and source not in built:
+            source = ""
+        sources = list(built.values())
         if source:
             sources = [item for item in sources if item.name == source]
             if not sources:

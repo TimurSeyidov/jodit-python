@@ -34,12 +34,17 @@ def success_response(data: JsonObject) -> JsonResponse:
     )
 
 
-def error_response(status_code: int, messages: list[str]) -> JsonResponse:
+def error_response(
+    status_code: int, messages: list[str], *, http_status: bool = True
+) -> JsonResponse:
     """Build an error response.
 
     Args:
-        status_code: HTTP status, repeated as ``data.code``.
+        status_code: Error code of ``data.code``.
         messages: Error messages.
+        http_status: Send ``status_code`` as the HTTP status; ``200``
+            otherwise, as the PHP connector does (see
+            ``errorHttpStatus``).
 
     Returns:
         Response with ``{"success": false, "data": {"code", "messages"}}``.
@@ -49,17 +54,23 @@ def error_response(status_code: int, messages: list[str]) -> JsonResponse:
             "success": False,
             "data": {"code": status_code, "messages": messages},
         },
-        status_code=status_code,
+        status_code=status_code if http_status else HTTPStatus.OK,
     )
 
 
-def internal_error_response(message: str) -> JsonResponse:
+def internal_error_response(
+    message: str, *, http_status: bool = True
+) -> JsonResponse:
     """Build a ``500`` error response.
 
     Args:
         message: Error message.
+        http_status: Send ``500`` as the HTTP status; ``200``
+            otherwise.
 
     Returns:
-        Error envelope with status ``500``.
+        Error envelope with code ``500``.
     """
-    return error_response(HTTPStatus.INTERNAL_SERVER_ERROR, [message])
+    return error_response(
+        HTTPStatus.INTERNAL_SERVER_ERROR, [message], http_status=http_status
+    )
