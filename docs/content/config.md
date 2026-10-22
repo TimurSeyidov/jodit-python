@@ -88,7 +88,7 @@ Source settings:
 |---|---|---|
 | `name` | `string` | Name used in requests (`source=...`); defaults to the key |
 | `title` | `string` | Required. Name shown in the browser |
-| `baseurl` | `string` | Required. Absolute public URL of the source root; file links and thumbnails are built from it |
+| `baseurl` | `string` | Required. Public URL of the source root, absolute (`https://cdn.example.com/uploads/`) or from the site root (`/uploads/`); file links and thumbnails are built from it |
 | `root` | `string` | Directory of the source; required for local storage, a virtual prefix for other adapters |
 | `defaultFilesKey` | `string` | Overrides the global [`defaultFilesKey`](#defaultFilesKey) |
 | `storageAdapter` | `string` | `local` (default), `s3`, `azure`, `gcs`, `ftp`, `sftp`, `webdav` or a [registered](storage-adapters.md) name |
@@ -101,6 +101,8 @@ Source settings:
 | *any global setting* | | [Per-source override](#per-source-overrides) |
 
 The connector does not serve the files: `baseurl` must point to a web server or a CDN that does.
+
+A `baseurl` from the site root (`/uploads/`) is resolved by the browser against the page with the editor, so the same configuration works on every host the site is opened on (`localhost`, `127.0.0.1`, a staging domain). The editor then inserts root-relative links (`/uploads/a.png`) into the content, and `getLocalFileByUrl` accepts them. Protocol-relative values (`//cdn.example.com/uploads/`) are refused: use the absolute URL.
 
 ### `dynamicSourcesCache` {#dynamicSourcesCache}
 `object` · default `{"max": 200, "ttlMs": 60000}`

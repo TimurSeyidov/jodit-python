@@ -186,6 +186,14 @@ def test_s3_source() -> None:
             "sources.a.baseurl",
         ),
         (
+            {"sources": {"a": {**SOURCE, "baseurl": "files/a/"}}},
+            "sources.a.baseurl",
+        ),
+        (
+            {"sources": {"a": {**SOURCE, "baseurl": "//cdn.example/a/"}}},
+            "sources.a.baseurl",
+        ),
+        (
             {"sources": {"a": {"title": "A", "baseurl": "http://x/"}}},
             "root is required for local storage",
         ),
@@ -237,6 +245,30 @@ def test_invalid_config(user: dict[str, object], message: str) -> None:
         build_config(user)  # type: ignore[arg-type]
 
     assert message in str(info.value)
+
+
+@pytest.mark.parametrize("baseurl", ["/", "/upload/", "/media/files/"])
+def test_baseurl_from_site_root(baseurl: str) -> None:
+    config = build_config({"sources": {"a": {**SOURCE, "baseurl": baseurl}}})
+
+    assert config.sources["a"].baseurl == baseurl
+
+
+def test_root_relative_baseurl_only_for_sources() -> None:
+    s3: JsonObject = {
+        "bucket": "b",
+        "endpoint": "/minio",
+        "credentials": {"accessKeyId": "id", "secretAccessKey": "secret"},
+    }
+    source: JsonObject = {
+        "title": "S",
+        "baseurl": "/media/",
+        "storageAdapter": "s3",
+        "s3": s3,
+    }
+
+    with pytest.raises(ConfigError, match=r"sources\.s\.s3\.endpoint"):
+        build_config({"sources": {"s": source}})
 
 
 def test_read_user_config_priority(

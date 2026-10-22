@@ -131,3 +131,39 @@ def url_pathname(url: str) -> str | None:
     """
     parsed = parse_url(url)
     return None if parsed is None else parsed.pathname
+
+
+def is_root_relative(url: str) -> bool:
+    """Tell a path from the site root (``/files/``) from other URLs.
+
+    Protocol-relative URLs (``//host/path``, ``/\\host/path``) are not
+    root-relative: browsers resolve them to another host.
+
+    Args:
+        url: URL or path.
+
+    Returns:
+        ``True`` when ``url`` starts with a single ``/``.
+    """
+    cleaned = url.strip(_TRIM)
+    return cleaned.startswith("/") and cleaned[1:2] not in {"/", "\\"}
+
+
+def pathname_of(url: str) -> str | None:
+    """Return the path of an absolute URL or of a root-relative path.
+
+    Root-relative paths lose their query and fragment and get dot
+    segments resolved, as ``new URL(url, base).pathname`` would.
+
+    Args:
+        url: Absolute URL (``http://host/files/a.png``) or path from
+            the site root (``/files/a.png``).
+
+    Returns:
+        Percent-encoded path, ``None`` for anything else.
+    """
+    if is_root_relative(url):
+        cleaned = url.strip(_TRIM).replace("\t", "").replace("\n", "")
+        path = re.split(r"[?#]", cleaned, maxsplit=1)[0]
+        return _remove_dot_segments(path)
+    return url_pathname(url)

@@ -469,6 +469,33 @@ class TestGetLocalFileByUrl:
 
         assert response.json()["data"]["source"] == "other-name"
 
+    async def test_root_relative_baseurl(
+        self, connector_client: ClientFactory, root: Path
+    ) -> None:
+        config = source_config(root)
+        sources = config["sources"]
+        assert isinstance(sources, dict)
+        test = sources["test"]
+        assert isinstance(test, dict)
+        test["baseurl"] = "/upload/"
+        async with connector_client(config) as http:
+            absolute = await resolve(http, "http://site:9000/upload/file1.txt")
+            relative = await resolve(http, "/upload/subdir/sub.txt?v=2")
+            outside = await resolve(http, "/upload/../../../etc/passwd")
+
+        assert absolute.json()["data"]["name"] == "file1.txt"
+        assert relative.json()["data"]["path"] == "/subdir"
+        assert relative.json()["data"]["name"] == "sub.txt"
+        assert outside.json()["data"]["messages"] == ["File does not exist"]
+
+    async def test_root_relative_url_with_absolute_baseurl(
+        self, connector_client: ClientFactory, root: Path
+    ) -> None:
+        async with connector_client(source_config(root)) as http:
+            response = await resolve(http, "/files/test/image.png")
+
+        assert response.json()["data"]["name"] == "image.png"
+
     @pytest.mark.parametrize(
         ("params", "message"),
         [
@@ -477,6 +504,8 @@ class TestGetLocalFileByUrl:
             ({"url": "   "}, "Empty url"),
             ({"url": "not a url"}, "Empty url"),
             ({"url": "http://"}, "Empty url"),
+            ({"url": "//cdn.example/files/test/file1.txt"}, "Empty url"),
+            ({"url": "files/test/file1.txt"}, "Empty url"),
             ({"url": f"{BASEURL}missing.txt"}, "File does not exist"),
             (
                 {"url": "http://example.com/some/file.txt"},

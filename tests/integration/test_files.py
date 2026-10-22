@@ -107,6 +107,26 @@ async def test_lists_root(connector_client: ClientFactory, root: Path) -> None:
     assert by_name["image.png"]["thumb"] == "_thumbs/image.png"
 
 
+async def test_root_relative_baseurl_is_sent_as_is(
+    connector_client: ClientFactory, root: Path
+) -> None:
+    config = source_config(root)
+    sources = config["sources"]
+    assert isinstance(sources, dict)
+    test = sources["test"]
+    assert isinstance(test, dict)
+    test["baseurl"] = "/upload/"
+    async with connector_client(config) as http:
+        response = await http.get(
+            "/", params={"action": "files", "source": "test"}
+        )
+
+    source = response.json()["data"]["sources"][0]
+    assert source["baseurl"] == "/upload/"
+    image = next(f for f in source["files"] if f["name"] == "image.png")
+    assert image["thumb"] == "_thumbs/image.png"
+
+
 async def test_default_sort_is_newest_first(
     connector_client: ClientFactory, root: Path
 ) -> None:

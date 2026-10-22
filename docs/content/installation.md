@@ -51,7 +51,7 @@ Functions (authentication, dynamic access rules, icon generator, tenant resolver
 | `CONFIG_FILE` | | Path to a JSON configuration file |
 | `SOURCE_NAME` | `Test Files` | Title of the default source |
 | `SOURCE_ROOT` | `./files` | Directory of the default source |
-| `SOURCE_BASEURL` | `http://localhost:$PORT/files/` | Public URL of the default source |
+| `SOURCE_BASEURL` | `http://localhost:$PORT/files/` | Public URL of the default source, absolute or from the site root (`/files/`) |
 | `HOST` | `0.0.0.0` | Address the `jcpy` command listens on |
 | `PORT` | `8081` | Port the `jcpy` command listens on |
 

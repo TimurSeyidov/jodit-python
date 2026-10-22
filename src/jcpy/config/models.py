@@ -22,6 +22,7 @@ from pydantic import (
 from pydantic.alias_generators import to_camel
 
 from jcpy.config import defaults
+from jcpy.helpers.urls import is_root_relative
 
 type ExtensionsResolver = Callable[
     [str, AccessControlRule, str, str], list[str]
@@ -43,6 +44,14 @@ extension of the checked request.
 def _check_url(value: str) -> str:
     AnyUrl(value)
     return value
+
+
+def _check_baseurl(value: str) -> str:
+    # The connector only sends baseurl to the browser, which resolves a
+    # path from the site root against the page it was opened on.
+    if is_root_relative(value):
+        return value
+    return _check_url(value)
 
 
 class _Model(BaseModel):
@@ -452,7 +461,7 @@ class SourceConfig(BaseModel):
     @field_validator("baseurl")
     @classmethod
     def _baseurl_is_url(cls, value: str) -> str:
-        return _check_url(value)
+        return _check_baseurl(value)
 
     @model_validator(mode="after")
     def _check_storage(self) -> Self:
