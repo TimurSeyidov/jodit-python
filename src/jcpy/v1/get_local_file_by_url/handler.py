@@ -3,7 +3,7 @@
 from typing import TYPE_CHECKING
 
 from jcpy.errors import HttpError
-from jcpy.helpers.urls import url_pathname
+from jcpy.helpers.urls import pathname_of
 from jcpy.responses import success_response
 from jcpy.services.resolve_url import resolve_file_by_url
 from jcpy.validation import Issue, string_field
@@ -35,7 +35,8 @@ async def get_local_file_by_url_handler(context: ActionContext) -> Response:
     """Find which source file a public URL points to.
 
     Every source is tried in order; the first one holding the file
-    wins.
+    wins. ``url`` is an absolute URL or a path from the site root, as
+    the editor inserts it with a root-relative ``baseurl``.
 
     Args:
         context: Action context.
@@ -53,7 +54,7 @@ async def get_local_file_by_url_handler(context: ActionContext) -> Response:
         validate(data)
         or not isinstance(url, str)
         or not url.strip()
-        or url_pathname(url) is None
+        or pathname_of(url) is None
     ):
         raise HttpError.bad_request(EMPTY_URL)
 

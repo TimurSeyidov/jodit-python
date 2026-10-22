@@ -9,7 +9,7 @@ from urllib.parse import unquote
 import pytest
 from PIL import Image
 
-from jcpy.helpers.urls import url_pathname
+from jcpy.helpers.urls import is_root_relative, pathname_of, url_pathname
 from jcpy.services.listing import _Item, sort_items
 from jcpy.services.thumbs import render_thumbnail
 from jcpy.storage.base import StatEntry
@@ -57,6 +57,41 @@ def test_url_pathname_matches_whatwg(case: dict[str, Any]) -> None:
 @pytest.mark.parametrize("url", ["http://[::1/x", "http://[::1]x/"])
 def test_url_pathname_rejects_bad_ipv6(url: str) -> None:
     assert url_pathname(url) is None
+
+
+@pytest.mark.parametrize(
+    ("url", "expected"),
+    [
+        ("/", True),
+        ("/files/", True),
+        (" /files/a.png", True),
+        ("//cdn.example/files/", False),
+        ("/\\cdn.example/files/", False),
+        ("files/", False),
+        ("http://x/files/", False),
+        ("", False),
+    ],
+)
+def test_is_root_relative(url: str, *, expected: bool) -> None:
+    assert is_root_relative(url) is expected
+
+
+@pytest.mark.parametrize(
+    ("url", "expected"),
+    [
+        ("/upload/a.png", "/upload/a.png"),
+        ("/upload/a.png?v=1#top", "/upload/a.png"),
+        ("/upload/x/../a.png", "/upload/a.png"),
+        ("/upload/../../etc/passwd", "/etc/passwd"),
+        ("/upload/my%20file.png", "/upload/my%20file.png"),
+        ("http://host:9000/upload/a.png", "/upload/a.png"),
+        ("//cdn.example/upload/a.png", None),
+        ("upload/a.png", None),
+        ("not a url", None),
+    ],
+)
+def test_pathname_of(url: str, expected: str | None) -> None:
+    assert pathname_of(url) == expected
 
 
 def image_bytes(mode: str, size: tuple[int, int], fmt: str) -> bytes:

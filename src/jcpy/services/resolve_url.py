@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 from urllib.parse import unquote
 
-from jcpy.helpers.urls import url_pathname
+from jcpy.helpers.urls import pathname_of
 
 if TYPE_CHECKING:
     from jcpy.sources import Source
@@ -33,7 +33,8 @@ async def resolve_file_by_url(source: Source, url: str) -> ResolvedFile | None:
 
     The source ``baseurl`` path is stripped from the URL path; the rest
     (decoded) must be an existing file with a served extension. The
-    host is not compared.
+    host is not compared. Both ``baseurl`` and ``url`` may be absolute
+    URLs or paths from the site root.
 
     Args:
         source: Source to search.
@@ -42,8 +43,8 @@ async def resolve_file_by_url(source: Source, url: str) -> ResolvedFile | None:
     Returns:
         File location, ``None`` when the source has no such file.
     """
-    base = url_pathname(source.settings.baseurl) or "/"
-    pathname = url_pathname(url)
+    base = pathname_of(source.settings.baseurl) or "/"
+    pathname = pathname_of(url)
     if pathname is None:
         return None
     prefix = re.compile("^(/)?" + re.escape(unquote(base)))

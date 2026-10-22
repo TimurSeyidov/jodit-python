@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- A source `baseurl` can be a path from the site root (`/uploads/`), not only an absolute URL. The browser resolves it against the page with the editor, so one configuration serves `localhost`, `127.0.0.1` and other hosts of the site. `getLocalFileByUrl` accepts root-relative URLs (`/uploads/a.png`), which the editor inserts with such a `baseurl`. Values without a leading `/` and protocol-relative ones (`//host/`) are still refused.
+
 ## [0.5.1] - 2026-10-09
 
 ### Added
@@ -109,6 +115,7 @@ First release.
 - A rejected upload never overwrites an existing file; `imageSave` obeys the `extensions` list.
 - Error messages do not reveal absolute server paths.
 
+[Unreleased]: https://github.com/TimurSeyidov/jodit-python/compare/v0.5.1...HEAD
 [0.5.1]: https://github.com/TimurSeyidov/jodit-python/releases/tag/v0.5.1
 [0.5.0]: https://github.com/TimurSeyidov/jodit-python/releases/tag/v0.5.0
 [0.4.1]: https://github.com/TimurSeyidov/jodit-python/releases/tag/v0.4.1
