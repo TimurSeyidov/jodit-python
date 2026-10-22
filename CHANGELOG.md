@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.6.0] - 2026-10-22
 
 ### Added
 
@@ -115,7 +115,7 @@ First release.
 - A rejected upload never overwrites an existing file; `imageSave` obeys the `extensions` list.
 - Error messages do not reveal absolute server paths.
 
-[Unreleased]: https://github.com/TimurSeyidov/jodit-python/compare/v0.5.1...HEAD
+[0.6.0]: https://github.com/TimurSeyidov/jodit-python/releases/tag/v0.6.0
 [0.5.1]: https://github.com/TimurSeyidov/jodit-python/releases/tag/v0.5.1
 [0.5.0]: https://github.com/TimurSeyidov/jodit-python/releases/tag/v0.5.0
 [0.4.1]: https://github.com/TimurSeyidov/jodit-python/releases/tag/v0.4.1
