@@ -160,7 +160,9 @@ What an upload does when the name is taken:
 
 - `addNumber`: store as `name-1.ext`, `name-2.ext`...
 - `replace`: overwrite
-- `error`: fail with `400 File ... already exists`
+- `error`: fail with `409 File ... already exists`
+
+A client overrides it for one upload with the `onExists` parameter of [`fileUpload`](api.md#fileupload-post-multipart).
 
 ### `datetimeFormat` {#datetimeFormat}
 `string` · default `"M/D/YYYY h:mm:ss A"`

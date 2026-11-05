@@ -170,8 +170,79 @@ class TestFileUpload:
                 files=[("files", ("file.txt", b"new", "text/plain"))],
             )
 
-        assert response.status_code == 400
+        assert response.status_code == 409
         assert messages(response) == ["File file.txt already exists"]
+
+    async def test_on_exists_replace_overrides_the_error_strategy(
+        self, connector_client: ClientFactory, root: Path
+    ) -> None:
+        async with connector_client(
+            config(root, saveSameFileNameStrategy="error")
+        ) as http:
+            response = await http.post(
+                "/fileUpload",
+                data={"onExists": "replace"},
+                files=[("files", ("file.txt", b"new", "text/plain"))],
+            )
+
+        assert response.status_code == 200
+        assert response.json()["data"]["files"] == ["file.txt"]
+        assert (root / "file.txt").read_bytes() == b"new"
+
+    async def test_on_exists_add_number_overrides_the_error_strategy(
+        self, connector_client: ClientFactory, root: Path
+    ) -> None:
+        async with connector_client(
+            config(root, saveSameFileNameStrategy="error")
+        ) as http:
+            response = await http.post(
+                "/fileUpload",
+                data={"onExists": "addNumber"},
+                files=[("files", ("file.txt", b"new", "text/plain"))],
+            )
+
+        assert response.status_code == 200
+        assert response.json()["data"]["files"] == ["file-1.txt"]
+
+    async def test_on_exists_error_overrides_the_add_number_strategy(
+        self, connector_client: ClientFactory, root: Path
+    ) -> None:
+        async with connector_client(config(root)) as http:
+            response = await http.post(
+                "/fileUpload",
+                data={"onExists": "error"},
+                files=[("files", ("file.txt", b"new", "text/plain"))],
+            )
+
+        assert response.status_code == 409
+        assert not (root / "file-1.txt").exists()
+
+    async def test_unknown_on_exists_is_rejected(
+        self, connector_client: ClientFactory, root: Path
+    ) -> None:
+        async with connector_client(config(root)) as http:
+            response = await http.post(
+                "/fileUpload",
+                data={"onExists": "overwrite"},
+                files=[("files", ("new.txt", b"new", "text/plain"))],
+            )
+
+        assert response.status_code == 400
+        assert not (root / "new.txt").exists()
+
+    async def test_on_exists_replace_needs_file_remove(
+        self, connector_client: ClientFactory, root: Path
+    ) -> None:
+        rules = deny("FILE_REMOVE")
+        async with connector_client(config(root, accessControl=rules)) as http:
+            response = await http.post(
+                "/fileUpload",
+                data={"onExists": "replace"},
+                files=[("files", ("file.txt", b"new", "text/plain"))],
+            )
+
+        assert response.status_code == 403
+        assert (root / "file.txt").read_bytes() != b"new"
 
     async def test_forbidden_extension_rolls_back_the_request(
         self, connector_client: ClientFactory, root: Path

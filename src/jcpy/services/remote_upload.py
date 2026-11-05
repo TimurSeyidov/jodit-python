@@ -51,7 +51,7 @@ async def _target_path(source: Source, directory: str, file_name: str) -> str:
     strategy = source.config.save_same_file_name_strategy or "addNumber"
     if strategy == "error":
         msg = f"File {file_name} already exists"
-        raise HttpError.bad_request(msg)
+        raise HttpError.conflict(msg)
     if strategy == "replace":
         return target
     extension = source.get_extension(file_name)

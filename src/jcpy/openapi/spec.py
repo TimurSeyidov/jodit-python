@@ -20,6 +20,7 @@ ERROR_DESCRIPTIONS = {
     403: "Access denied",
     404: "Source, path or file not found",
     405: "Method not allowed",
+    409: "The uploaded name is taken and the strategy is error",
     413: "Request body too large",
     422: "Non-numeric paging parameters",
     500: "Internal error",
@@ -77,6 +78,7 @@ ACTIONS: tuple[ActionDoc, ...] = (
         method="post",
         body=("multipart/form-data", m.UploadForm),
         response=m.UploadResponse,
+        errors=(400, 403, 404, 409, 500),
     ),
     ActionDoc(
         "fileUploadRemote",
@@ -87,6 +89,7 @@ ACTIONS: tuple[ActionDoc, ...] = (
         "Files",
         query=m.RemoteUploadQuery,
         response=m.RemoteUploadResponse,
+        errors=(400, 403, 404, 409, 500),
     ),
     ActionDoc(
         "fileRemove",

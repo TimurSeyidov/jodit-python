@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- `fileUpload` accepts `onExists` (`addNumber`, `replace` or `error`), which overrides `saveSameFileNameStrategy` for that one upload; `replace` additionally needs `FILE_REMOVE` on the path, since the existing file is destroyed. Same parameter as in jodit-nodejs 2.1.0 and the PHP connector 3.0.61.
+
+### Changed
+
+- A taken name under the `error` strategy answers `409` instead of `400` (`fileUpload` and `fileUploadRemote`), so a client can tell it from any other failed upload and ask the user what to do.
+
 ## [0.6.0] - 2026-10-22
 
 ### Added

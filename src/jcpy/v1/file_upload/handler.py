@@ -4,9 +4,9 @@ from typing import TYPE_CHECKING
 
 from jcpy.errors import HttpError
 from jcpy.responses import success_response
-from jcpy.services.upload import upload_files
+from jcpy.services.upload import SAME_FILE_NAME_STRATEGIES, upload_files
 from jcpy.v1.common import first_source, string_fields
-from jcpy.validation import require_valid_plain
+from jcpy.validation import one_of, require_valid_plain, union_field
 
 if TYPE_CHECKING:
     from starlette.responses import Response
@@ -19,7 +19,9 @@ async def file_upload_handler(context: ActionContext) -> Response:
     """Store the files of a multipart request.
 
     Files are taken from the field named by ``defaultFilesKey`` (of the
-    source, else global) and from ``files[...]`` fields.
+    source, else global) and from ``files[...]`` fields. ``onExists``
+    (``addNumber``, ``replace`` or ``error``) overrides
+    ``saveSameFileNameStrategy`` for this upload.
 
     Args:
         context: Action context.
@@ -30,10 +32,19 @@ async def file_upload_handler(context: ActionContext) -> Response:
 
     Raises:
         HttpError: ``400`` for invalid parameters or no files, ``403``
-            for denied uploads, ``404`` for an unknown source or path.
+            for denied uploads, ``404`` for an unknown source or path,
+            ``409`` for a taken name with the ``error`` strategy.
     """
     params = context.params
-    require_valid_plain(string_fields(params.data))
+    require_valid_plain(
+        [
+            *string_fields(params.data),
+            *union_field(
+                params.data, "onExists", one_of(*SAME_FILE_NAME_STRATEGIES)
+            ),
+        ]
+    )
+    on_exists = params.data.get("onExists")
     source = await first_source(context)
     files_key = (
         source.settings.default_files_key or context.config.default_files_key
@@ -49,7 +60,13 @@ async def file_upload_handler(context: ActionContext) -> Response:
         context.role, params.action, await source.get_path(params.path)
     )
 
-    stored = await upload_files(context, source, uploads, params.path)
+    stored = await upload_files(
+        context,
+        source,
+        uploads,
+        params.path,
+        on_exists if isinstance(on_exists, str) else None,
+    )
     messages: list[JsonValue] = [
         f"File {item.name} was uploaded" for item in stored
     ]

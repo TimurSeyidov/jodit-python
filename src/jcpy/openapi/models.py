@@ -190,6 +190,13 @@ class GenerateDocxQuery(_Doc):
 class UploadForm(SourceQuery):
     """Multipart form of ``fileUpload``."""
 
+    on_exists: Literal["addNumber", "replace", "error"] | None = Field(
+        default=None,
+        alias="onExists",
+        description="What to do when the name is taken; overrides "
+        "saveSameFileNameStrategy for this upload. replace also needs "
+        "the FILE_REMOVE permission on the path",
+    )
     files: list[bytes] = Field(
         description="Files, as `files[0]`, `files[1]`... or the "
         "`defaultFilesKey` field",
