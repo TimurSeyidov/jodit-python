@@ -195,7 +195,7 @@ async def test_refusals(
 
 @pytest.mark.parametrize(
     ("strategy", "status", "name"),
-    [("replace", 200, "keep.txt"), ("error", 400, None)],
+    [("replace", 200, "keep.txt"), ("error", 409, None)],
 )
 async def test_same_name_strategies(
     connector_client: ClientFactory,

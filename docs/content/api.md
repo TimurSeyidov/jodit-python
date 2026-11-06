@@ -42,6 +42,7 @@ With [`errorHttpStatus: false`](config.md#errorHttpStatus) the status line is `2
 | `403` | Denied by [access rules](access-control.md), file type not allowed, file too large, private address in `fileUploadRemote` |
 | `404` | Unknown action, source, path or file |
 | `405` | `GET` with `onlyPOST`, or `GET` to a POST-only action |
+| `409` | The uploaded name is taken and the strategy is `error` (`fileUpload`, `fileUploadRemote`) |
 | `413` | JSON or urlencoded body over 100 KB (multipart uploads are limited by `maxUploadFileSize` instead) |
 | `422` | Non-numeric `mods[offset]` / `mods[limit]` |
 | `500` | Storage or processing failure |
@@ -170,6 +171,12 @@ curl -F "path=photos" -F "files[0]=@a.png" -F "files[1]=@b.jpg" \
 ```
 
 Names are made safe (`sanitize-filename` rules); the extension must be in `extensions` and the size within `maxUploadFileSize`; an existing name is handled by `saveSameFileNameStrategy`.
+
+`onExists` (`addNumber`, `replace` or `error`) overrides that strategy for one upload; `replace` also needs `FILE_REMOVE` on the path, since the existing file is destroyed. With `error` the answer is `409`, so a client can tell a taken name from any other failed upload, ask the user and send the file again with `onExists`:
+
+```bash
+curl -F "path=photos" -F "onExists=replace" -F "files[0]=@a.png" http://localhost:8081/fileUpload
+```
 
 ### `fileUploadRemote`
 

@@ -33,19 +33,41 @@ class StoredFile:
     is_image: bool
 
 
-async def _free_name(source: Source, directory: str, file_name: str) -> str:
+SAME_FILE_NAME_STRATEGIES = ("addNumber", "replace", "error")
+
+
+async def _free_name(
+    source: Source,
+    directory: str,
+    file_name: str,
+    on_exists: str | None = None,
+) -> str:
     """Apply ``saveSameFileNameStrategy`` to a taken name.
+
+    Args:
+        source: Source to store into.
+        directory: Target directory.
+        file_name: Sanitized file name.
+        on_exists: Strategy the client asked for in this request; wins
+            over the source's ``saveSameFileNameStrategy``.
 
     Returns:
         Absolute target path.
+
+    Raises:
+        HttpError: ``409`` for a taken name with the ``error`` strategy.
     """
     target = posixpath.join(directory, file_name)
     if not await source.storage.file_exists(source.storage_path(target)):
         return target
-    strategy = source.config.save_same_file_name_strategy or "addNumber"
+    strategy = (
+        on_exists or source.config.save_same_file_name_strategy or "addNumber"
+    )
     if strategy == "error":
+        # 409, not 400: a client can tell "the name is taken" from
+        # "could not save", ask the user and send again with ``onExists``.
         msg = f"File {file_name} already exists"
-        raise HttpError.bad_request(msg)
+        raise HttpError.conflict(msg)
     if strategy == "replace":
         return target
     extension = source.get_extension(file_name)
@@ -85,27 +107,31 @@ async def upload_files(
     source: Source,
     files: list[UploadFile],
     relative_path: str,
+    on_exists: str | None = None,
 ) -> list[StoredFile]:
     """Store uploaded files in a directory of a source.
 
     Names are sanitized (unsafe characters become ``_``); a taken name
-    follows ``saveSameFileNameStrategy``: ``addNumber`` (``a-1.txt``),
-    ``replace`` or ``error``. Each stored file must have an allowed
-    extension, fit ``maxUploadFileSize`` and pass ``FILE_UPLOAD`` for
-    its extension. Every file is checked before any is written, so a
-    rejected request changes nothing.
+    follows ``on_exists`` when given, else ``saveSameFileNameStrategy``:
+    ``addNumber`` (``a-1.txt``), ``replace`` or ``error``. Each stored
+    file must have an allowed extension, fit ``maxUploadFileSize`` and
+    pass ``FILE_UPLOAD`` for its extension; a file the client asked to
+    ``replace`` must also pass ``FILE_REMOVE``, since the existing one is
+    destroyed. Every file is checked before any is written, so a rejected
+    request changes nothing.
 
     Args:
         context: Action context (role and access control).
         source: Source to store into.
         files: Uploaded files.
         relative_path: Target directory relative to the source root.
+        on_exists: Strategy the client asked for in this request.
 
     Returns:
         Stored files in upload order.
 
     Raises:
-        HttpError: ``400`` for a taken name with the ``error``
+        HttpError: ``409`` for a taken name with the ``error``
             strategy, ``403`` for a forbidden extension, size or
             permission.
     """
@@ -115,7 +141,17 @@ async def upload_files(
     pending: list[tuple[str, UploadFile, bytes | None]] = []
     for upload in files:
         file_name = sanitize_filename(upload.filename or "", "_")
-        target = await _free_name(source, directory, file_name)
+        target = posixpath.join(directory, file_name)
+        if on_exists == "replace" and await source.storage.file_exists(
+            source.storage_path(target)
+        ):
+            await context.access.check_permission(
+                context.role,
+                "FILE_REMOVE",
+                directory,
+                source.get_extension(file_name),
+            )
+        target = await _free_name(source, directory, file_name, on_exists)
         storage_path = source.storage_path(target)
         _check_upload(source, storage_path, await _upload_size(upload))
         await context.access.check_permission(

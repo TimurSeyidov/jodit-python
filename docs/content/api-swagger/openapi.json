@@ -279,6 +279,16 @@
               }
             }
           },
+          "409": {
+            "description": "The uploaded name is taken and the strategy is error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal error",
             "content": {
@@ -343,6 +353,16 @@
           },
           "404": {
             "description": "Source, path or file not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "The uploaded name is taken and the strategy is error",
             "content": {
               "application/json": {
                 "schema": {
@@ -4126,6 +4146,24 @@
               "/"
             ],
             "title": "Path"
+          },
+          "onExists": {
+            "anyOf": [
+              {
+                "enum": [
+                  "addNumber",
+                  "replace",
+                  "error"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "What to do when the name is taken; overrides saveSameFileNameStrategy for this upload. replace also needs the FILE_REMOVE permission on the path",
+            "title": "Onexists"
           },
           "files": {
             "description": "Files, as `files[0]`, `files[1]`... or the `defaultFilesKey` field",

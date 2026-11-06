@@ -53,6 +53,18 @@ class HttpError(Exception):
         return cls(HTTPStatus.FORBIDDEN, message)
 
     @classmethod
+    def conflict(cls, message: str) -> HttpError:
+        """Build a ``409 Conflict`` error.
+
+        Args:
+            message: Error message.
+
+        Returns:
+            The error.
+        """
+        return cls(HTTPStatus.CONFLICT, message)
+
+    @classmethod
     def not_found(cls, message: str) -> HttpError:
         """Build a ``404 Not Found`` error.
 
