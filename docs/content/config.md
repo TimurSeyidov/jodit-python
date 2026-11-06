@@ -162,7 +162,7 @@ What an upload does when the name is taken:
 - `replace`: overwrite
 - `error`: fail with `409 File ... already exists`
 
-A client overrides it for one upload with the `onExists` parameter of [`fileUpload`](api.md#fileupload-post-multipart).
+A client overrides it for one upload with the `onExists` parameter of [`fileUpload`](api.md#fileupload-post-multipart), so this setting is a default rather than a limit: to keep clients from overwriting files, deny `FILE_REMOVE` in the [access rules](access-control.md). `FILE_REMOVE` is checked only for `replace` asked by the client; `replace` set here needs only `FILE_UPLOAD`.
 
 ### `datetimeFormat` {#datetimeFormat}
 `string` · default `"M/D/YYYY h:mm:ss A"`

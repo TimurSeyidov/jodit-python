@@ -6,7 +6,7 @@ All notable changes to this project are documented in this file. The format is b
 
 ### Added
 
-- `fileUpload` accepts `onExists` (`addNumber`, `replace` or `error`), which overrides `saveSameFileNameStrategy` for that one upload; `replace` additionally needs `FILE_REMOVE` on the path, since the existing file is destroyed. Same parameter as in jodit-nodejs 2.1.0 and the PHP connector 3.0.61.
+- `fileUpload` accepts `onExists` (`addNumber`, `replace` or `error`), which overrides `saveSameFileNameStrategy` for that one upload; `replace` additionally needs `FILE_REMOVE` on the path, since the existing file is destroyed.
 
 ### Changed
 
